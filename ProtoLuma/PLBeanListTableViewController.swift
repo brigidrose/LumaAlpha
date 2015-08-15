@@ -100,7 +100,8 @@ class PLBeanListTableViewController: UITableViewController, PTDBeanManagerDelega
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destinationViewController = segue.destinationViewController as! PLBeanDetailTableViewController
         destinationViewController.bean = self.beans.allValues[(self.tableView.indexPathForSelectedRow?.row)!] as! PTDBean
-        destinationViewController.navigationItem.title = "PLBeanDetailViewController"
+        destinationViewController.beanManager = self.beanManager
+        destinationViewController.navigationItem.title = destinationViewController.bean.name
     }
     
     /*

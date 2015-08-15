@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8142"/>
     </dependencies>
     <scenes>
-        <!--PLBeanListTableVIewController-->
+        <!--Beans-->
         <scene sceneID="cd5-gk-ePn">
             <objects>
                 <tableViewController id="RsP-P0-tdK" customClass="PLBeanListTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
@@ -31,7 +31,7 @@
                             <outlet property="delegate" destination="RsP-P0-tdK" id="Hii-tM-mqc"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="PLBeanListTableVIewController" id="ROv-PN-l5K"/>
+                    <navigationItem key="navigationItem" title="Beans" id="ROv-PN-l5K"/>
                     <connections>
                         <segue destination="Gdz-IV-LC7" kind="show" identifier="showBeanDetail" id="GUa-I7-V8W"/>
                     </connections>
@@ -40,7 +40,7 @@
             </objects>
             <point key="canvasLocation" x="859" y="369"/>
         </scene>
-        <!--Bean Detail Table View Controller-->
+        <!--Bean-->
         <scene sceneID="HUK-AN-okC">
             <objects>
                 <tableViewController id="Gdz-IV-LC7" customClass="PLBeanDetailTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
@@ -66,6 +66,13 @@
                             <outlet property="delegate" destination="Gdz-IV-LC7" id="zz6-qW-gef"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Bean" id="0aF-Xd-67b">
+                        <barButtonItem key="rightBarButtonItem" title="Connect" id="X7U-4M-Pjz">
+                            <connections>
+                                <action selector="connectBarButtonItemTapped:" destination="Gdz-IV-LC7" id="iQO-Jq-etW"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I3T-i0-YMu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

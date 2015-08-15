@@ -8,9 +8,10 @@
 
 import UIKit
 
-class PLBeanDetailTableViewController: UITableViewController {
+class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDelegate, PTDBeanDelegate {
 
     var bean:PTDBean!
+    var beanManager:PTDBeanManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +28,44 @@ class PLBeanDetailTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func update(){
+        let connectButton = self.navigationItem.rightBarButtonItem!
+        if (self.bean.state == BeanState.Discovered) {
+            connectButton.title = "Connect"
+            connectButton.enabled = true
+        }
+        else if (self.bean.state == BeanState.ConnectedAndValidated) {
+            connectButton.title = "Disconnect"
+            connectButton.enabled = true
+        }
+        self.tableView.reloadData()
+    }
+    
+    func BeanManager(beanManager: PTDBeanManager!, didConnectToBean bean: PTDBean!, error: NSError!) {
+        self.update()
+    }
+    
+    func BeanManager(beanManager: PTDBeanManager!, didDisconnectBean bean: PTDBean!, error: NSError!) {
+        self.update()
+    }
 
+
+    @IBAction func connectBarButtonItemTapped(sender: UIBarButtonItem) {
+        print("Connect Bar Button Item Tapped")
+        if (self.bean.state == BeanState.Discovered) {
+            self.bean.delegate = self
+            self.beanManager.connectToBean(self.bean, error: nil)
+            self.beanManager.delegate = self;
+            self.navigationItem.rightBarButtonItem?.enabled = false
+        }
+        else {
+            self.bean.delegate = self;
+            self.beanManager.disconnectBean(self.bean, error: nil)
+        }
+        self.tableView.reloadData()
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -37,22 +75,28 @@ class PLBeanDetailTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        return 2
     }
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "BeanDetail")
-        cell.textLabel?.text = self.bean.name
-        var beanStateString:String!
-        if self.bean.state == BeanState.ConnectedAndValidated{
-            beanStateString = "Connected"
+        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "BeanDetail")
+        switch indexPath.row{
+        case 0:
+            cell.textLabel?.text = "State"
+            var beanStateString:String!
+            if self.bean.state == BeanState.ConnectedAndValidated{
+                beanStateString = "Connected"
+            }
+            else{
+                beanStateString = "Disconnected"
+            }
+            cell.detailTextLabel!.text = beanStateString
+        case 1:
+            cell.textLabel?.text = "Action"
+            cell.detailTextLabel?.text = "Description"
+        default: break
         }
-        else{
-            beanStateString = "Disconnected"
-        }
-        cell.detailTextLabel!.text = beanStateString
-        // Configure the cell...
         return cell
     }
 
