@@ -1,61 +1,27 @@
 //
-//  PLBeanListTableViewController.swift
+//  PLBeanDetailTableViewController.swift
 //  ProtoLuma
 //
-//  Created by Chun-Wei Chen on 8/14/15.
+//  Created by Chun-Wei Chen on 8/15/15.
 //  Copyright © 2015 Chun-Wei Chen. All rights reserved.
 //
 
 import UIKit
 
-class PLBeanListTableViewController: UITableViewController, PTDBeanManagerDelegate {
+class PLBeanDetailTableViewController: UITableViewController {
 
-    let beanManager = PTDBeanManager()
-    var beans:NSMutableDictionary!
+    var bean:PTDBean!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.beanManager.delegate = self
-        self.beans = NSMutableDictionary(dictionary: NSMutableDictionary())
+        print(self.bean)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-    
-    // MARK: PTDBeanManager Delegates
-    
-    func beanManagerDidUpdateState(beanManager: PTDBeanManager!) {
-        if beanManager.state == BeanManagerState.PoweredOn {
-            beanManager.startScanningForBeans_error(nil)
-        }
-        else{
-            let alert = UIAlertView(title: "Bluetooth Unavailable", message: "Turn on Bluetooth to scan for beans.", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
-        }
-    }
-    
-    func BeanManager(beanManager: PTDBeanManager!, didDiscoverBean bean: PTDBean!, error: NSError!) {
-        let key = bean.identifier
-        NSLog("%@", key)
-        if(self.beans.objectForKey(key) == nil){
-            // New Bean
-            print("A New Bean")
-            self.beans.setObject(bean, forKey: key)
-        }
-        print(self.beans)
         self.tableView.reloadData()
     }
-    
-    func BeanManager(beanManager: PTDBeanManager!, didConnectToBean bean: PTDBean!, error: NSError!) {
-        
-    }
-    
-    func BeanManager(beanManager: PTDBeanManager!, didDisconnectBean bean: PTDBean!, error: NSError!) {
-        self.tableView.reloadData()
-    }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -63,46 +29,34 @@ class PLBeanListTableViewController: UITableViewController, PTDBeanManagerDelega
     }
 
     // MARK: - Table view data source
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Beans"
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
     }
-    
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print(self.beans.count)
-        return self.beans.count
+        return 1
     }
-    
+
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "BeanTableViewCell")
-        let bean:PTDBean = self.beans.allValues[indexPath.row] as! PTDBean
-        print("bean is \(bean)")
-        cell.textLabel?.text = "\(bean.name)"
-        let beanState:String!
-        if (bean.state == BeanState.ConnectedAndValidated){
-            beanState = "Connected"
+        let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "BeanDetail")
+        cell.textLabel?.text = self.bean.name
+        var beanStateString:String!
+        if self.bean.state == BeanState.ConnectedAndValidated{
+            beanStateString = "Connected"
         }
         else{
-            beanState = "Disconnected"
+            beanStateString = "Disconnected"
         }
-        cell.detailTextLabel?.text = beanState
+        cell.detailTextLabel!.text = beanStateString
         // Configure the cell...
-
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.performSegueWithIdentifier("showBeanDetail", sender: self)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationViewController = segue.destinationViewController as! PLBeanDetailTableViewController
-        destinationViewController.bean = self.beans.allValues[(self.tableView.indexPathForSelectedRow?.row)!] as! PTDBean
-        destinationViewController.navigationItem.title = "PLBeanDetailViewController"
-    }
-    
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

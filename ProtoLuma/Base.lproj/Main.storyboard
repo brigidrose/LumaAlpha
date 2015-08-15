@@ -32,10 +32,44 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="PLBeanListTableVIewController" id="ROv-PN-l5K"/>
+                    <connections>
+                        <segue destination="Gdz-IV-LC7" kind="show" identifier="showBeanDetail" id="GUa-I7-V8W"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vji-5k-Dfh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="859" y="369"/>
+        </scene>
+        <!--Bean Detail Table View Controller-->
+        <scene sceneID="HUK-AN-okC">
+            <objects>
+                <tableViewController id="Gdz-IV-LC7" customClass="PLBeanDetailTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="M3f-q5-jrS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5ka-7m-IdR">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5ka-7m-IdR" id="EAf-5c-d8U">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Gdz-IV-LC7" id="g3S-X0-xDa"/>
+                            <outlet property="delegate" destination="Gdz-IV-LC7" id="zz6-qW-gef"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I3T-i0-YMu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1644" y="369"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="37F-Oh-ulr">
