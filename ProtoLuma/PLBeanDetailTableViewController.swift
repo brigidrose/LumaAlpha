@@ -75,7 +75,7 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 2
+        return 6
     }
 
 
@@ -93,14 +93,70 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
             }
             cell.detailTextLabel!.text = beanStateString
         case 1:
-            cell.textLabel?.text = "Action"
-            cell.detailTextLabel?.text = "Description"
+            cell.textLabel?.text = "Color"
+            cell.detailTextLabel?.text = "RED"
+        case 2:
+            cell.textLabel?.text = "Temperature"
+            cell.detailTextLabel?.text = "Measuring..."
+        case 3:
+            cell.textLabel?.text = "Vibrate"
+            cell.detailTextLabel?.text = "ON"
+        case 4:
+            cell.textLabel?.text = "Vibrate"
+            cell.detailTextLabel?.text = "OFF"
+        case 5:
+            cell.textLabel?.text = "Color"
+            cell.detailTextLabel?.text = "BLUE!"
         default: break
         }
         return cell
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.row == 1){
+            self.bean.setLedColor(UIColor.redColor())
+            print("LED RED")
+        }
+        if (indexPath.row == 2){
+            self.bean.readTemperature()
+            print("temperature measured")
+        }
+        if (indexPath.row == 3){
+            let messageString = "R"
+            self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+            print("R Sent!")
+        }
+        if (indexPath.row == 4){
+            let messageString = "G"
+            self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+            print("G Sent!")
+        }
+        if (indexPath.row == 5){
+            let messageString = "B"
+            self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+            print("B Sent!")
+        }
+    }
 
-
+    func bean(bean: PTDBean!, didUpdateTemperature degrees_celsius: NSNumber!) {
+        let temperatureAlert = UIAlertView(title: "Temperature Read", message: "\(degrees_celsius)", delegate: self, cancelButtonTitle: "OK")
+        temperatureAlert.show()
+    }
+    
+    func bean(bean: PTDBean!, serialDataReceived data: NSData!) {
+        let feedback = NSString(data: data, encoding: NSUTF8StringEncoding)
+        if (feedback == "IT's R"){
+//            self.bean.setLedColor(UIColor.redColor())
+        }
+        else if (feedback == "IT's G"){
+//            self.bean.setLedColor(UIColor.greenColor())
+        }
+        else if (feedback == "IT's B"){
+            self.bean.setLedColor(UIColor.blueColor())
+        }
+        print(NSString(data: data, encoding: NSUTF8StringEncoding))
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

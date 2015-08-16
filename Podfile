@@ -4,7 +4,7 @@
 target 'ProtoLuma' do
 
 pod 'Bean-iOS-OSX-SDK'
-
+pod 'Parse'
 end
 
 target 'ProtoLumaTests' do
