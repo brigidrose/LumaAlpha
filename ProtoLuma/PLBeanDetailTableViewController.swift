@@ -144,13 +144,18 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
     func vibrate(notification:NSNotification){
         let messageString = "R"
         self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("NOTIFICATION SENT TO VIBRATE!")
+        print("RECEIVED NOTIFICATION TO VIBRATE!")
+        let alert = UIAlertView(title: "Notification Received", message: "Command is sent to Arduino to jiggle.", delegate: nil, cancelButtonTitle: "OK")
+        alert.show()
+
     }
 
     func stopVibration(notification:NSNotification){
         let messageString = "G"
         self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("NOTIFICATION SENT TO STOP VIBRATION!")
+        print("RECEIVED NOTIFICATION TO STOP VIBRATION!")
+        let alert = UIAlertView(title: "Notification Received", message: "Command is sent to Arduino to stop jiggling.", delegate: nil, cancelButtonTitle: "OK")
+        alert.show()
     }
     
     func bean(bean: PTDBean!, didUpdateTemperature degrees_celsius: NSNumber!) {
@@ -160,7 +165,15 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
     
     func bean(bean: PTDBean!, serialDataReceived data: NSData!) {
         let feedback = NSString(data: data, encoding: NSUTF8StringEncoding)
-        print(feedback)
+        print("feedback is \(feedback)")
+        if (feedback == "Vibrating"){
+            let alert = UIAlertView(title: "Arduino Reacted", message: "It's feeling some good vibration.", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+        }
+        else if(feedback == "Stopped Vibrating"){
+            let alert = UIAlertView(title: "Arduino Reacted", message: "Vibration is, sadly, no more.", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+        }
 //        if (feedback == "IT's R"){
 //            self.bean.setLedColor(UIColor.redColor())
 //        }

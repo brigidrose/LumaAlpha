@@ -74,10 +74,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Handle notifications when app is in foreground
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        if (userInfo["MEME"] as! String == "photo"){
+        if (userInfo["MIME"] as! String == "photo"){
             NSNotificationCenter.defaultCenter().postNotificationName("notificationToVibrate", object: nil)
         }
-        else if (userInfo["MEME"] as! String == "movie"){
+        else if (userInfo["MIME"] as! String == "movie"){
             NSNotificationCenter.defaultCenter().postNotificationName("notificationToStopVibration", object: nil)
         }
     }
