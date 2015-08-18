@@ -19,6 +19,9 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "vibrate:", name: "notificationToVibrate", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopVibration:", name: "notificationToStopVibration", object: nil)
+
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.tableView.reloadData()
@@ -137,7 +140,19 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
             print("B Sent!")
         }
     }
+    
+    func vibrate(notification:NSNotification){
+        let messageString = "R"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("NOTIFICATION SENT TO VIBRATE!")
+    }
 
+    func stopVibration(notification:NSNotification){
+        let messageString = "G"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("NOTIFICATION SENT TO STOP VIBRATION!")
+    }
+    
     func bean(bean: PTDBean!, didUpdateTemperature degrees_celsius: NSNumber!) {
         let temperatureAlert = UIAlertView(title: "Temperature Read", message: "\(degrees_celsius)", delegate: self, cancelButtonTitle: "OK")
         temperatureAlert.show()
@@ -145,16 +160,16 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
     
     func bean(bean: PTDBean!, serialDataReceived data: NSData!) {
         let feedback = NSString(data: data, encoding: NSUTF8StringEncoding)
-        if (feedback == "IT's R"){
+        print(feedback)
+//        if (feedback == "IT's R"){
 //            self.bean.setLedColor(UIColor.redColor())
-        }
-        else if (feedback == "IT's G"){
+//        }
+//        else if (feedback == "IT's G"){
 //            self.bean.setLedColor(UIColor.greenColor())
-        }
-        else if (feedback == "IT's B"){
-            self.bean.setLedColor(UIColor.blueColor())
-        }
-        print(NSString(data: data, encoding: NSUTF8StringEncoding))
+//        }
+//        else if (feedback == "IT's B"){
+//            self.bean.setLedColor(UIColor.blueColor())
+//        }
     }
     
     /*

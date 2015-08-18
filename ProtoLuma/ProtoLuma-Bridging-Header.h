@@ -10,5 +10,5 @@
 #define ProtoLuma_Bridging_Header_h
 
 #import <PTDBeanManager.h>
-
+#import <Parse/Parse.h>
 #endif /* ProtoLuma_Bridging_Header_h */

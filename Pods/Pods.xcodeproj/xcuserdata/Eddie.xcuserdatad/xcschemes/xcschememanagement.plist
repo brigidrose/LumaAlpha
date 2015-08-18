@@ -9,6 +9,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Bolts.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Parse.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-ProtoLuma.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3564569F0086D97B00E0528B42EA96EE</key>
+		<key>0153644072B85C5786D5F963D84B86BD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>75376E5CA49D38195072CDB0D161D1A8</key>
+		<key>37C25A3D4963444E3AE2CABA112A6C04</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8E4E50CC252B04A3B391B2E25D2727EF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A17A8A8A8CE0EC864622DF2DBE76DCD1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

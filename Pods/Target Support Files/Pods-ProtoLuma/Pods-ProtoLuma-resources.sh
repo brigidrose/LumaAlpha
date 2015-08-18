@@ -60,10 +60,12 @@ install_resource()
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgA.bin"
   install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgB.bin"
+  install_resource "Parse/Parse/Resources/Localizable.strings"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgA.bin"
   install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgB.bin"
+  install_resource "Parse/Parse/Resources/Localizable.strings"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

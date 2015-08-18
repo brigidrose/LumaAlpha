@@ -16,7 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        // [Optional] Power your app with Local Datastore. For more info, go to
+        // https://parse.com/docs/ios_guide#localdatastore/iOS
+        Parse.enableLocalDatastore()
+        
+        // Initialize Parse.
+        Parse.setApplicationId("xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d",
+            clientKey: "VPxuBA4ASQBaPpusXfocIPKAKNrtJALBYd6LKlSx")
+        
+        // [Optional] Track statistics around application opens.
+        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
+        
+        let userNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(userNotificationSettings)
+        application.registerForRemoteNotifications()
+        
         return true
     }
 
@@ -36,6 +50,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if (PFInstallation.currentInstallation().badge != 0) {
+            PFInstallation.currentInstallation().badge = 0
+            PFInstallation.currentInstallation().saveEventually(nil)
+        }
+
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -43,7 +62,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        // Store the deviceToken in the current Installation and save it to Parse
+        let installation = PFInstallation.currentInstallation()
+        installation.setDeviceTokenFromData(deviceToken)
+        installation.saveInBackgroundWithBlock(nil)
+    }
+    
 
+    // MARK: Handle notifications when app is in foreground
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        if (userInfo["MEME"] as! String == "photo"){
+            NSNotificationCenter.defaultCenter().postNotificationName("notificationToVibrate", object: nil)
+        }
+        else if (userInfo["MEME"] as! String == "movie"){
+            NSNotificationCenter.defaultCenter().postNotificationName("notificationToStopVibration", object: nil)
+        }
+    }
+    
     // MARK: - Core Data stack
 
     lazy var applicationDocumentsDirectory: NSURL = {

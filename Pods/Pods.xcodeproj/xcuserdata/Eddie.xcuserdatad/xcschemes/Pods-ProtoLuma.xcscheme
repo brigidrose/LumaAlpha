@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1AA7FEAC25A49B4F943ED2E9"
+               BlueprintIdentifier = "D9C888D944F69A9CAB584C02"
                BuildableName = "libPods-ProtoLuma.a"
                BlueprintName = "Pods-ProtoLuma"
                ReferencedContainer = "container:Pods.xcodeproj">
