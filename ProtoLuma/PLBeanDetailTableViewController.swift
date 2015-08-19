@@ -19,8 +19,17 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "vibrate:", name: "notificationToVibrate", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopVibration:", name: "notificationToStopVibration", object: nil)
+        // MARK: ADD NOTIFICATION OBSERVERS
+        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "vibrate:", name: "notificationToVibrate", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopVibration:", name: "notificationToStopVibration", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "vibrateForNotification:", name: "notificationReceived", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmX:", name: "charmX", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmY:", name: "charmY", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmZ", name: "charmZ", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmX:", name: "actionAOnCharmX", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmY:", name: "actionBOnCharmY", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmZ", name: "actionCOnCharmZ", object: nil)
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
@@ -50,6 +59,10 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
     }
     
     func BeanManager(beanManager: PTDBeanManager!, didDisconnectBean bean: PTDBean!, error: NSError!) {
+        self.update()
+    }
+    
+    func beanManager(beanManager: PTDBeanManager!, didDiscoverBean bean: PTDBean!, error: NSError!) {
         self.update()
     }
 
@@ -95,85 +108,98 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
                 beanStateString = "Disconnected"
             }
             cell.detailTextLabel!.text = beanStateString
-        case 1:
-            cell.textLabel?.text = "Color"
-            cell.detailTextLabel?.text = "RED"
-        case 2:
-            cell.textLabel?.text = "Temperature"
-            cell.detailTextLabel?.text = "Measuring..."
-        case 3:
-            cell.textLabel?.text = "Vibrate"
-            cell.detailTextLabel?.text = "ON"
-        case 4:
-            cell.textLabel?.text = "Vibrate"
-            cell.detailTextLabel?.text = "OFF"
-        case 5:
-            cell.textLabel?.text = "Color"
-            cell.detailTextLabel?.text = "BLUE!"
         default: break
         }
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.row == 1){
-            self.bean.setLedColor(UIColor.redColor())
-            print("LED RED")
-        }
-        if (indexPath.row == 2){
-            self.bean.readTemperature()
-            print("temperature measured")
-        }
-        if (indexPath.row == 3){
-            let messageString = "R"
-            self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-            print("R Sent!")
-        }
-        if (indexPath.row == 4){
-            let messageString = "G"
-            self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-            print("G Sent!")
-        }
-        if (indexPath.row == 5){
-            let messageString = "B"
-            self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-            print("B Sent!")
-        }
     }
     
-    func vibrate(notification:NSNotification){
-        let messageString = "R"
-        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("RECEIVED NOTIFICATION TO VIBRATE!")
-        let alert = UIAlertView(title: "Notification Received", message: "Command is sent to Arduino to jiggle.", delegate: nil, cancelButtonTitle: "OK")
-        alert.show()
-
-    }
-
-    func stopVibration(notification:NSNotification){
-        let messageString = "G"
-        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("RECEIVED NOTIFICATION TO STOP VIBRATION!")
-        let alert = UIAlertView(title: "Notification Received", message: "Command is sent to Arduino to stop jiggling.", delegate: nil, cancelButtonTitle: "OK")
-        alert.show()
-    }
+    // MARK: Notification SendSerialData Functions
     
-    func bean(bean: PTDBean!, didUpdateTemperature degrees_celsius: NSNumber!) {
-        let temperatureAlert = UIAlertView(title: "Temperature Read", message: "\(degrees_celsius)", delegate: self, cancelButtonTitle: "OK")
-        temperatureAlert.show()
+    func vibrateForNotification(notification:NSNotification){
+        let messageString = "N"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
     }
+
+    func pulseCharmX(notification:NSNotification){
+        let messageString = "X"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+
+    func pulseCharmY(notification:NSNotification){
+        let messageString = "Y"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+
+//    func pulseCharmZ(notification:NSNotification){
+//        let messageString = "Z"
+//        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+//        print("Sent \(messageString)")
+//    }
+
+    func recallCharmX(notification:NSNotification){
+        let messageString = "A"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+
+    func recallCharmY(notification:NSNotification){
+        let messageString = "B"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+
+//    func recallCharmZ(notification:NSNotification){
+//        let messageString = "C"
+//        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+//        print("Sent \(messageString)")
+//    }
+
+    
+//    func vibrate(notification:NSNotification){
+//        let messageString = "R"
+//        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+//        print("RECEIVED NOTIFICATION TO VIBRATE!")
+//        let alert = UIAlertView(title: "Notification Received", message: "Command is sent to Arduino to jiggle.", delegate: nil, cancelButtonTitle: "OK")
+//        alert.show()
+//
+//    }
+//
+//    func stopVibration(notification:NSNotification){
+//        let messageString = "G"
+//        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+//        print("RECEIVED NOTIFICATION TO STOP VIBRATION!")
+//        let alert = UIAlertView(title: "Notification Received", message: "Command is sent to Arduino to stop jiggling.", delegate: nil, cancelButtonTitle: "OK")
+//        alert.show()
+//    }
+    
     
     func bean(bean: PTDBean!, serialDataReceived data: NSData!) {
         let feedback = NSString(data: data, encoding: NSUTF8StringEncoding)
         print("feedback is \(feedback)")
-        if (feedback == "Vibrating"){
-            let alert = UIAlertView(title: "Arduino Reacted", message: "It's feeling some good vibration.", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
+        switch feedback as! String{
+        case "buttonAPushed":
+            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
+            print("Button A Pushed")
+        case "buttonBPushed":
+            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
+            print("Button B Pushed")
+        default:
+             break
         }
-        else if(feedback == "Stopped Vibrating"){
-            let alert = UIAlertView(title: "Arduino Reacted", message: "Vibration is, sadly, no more.", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
-        }
+//        if (feedback == "Vibrating"){
+//            let alert = UIAlertView(title: "Arduino Reacted", message: "It's feeling some good vibration.", delegate: nil, cancelButtonTitle: "OK")
+//            alert.show()
+//        }
+//        else if(feedback == "Stopped Vibrating"){
+//            let alert = UIAlertView(title: "Arduino Reacted", message: "Vibration is, sadly, no more.", delegate: nil, cancelButtonTitle: "OK")
+//            alert.show()
+//        }
 //        if (feedback == "IT's R"){
 //            self.bean.setLedColor(UIColor.redColor())
 //        }

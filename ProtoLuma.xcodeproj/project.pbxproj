@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C6278D31B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6278D21B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift */; };
+		2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */; };
 		2CCC57B91B7F17C300BD1D9F /* PLBeanListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCC57B81B7F17C300BD1D9F /* PLBeanListTableViewController.swift */; };
 		2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */; };
 		2CF2FE211B7EBB6200F4E11D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		2C6278D11B7F1E08006DDBE7 /* ProtoLuma-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtoLuma-Bridging-Header.h"; sourceTree = "<group>"; };
 		2C6278D21B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PLBeanDetailTableViewController.swift; sourceTree = "<group>"; };
+		2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoriesTabViewController.swift; path = "Stories Tab/StoriesTabViewController.swift"; sourceTree = "<group>"; };
 		2CCC57B81B7F17C300BD1D9F /* PLBeanListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PLBeanListTableViewController.swift; sourceTree = "<group>"; };
 		2CF2FE181B7EBB6200F4E11D /* ProtoLuma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtoLuma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */,
 				2CCC57B81B7F17C300BD1D9F /* PLBeanListTableViewController.swift */,
 				2C6278D21B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift */,
+				2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */,
 				2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */,
 				2CF2FE251B7EBB6200F4E11D /* Assets.xcassets */,
 				2CF2FE271B7EBB6200F4E11D /* LaunchScreen.storyboard */,
@@ -322,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */,
 				2C6278D31B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift in Sources */,
 				2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,

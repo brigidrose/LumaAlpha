@@ -74,11 +74,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Handle notifications when app is in foreground
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        if (userInfo["MIME"] as! String == "photo"){
-            NSNotificationCenter.defaultCenter().postNotificationName("notificationToVibrate", object: nil)
-        }
-        else if (userInfo["MIME"] as! String == "movie"){
-            NSNotificationCenter.defaultCenter().postNotificationName("notificationToStopVibration", object: nil)
+        // "N" case
+        NSNotificationCenter.defaultCenter().postNotificationName("notificationReceived", object: nil)
+
+        // Switch for userInfo["notificationType"]
+        switch userInfo["notificationType"] as! String{
+            case "X": NSNotificationCenter.defaultCenter().postNotificationName("charmX", object: nil)
+            case "Y": NSNotificationCenter.defaultCenter().postNotificationName("charmY", object: nil)
+//            case "Z": NSNotificationCenter.defaultCenter().postNotificationName("charmZ", object: nil)
+            case "A": NSNotificationCenter.defaultCenter().postNotificationName("actionAOnCharmX", object: nil)
+            case "B": NSNotificationCenter.defaultCenter().postNotificationName("actionBOnCharmY", object: nil)
+//            case "C": NSNotificationCenter.defaultCenter().postNotificationName("actionCOnCharmZ", object: nil)
+            default: break
         }
     }
     

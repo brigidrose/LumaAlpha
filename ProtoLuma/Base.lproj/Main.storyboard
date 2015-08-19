@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="15A244d" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3rt-jV-9id">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="15A244d" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XfZ-bz-mtE">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8142"/>
     </dependencies>
     <scenes>
-        <!--Beans-->
+        <!--Settings-->
         <scene sceneID="cd5-gk-ePn">
             <objects>
                 <tableViewController id="RsP-P0-tdK" customClass="PLBeanListTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
@@ -31,7 +31,7 @@
                             <outlet property="delegate" destination="RsP-P0-tdK" id="Hii-tM-mqc"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Beans" id="ROv-PN-l5K"/>
+                    <navigationItem key="navigationItem" title="Settings" id="ROv-PN-l5K"/>
                     <connections>
                         <segue destination="Gdz-IV-LC7" kind="show" identifier="showBeanDetail" id="GUa-I7-V8W"/>
                     </connections>
@@ -78,10 +78,49 @@
             </objects>
             <point key="canvasLocation" x="1644" y="369"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Stories-->
+        <scene sceneID="dZV-sS-byP">
+            <objects>
+                <navigationController id="Kti-Ah-weI" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Stories" id="s0n-rD-ZIB"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dUd-6b-bdH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="rf6-Oy-7bt" kind="relationship" relationship="rootViewController" id="lIJ-9f-Fcm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3xo-tF-ey1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="38" y="1116"/>
+        </scene>
+        <!--Stories-->
+        <scene sceneID="vom-AO-DHA">
+            <objects>
+                <viewController id="rf6-Oy-7bt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ESM-zd-NHU"/>
+                        <viewControllerLayoutGuide type="bottom" id="OPW-0v-QWZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Pbb-Vh-NzP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Stories" id="eEy-rX-ytS"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T5H-pC-m46" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="859" y="1116"/>
+        </scene>
+        <!--Settings-->
         <scene sceneID="37F-Oh-ulr">
             <objects>
                 <navigationController id="3rt-jV-9id" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" id="BB4-GP-ss4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="B1u-dI-9gb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -94,6 +133,26 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uf1-8i-stN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="38" y="369"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="AM5-uZ-9hA">
+            <objects>
+                <tabBarController id="XfZ-bz-mtE" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="Iry-Xg-WF3">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="3rt-jV-9id" kind="relationship" relationship="viewControllers" id="VSc-ui-DgL"/>
+                        <segue destination="Kti-Ah-weI" kind="relationship" relationship="viewControllers" id="Aik-B7-0Lc"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="09t-f6-yUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-653" y="369"/>
         </scene>
     </scenes>
 </document>
