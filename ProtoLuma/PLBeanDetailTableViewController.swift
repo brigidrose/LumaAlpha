@@ -184,10 +184,10 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
         print("feedback is \(feedback)")
         switch feedback as! String{
         case "buttonAPushed":
-            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
+//            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
             print("Button A Pushed")
         case "buttonBPushed":
-            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
+//            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
             print("Button B Pushed")
         default:
              break
