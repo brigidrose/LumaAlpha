@@ -29,6 +29,7 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmZ", name: "charmZ", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmX:", name: "actionAOnCharmX", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmY:", name: "actionBOnCharmY", object: nil)
+        
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmZ", name: "actionCOnCharmZ", object: nil)
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.

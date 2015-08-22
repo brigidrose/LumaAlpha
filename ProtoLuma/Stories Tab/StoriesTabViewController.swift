@@ -12,13 +12,15 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 
     var charmsGalleryCollectionView:UICollectionView!
     var storiesTableView:UITableView!
-
+    var userInfo:AnyObject!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let accountButton = UIBarButtonItem(image: UIImage(named: "AccountBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "accountButtonTapped:")
         let newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "presentTestImageView:", name: "showTestImage", object: nil)
+        
         self.navigationItem.rightBarButtonItem = newStoryButton
         self.navigationItem.leftBarButtonItem = accountButton
         
@@ -120,6 +122,13 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "showTempImageView"){
+            let destinationVC = segue.destinationViewController.childViewControllers[0] as! TempImageViewController
+            destinationVC.url = NSURL(string: self.userInfo["url"] as! String)
+        }
+    }
+    
     
     // MARK: Navigation Methods
     func accountButtonTapped(sender:UIBarButtonItem){
@@ -135,6 +144,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         sender.endRefreshing()
     }
     
+    func presentTestImageView(notification:NSNotification){
+        self.userInfo = notification.object!
+        print(notification.object)
+        self.performSegueWithIdentifier("showTempImageView", sender: self)
+    }
     
 
 }

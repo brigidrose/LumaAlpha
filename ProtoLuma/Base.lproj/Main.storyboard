@@ -16,7 +16,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5Nu-Og-afZ">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Nu-Og-afZ" id="7TN-NW-Qsb">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -51,7 +51,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5ka-7m-IdR">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5ka-7m-IdR" id="EAf-5c-d8U">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -114,6 +114,7 @@
                         <segue destination="syx-Qf-0WI" kind="show" identifier="showStoryDetail" id="YaX-F2-hyf"/>
                         <segue destination="Zuw-ZQ-xEi" kind="presentation" identifier="showNewStory" id="MLz-NT-2Yf"/>
                         <segue destination="3rt-jV-9id" kind="presentation" identifier="showAccount" id="che-mF-G8g"/>
+                        <segue destination="FVX-zX-uMY" kind="presentation" identifier="showTempImageView" id="q6C-v8-mGB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T5H-pC-m46" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -176,6 +177,59 @@
             </objects>
             <point key="canvasLocation" x="2203" y="1607"/>
         </scene>
+        <!--Temp Image View Controller-->
+        <scene sceneID="G3R-RE-tqJ">
+            <objects>
+                <viewController id="Q4f-mg-U2k" customClass="TempImageViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="CT9-Wf-Eho"/>
+                        <viewControllerLayoutGuide type="bottom" id="Lsq-Ig-4LL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zRv-nJ-dOc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fq9-ZQ-4qS">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Lsq-Ig-4LL" firstAttribute="top" secondItem="fq9-ZQ-4qS" secondAttribute="bottom" id="16F-vj-r9B"/>
+                            <constraint firstItem="fq9-ZQ-4qS" firstAttribute="leading" secondItem="zRv-nJ-dOc" secondAttribute="leading" id="EHu-RM-IqF"/>
+                            <constraint firstAttribute="trailing" secondItem="fq9-ZQ-4qS" secondAttribute="trailing" id="dSl-wd-utO"/>
+                            <constraint firstItem="fq9-ZQ-4qS" firstAttribute="top" secondItem="CT9-Wf-Eho" secondAttribute="bottom" id="gWr-jH-YMH"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="ylb-oo-wLI"/>
+                    <connections>
+                        <outlet property="webView" destination="fq9-ZQ-4qS" id="8y7-He-ybr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l2K-RJ-Dqa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1049" y="2988"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="dge-32-QSN">
+            <objects>
+                <navigationController id="FVX-zX-uMY" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qxx-bR-i0g">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Q4f-mg-U2k" kind="relationship" relationship="rootViewController" id="zib-3T-Ydm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TSW-CH-NCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1049" y="2243"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="37F-Oh-ulr">
             <objects>
@@ -208,10 +262,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="JYZ-VU-nTj"/>
+                    <connections>
+                        <segue destination="RsP-P0-tdK" kind="show" identifier="showBeans" id="RMp-A7-0i8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S68-I0-l2A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1382" y="3060"/>
+            <point key="canvasLocation" x="563" y="3060"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.70980392156862748" green="0.64313725490196083" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>

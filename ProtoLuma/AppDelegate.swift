@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         // "N" case
         NSNotificationCenter.defaultCenter().postNotificationName("notificationReceived", object: nil)
-
+        NSNotificationCenter.defaultCenter().postNotificationName("showTestImage", object:userInfo)
         // Switch for userInfo["notificationType"]
         switch userInfo["notificationType"] as! String{
             case "X": NSNotificationCenter.defaultCenter().postNotificationName("charmX", object: nil)

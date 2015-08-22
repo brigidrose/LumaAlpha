@@ -63,6 +63,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
             cell.promptLabel.text = "Have a new Luma Bracelet or Charm?"
             cell.button.setTitle("Begin Setup", forState: UIControlState.Normal)
+            cell.button.addTarget(self, action: "setupButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
             return cell
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
@@ -133,5 +134,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func logoutButtonTapped(sender:UIBarButtonItem){
         print("Logout button tapped")
+    }
+    
+    func setupButtonTapped(){
+        self.performSegueWithIdentifier("showBeans", sender: self)
     }
 }
