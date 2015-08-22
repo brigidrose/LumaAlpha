@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().registerUserNotificationSettings(userNotificationSettings)
         application.registerForRemoteNotifications()
         
+        UIStyleController.applyStyle()
         return true
     }
 

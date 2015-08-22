@@ -8,27 +8,60 @@
 
 import UIKit
 
-class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate{
 
-    @IBOutlet weak var storiesCollectionView: UICollectionView!
-    @IBOutlet weak var charmsGalleryCollectionView: UICollectionView!
+    var charmsGalleryCollectionView:UICollectionView!
+    var storiesTableView:UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.automaticallyAdjustsScrollViewInsets = false
         
+        let accountButton = UIBarButtonItem(image: UIImage(named: "AccountBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "accountButtonTapped:")
+        let newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
+
+        self.navigationItem.rightBarButtonItem = newStoryButton
+        self.navigationItem.leftBarButtonItem = accountButton
+        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 50, height: 50)
+        layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
+        layout.sectionInset = UIEdgeInsets(top: 7, left: 16, bottom: 7, right: 16)
+        layout.minimumLineSpacing = 28
+        self.charmsGalleryCollectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+        self.charmsGalleryCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.charmsGalleryCollectionView.delegate = self
         self.charmsGalleryCollectionView.dataSource = self
-        self.charmsGalleryCollectionView.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "charmsGalleryCell")
+        self.charmsGalleryCollectionView.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "CharmsGalleryCollectionViewCell")
+        self.charmsGalleryCollectionView.directionalLockEnabled = true
+        self.charmsGalleryCollectionView.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
+        self.charmsGalleryCollectionView.showsHorizontalScrollIndicator = false
+        self.view.addSubview(self.charmsGalleryCollectionView)
         
-        self.storiesCollectionView.delegate = self
-        self.storiesCollectionView.dataSource = self
-//        self.storiesCollectionView.collectionViewLayout = StoriesCollectionViewFlowLayout()
-        let layout = self.storiesCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.estimatedItemSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 32, 180)
-
-        self.storiesCollectionView.registerClass(StoriesCollectionViewCell.self, forCellWithReuseIdentifier: "storiesCell")
+        self.storiesTableView = UITableView(frame: CGRectZero)
+        self.storiesTableView.translatesAutoresizingMaskIntoConstraints = false
+        self.storiesTableView.delegate = self
+        self.storiesTableView.dataSource = self
+        self.storiesTableView.estimatedRowHeight = 210
+        self.storiesTableView.rowHeight = UITableViewAutomaticDimension
+        self.storiesTableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.storiesTableView.registerClass(StoriesTableViewCell.self, forCellReuseIdentifier: "StoriesTableViewCell")
+        self.storiesTableView.registerClass(CharmTitleBlurbHeaderTableViewCell.self, forCellReuseIdentifier: "CharmTitleBlurbHeaderTableViewCell")
+        self.view.addSubview(self.storiesTableView)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "loadNewStoriesForCharm:", forControlEvents: UIControlEvents.ValueChanged)
+        self.storiesTableView.addSubview(refreshControl)
+        
+        let metricsDictionary = ["zero":0]
+        let viewsDictionary = ["charmsGalleryCollectionView":self.charmsGalleryCollectionView, "storiesTableView":self.storiesTableView]
+        
+        let horizontalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[charmsGalleryCollectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
+        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-64-[charmsGalleryCollectionView(84)][storiesTableView]|", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: metricsDictionary, views: viewsDictionary)
+        
+        self.view.addConstraints(horizontalConstraints)
+        self.view.addConstraints(verticalConstraints)
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,37 +72,69 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 
     
     
+    
+    // MARK: Collection View delegate methods
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if (collectionView == self.charmsGalleryCollectionView){
-            return 6
-        }
-        else{
-            return 30
-        }
+        return 8
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if (collectionView == self.charmsGalleryCollectionView){
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("charmsGalleryCell", forIndexPath: indexPath)
-            cell.backgroundColor = UIColor.redColor()
-            return cell
-        }
-        else if (collectionView == self.storiesCollectionView){
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("storiesCell", forIndexPath: indexPath)
-            cell.backgroundColor = UIColor.greenColor()
-            return cell
-        }
-        return UICollectionViewCell()
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CharmsGalleryCollectionViewCell", forIndexPath: indexPath)
+        return cell
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
     }
-    */
+    
+    
+    // MARK: Table View delegate methods
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(section == 0){
+            return 1
+        }
+        else{
+            return 6
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if (indexPath.section == 0){
+            let cell = tableView.dequeueReusableCellWithIdentifier("CharmTitleBlurbHeaderTableViewCell") as! CharmTitleBlurbHeaderTableViewCell
+            cell.charmTitleLabel.text = "Charm Title"
+            cell.charmBlurbLabel.text = "Charm blurb with authors and timestamp"
+            return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCellWithIdentifier("StoriesTableViewCell") as! StoriesTableViewCell
+            return cell
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.section == 1){
+            self.performSegueWithIdentifier("showStoryDetail", sender: self)
+        }
+    }
+    
+    
+    
+    // MARK: Navigation Methods
+    func accountButtonTapped(sender:UIBarButtonItem){
+        self.performSegueWithIdentifier("showAccount", sender: self)
+    }
+    
+    func newStoryButtonTapped(sender:UIBarButtonItem){
+        self.performSegueWithIdentifier("showNewStory", sender: self)
+    }
+    
+    func loadNewStoriesForCharm(sender:UIRefreshControl){
+        print("Load new stories for charm.")
+        sender.endRefreshing()
+    }
+    
+    
 
 }
