@@ -156,7 +156,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func setupButtonTapped(){
-        self.performSegueWithIdentifier("showBeans", sender: self)
+        print("Setup button tapped")
     }
     
     // Bean methods
