@@ -98,10 +98,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         switch userInfo["notificationType"] as! String{
             case "X": NSNotificationCenter.defaultCenter().postNotificationName("charmX", object: nil)
             case "Y": NSNotificationCenter.defaultCenter().postNotificationName("charmY", object: nil)
-//            case "Z": NSNotificationCenter.defaultCenter().postNotificationName("charmZ", object: nil)
             case "A": NSNotificationCenter.defaultCenter().postNotificationName("actionAOnCharmX", object: nil)
             case "B": NSNotificationCenter.defaultCenter().postNotificationName("actionBOnCharmY", object: nil)
-//            case "C": NSNotificationCenter.defaultCenter().postNotificationName("actionCOnCharmZ", object: nil)
             default: break
         }
     }

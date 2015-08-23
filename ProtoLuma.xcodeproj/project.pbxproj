@@ -10,7 +10,6 @@
 		2C26F9B41B86951C0081388C /* CharmsGalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B31B86951C0081388C /* CharmsGalleryCollectionViewCell.swift */; };
 		2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */; };
 		2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */; };
-		2C6278D31B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6278D21B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift */; };
 		2C947F9C1B87A81B00607770 /* StoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */; };
 		2C947FA01B87AB2C00607770 /* ProtoLumaTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */; };
 		2C947FA21B87AC8500607770 /* NewStoryTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */; };
@@ -22,7 +21,6 @@
 		2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FAD1B88039E00607770 /* CharmsTableViewHeader.swift */; };
 		2C947FB01B8813BF00607770 /* TempImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FAF1B8813BF00607770 /* TempImageViewController.swift */; };
 		2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */; };
-		2CCC57B91B7F17C300BD1D9F /* PLBeanListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCC57B81B7F17C300BD1D9F /* PLBeanListTableViewController.swift */; };
 		2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */; };
 		2CF2FE211B7EBB6200F4E11D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */; };
 		2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE221B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld */; };
@@ -55,7 +53,6 @@
 		2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoriesTableViewCell.swift; path = "Stories Tab/StoriesTableViewCell.swift"; sourceTree = "<group>"; };
 		2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharmTitleBlurbHeaderTableViewCell.swift; path = "Stories Tab/CharmTitleBlurbHeaderTableViewCell.swift"; sourceTree = "<group>"; };
 		2C6278D11B7F1E08006DDBE7 /* ProtoLuma-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtoLuma-Bridging-Header.h"; sourceTree = "<group>"; };
-		2C6278D21B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PLBeanDetailTableViewController.swift; sourceTree = "<group>"; };
 		2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryDetailViewController.swift; path = "Stories Tab/StoryDetailViewController.swift"; sourceTree = "<group>"; };
 		2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtoLumaTabBarViewController.swift; sourceTree = "<group>"; };
 		2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewStoryTabViewController.swift; path = "New Story Tab/NewStoryTabViewController.swift"; sourceTree = "<group>"; };
@@ -67,7 +64,6 @@
 		2C947FAD1B88039E00607770 /* CharmsTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmsTableViewHeader.swift; sourceTree = "<group>"; };
 		2C947FAF1B8813BF00607770 /* TempImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempImageViewController.swift; sourceTree = "<group>"; };
 		2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoriesTabViewController.swift; path = "Stories Tab/StoriesTabViewController.swift"; sourceTree = "<group>"; };
-		2CCC57B81B7F17C300BD1D9F /* PLBeanListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PLBeanListTableViewController.swift; sourceTree = "<group>"; };
 		2CF2FE181B7EBB6200F4E11D /* ProtoLuma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtoLuma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CF2FE201B7EBB6200F4E11D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -139,12 +135,10 @@
 			children = (
 				2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */,
 				2C947FA51B87E2A500607770 /* UIStyleController.swift */,
-				2CCC57B81B7F17C300BD1D9F /* PLBeanListTableViewController.swift */,
 				2C947FA71B87E6D900607770 /* AccountViewController.swift */,
 				2C947FAD1B88039E00607770 /* CharmsTableViewHeader.swift */,
 				2C947FA91B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift */,
 				2C947FAB1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift */,
-				2C6278D21B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift */,
 				2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */,
 				2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */,
 				2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */,
@@ -371,13 +365,11 @@
 				2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */,
 				2C947FAC1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift in Sources */,
 				2C947F9C1B87A81B00607770 /* StoryDetailViewController.swift in Sources */,
-				2C6278D31B7FB928006DDBE7 /* PLBeanDetailTableViewController.swift in Sources */,
 				2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */,
 				2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */,
 				2C947FB01B8813BF00607770 /* TempImageViewController.swift in Sources */,
 				2C947FA41B87B7C600607770 /* NewStoryTransitionViewController.swift in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,
-				2CCC57B91B7F17C300BD1D9F /* PLBeanListTableViewController.swift in Sources */,
 				2C26F9B41B86951C0081388C /* CharmsGalleryCollectionViewCell.swift in Sources */,
 				2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */,
 				2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */,
