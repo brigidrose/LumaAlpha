@@ -205,6 +205,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         self.connectedBeans.setObject(bean, forKey: bean.identifier)
         self.disconnectedBeans.removeObjectForKey(bean.identifier)
         self.bean = bean
+        self.bean.delegate = self
         NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidConnectBean", object: bean)
         // Post notification for didConnectToBean
         // Register Bean to User Account
@@ -251,6 +252,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         print("Sent \(messageString)")
     }
 
+    func bean(bean: PTDBean!, serialDataReceived data: NSData!) {
+        print("PRINT")
+        let feedback = NSString(data: data, encoding: NSUTF8StringEncoding)
+        print("feedback is \(feedback)")
+        switch feedback as! String{
+        case "buttonAPushed":
+            //            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
+            print("Button A Pushed")
+            NSNotificationCenter.defaultCenter().postNotificationName("showTestImage", object:["url":"https://d1qb2nb5cznatu.cloudfront.net/startups/i/568822-bde3f767ecfc9172f32ca29359fd739b-medium_jpg.jpg"])
+        case "buttonBPushed":
+            //            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
+            print("Button B Pushed")
+            NSNotificationCenter.defaultCenter().postNotificationName("showTestImage", object:["url":"https://d1qb2nb5cznatu.cloudfront.net/startups/i/568822-bde3f767ecfc9172f32ca29359fd739b-medium_jpg.jpg"])
+        default:
+            break
+        }
+    }
 
 
 }
