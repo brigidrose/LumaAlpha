@@ -12,7 +12,6 @@ class PLBeanDetailTableViewController: UITableViewController, PTDBeanManagerDele
 
     var bean:PTDBean!
     var beanManager:PTDBeanManager!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         print(self.bean)

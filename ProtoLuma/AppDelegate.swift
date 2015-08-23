@@ -10,10 +10,13 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate {
 
     var window: UIWindow?
-
+    var beanManager = PTDBeanManager()
+    var beans:NSMutableDictionary!
+    var connectedBeans:NSMutableDictionary!
+    var disconnectedBeans:NSMutableDictionary!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -32,6 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         UIStyleController.applyStyle()
+        
+        self.beanManager.delegate = self
+        self.beans = NSMutableDictionary(dictionary: NSMutableDictionary())
+        self.connectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
+        self.disconnectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
         return true
     }
 
@@ -152,6 +160,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    // MARK: PLBeanManager delegate methods
+    // MARK: PTDBeanManager Delegates
+    
+    func beanManagerDidUpdateState(beanManager: PTDBeanManager!) {
+        if beanManager.state == BeanManagerState.PoweredOn {
+            beanManager.startScanningForBeans_error(nil)
+        }
+        else{
+            let alert = UIAlertView(title: "Bluetooth Unavailable", message: "Turn on Bluetooth to scan for beans.", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+        }
+    }
+    
+    func BeanManager(beanManager: PTDBeanManager!, didDiscoverBean bean: PTDBean!, error: NSError!) {
+        let key = bean.identifier
+        NSLog("%@", key)
+        if(self.beans.objectForKey(key) == nil){
+            // New Bean
+            print("A New Bean")
+            self.beans.setObject(bean, forKey: key)
+            if (bean.state == BeanState.ConnectedAndValidated){
+                if (self.connectedBeans.objectForKey(bean.identifier) == nil){
+                    self.connectedBeans.setObject(bean, forKey: bean.identifier)
+                }
+            }
+        }
+        else{
+            print("Existing Bean")
+        }
+        print(self.beans)
+        // Post notification for didDiscoverBean
+        NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidDiscoverBean", object: nil)
+    }
+    
+    func BeanManager(beanManager: PTDBeanManager!, didConnectToBean bean: PTDBean!, error: NSError!) {
+        self.connectedBeans.setObject(bean, forKey: bean.identifier)
+        self.disconnectedBeans.removeObjectForKey(bean.identifier)
+        NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidConnectBean", object: bean)
+        // Post notification for didConnectToBean
+        // Register Bean to User Account
+    }
+    
+    func BeanManager(beanManager: PTDBeanManager!, didDisconnectBean bean: PTDBean!, error: NSError!) {
+        self.disconnectedBeans.setObject(bean, forKey: bean.identifier)
+        self.connectedBeans.removeObjectForKey(bean.identifier)
+        NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidDisconnectBean", object: nil)
+
+        // Post notification for didDisconnectBean
+        // Deregister Bean from User Account
+    }
+
 
 }
 

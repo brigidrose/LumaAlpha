@@ -11,14 +11,21 @@ import UIKit
 class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var accountTableView:UITableView!
+    var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    var connectedBeansArray:[PTDBean] = []
+    var disconnectedBeansArray:[PTDBean] = []
+    var discoveredBeansArray:[PTDBean] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.updateDataSourceArray()
         self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
 
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "beanManagerDidDiscoverBean", name: "beanManagerDidDiscoverBean", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "beanManagerDidConnectBean", name: "beanManagerDidConnectBean", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "beanManagerDidDisconnectBean", name: "beanManagerDidDisconnectBean", object: nil)
+
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action: "doneButtonTapped:")
         self.navigationItem.leftBarButtonItem = doneButton
         
@@ -67,13 +74,15 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-            cell.charmTitle.text = "Charm Title"
-            cell.charmSubtitle.text = "Charm Subtitle"
+            let beanForCell = self.connectedBeansArray[indexPath.row]
+            cell.charmTitle.text = "\(beanForCell.name)"
+            cell.charmSubtitle.text = "\(beanForCell.identifier.UUIDString)"
             return cell
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-            cell.charmTitle.text = "Charm Title"
-            cell.charmSubtitle.text = "Charm Subtitle"
+            let beanForCell = self.discoveredBeansArray[indexPath.row]
+            cell.charmTitle.text = "\(beanForCell.name)"
+            cell.charmSubtitle.text = "\(beanForCell.identifier.UUIDString)"
             return cell
         case 3:
             let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
@@ -90,9 +99,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             return 1
         case 1:
-            return 5
+            return self.appDelegate.connectedBeans.count
         case 2:
-            return 3
+            return self.appDelegate.beans.count
         case 3:
             return 1
         default:
@@ -104,11 +113,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch section{
         case 1:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "5 Charms Connected"
+            headerView.sectionTitle.text = "\(self.appDelegate.connectedBeans.count) Charms Connected"
             return headerView
         case 2:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "3 Charms Disconnected"
+            headerView.sectionTitle.text = "\(self.appDelegate.beans.count) Charms Discovered"
             return headerView
         default:
             return UIView()
@@ -121,6 +130,16 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         else{
             return 40
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch indexPath.section{
+        case 1:
+            self.appDelegate.beanManager.disconnectBean(self.connectedBeansArray[indexPath.row], error: nil)
+        case 2:
+            self.appDelegate.beanManager.connectToBean(self.discoveredBeansArray[indexPath.row], error: nil)
+        default:break
         }
     }
 
@@ -138,5 +157,47 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setupButtonTapped(){
         self.performSegueWithIdentifier("showBeans", sender: self)
+    }
+    
+    // Bean methods
+    
+    func beanManagerDidDiscoverBean(){
+        self.updateDataSourceArray()
+        self.accountTableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(1, 2)), withRowAnimation: UITableViewRowAnimation.Automatic)
+        print("did discovered bean")
+    }
+    
+    func beanManagerDidConnectBean(){
+        self.updateDataSourceArray()
+        self.accountTableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(1, 2)), withRowAnimation: UITableViewRowAnimation.Automatic)
+        print("did connect to bean")
+    }
+    
+    func beanManagerDidDisconnectBean(){
+        self.updateDataSourceArray()
+        self.accountTableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(1, 2)), withRowAnimation: UITableViewRowAnimation.Automatic)
+        print("did disconnect bean")
+    }
+    
+    // Refresh data source array with updated bean dictionaries
+    func updateDataSourceArray(){
+        
+        let keysOfConnectedBeans = self.appDelegate.connectedBeans.allKeys
+        let keysOfDisconnectedBeans = self.appDelegate.disconnectedBeans.allKeys
+        let keysOfDiscoveredBeans = self.appDelegate.beans.allKeys
+        
+//        for key in keysOfConnectedBeans{
+//            if (keysOfDiscoveredBeans.contains(key)){
+//                let indexToRemove = keysOfDiscoveredBeans.indexOf(key)
+//                keysOfDiscoveredBeans.removeAtIndex(indexToRemove!)
+//            }
+//        }
+        
+        
+        
+        self.connectedBeansArray = self.appDelegate.connectedBeans.objectsForKeys(keysOfConnectedBeans, notFoundMarker: NSNull()) as! [PTDBean]
+        self.disconnectedBeansArray = self.appDelegate.disconnectedBeans.objectsForKeys(keysOfDisconnectedBeans, notFoundMarker: NSNull()) as! [PTDBean]
+        self.discoveredBeansArray = self.appDelegate.beans.objectsForKeys(keysOfDiscoveredBeans, notFoundMarker: NSNull()) as! [PTDBean]
+        
     }
 }
