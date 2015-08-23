@@ -20,6 +20,7 @@ class TempImageViewController: UIViewController, UIWebViewDelegate {
         self.navigationItem.leftBarButtonItem = closeButton
         print(url)
         self.webView.loadRequest(NSURLRequest(URL: url))
+        self.navigationItem.title = "Moment"
         // Do any additional setup after loading the view.
     }
 

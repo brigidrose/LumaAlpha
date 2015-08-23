@@ -10,13 +10,14 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, PTDBeanDelegate {
 
     var window: UIWindow?
     var beanManager = PTDBeanManager()
     var beans:NSMutableDictionary!
     var connectedBeans:NSMutableDictionary!
     var disconnectedBeans:NSMutableDictionary!
+    var bean:PTDBean!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -40,6 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate {
         self.beans = NSMutableDictionary(dictionary: NSMutableDictionary())
         self.connectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
         self.disconnectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "vibrateForNotification:", name: "notificationReceived", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmX:", name: "charmX", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmY:", name: "charmY", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmX:", name: "actionAOnCharmX", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmY:", name: "actionBOnCharmY", object: nil)
+
         return true
     }
 
@@ -198,6 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate {
     func BeanManager(beanManager: PTDBeanManager!, didConnectToBean bean: PTDBean!, error: NSError!) {
         self.connectedBeans.setObject(bean, forKey: bean.identifier)
         self.disconnectedBeans.removeObjectForKey(bean.identifier)
+        self.bean = bean
         NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidConnectBean", object: bean)
         // Post notification for didConnectToBean
         // Register Bean to User Account
@@ -206,11 +215,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate {
     func BeanManager(beanManager: PTDBeanManager!, didDisconnectBean bean: PTDBean!, error: NSError!) {
         self.disconnectedBeans.setObject(bean, forKey: bean.identifier)
         self.connectedBeans.removeObjectForKey(bean.identifier)
+        self.bean = nil
         NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidDisconnectBean", object: nil)
 
         // Post notification for didDisconnectBean
         // Deregister Bean from User Account
     }
+    
+    // MARK: PTDBean delegate methods
+    func vibrateForNotification(notification:NSNotification){
+        let messageString = "N"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+    
+    func pulseCharmX(notification:NSNotification){
+        let messageString = "X"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+    
+    func pulseCharmY(notification:NSNotification){
+        let messageString = "Y"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+        
+    func recallCharmX(notification:NSNotification){
+        let messageString = "A"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+    
+    func recallCharmY(notification:NSNotification){
+        let messageString = "B"
+        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
+        print("Sent \(messageString)")
+    }
+
 
 
 }
