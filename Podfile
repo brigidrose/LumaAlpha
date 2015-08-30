@@ -5,6 +5,7 @@ target 'ProtoLuma' do
 
 pod 'Bean-iOS-OSX-SDK'
 pod 'Parse'
+pod 'Metawear-iOSAPI'
 end
 
 target 'ProtoLumaTests' do

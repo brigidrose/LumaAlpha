@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
     var connectedBeans:NSMutableDictionary!
     var disconnectedBeans:NSMutableDictionary!
     var bean:PTDBean!
+    var metawearManager:MBLMetaWearManager!
+
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -41,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         self.beans = NSMutableDictionary(dictionary: NSMutableDictionary())
         self.connectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
         self.disconnectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
-        
+                
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "vibrateForNotification:", name: "notificationReceived", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmX:", name: "charmX", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmY:", name: "charmY", object: nil)

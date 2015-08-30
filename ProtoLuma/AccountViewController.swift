@@ -15,6 +15,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     var connectedBeansArray:[PTDBean] = []
     var disconnectedBeansArray:[PTDBean] = []
     var discoveredBeansArray:[PTDBean] = []
+    var metawearManager:MBLMetaWearManager!
+    var devices:[MBLMetaWear] = []
+    var savedDevices:[MBLMetaWear] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +25,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
 
+        self.metawearManager = MBLMetaWearManager.sharedManager()
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "beanManagerDidDiscoverBean", name: "beanManagerDidDiscoverBean", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "beanManagerDidConnectBean", name: "beanManagerDidConnectBean", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "beanManagerDidDisconnectBean", name: "beanManagerDidDisconnectBean", object: nil)
@@ -55,6 +60,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
         
+        self.startScanning()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,15 +81,15 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-            let beanForCell = self.connectedBeansArray[indexPath.row]
-            cell.charmTitle.text = "\(beanForCell.name)"
-            cell.charmSubtitle.text = "\(beanForCell.identifier.UUIDString)"
+            let metaWearForCell = self.savedDevices[indexPath.row]
+            cell.charmTitle.text = "\(metaWearForCell.name)"
+            cell.charmSubtitle.text = "\(metaWearForCell.identifier.UUIDString)"
             return cell
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-            let beanForCell = self.discoveredBeansArray[indexPath.row]
-            cell.charmTitle.text = "\(beanForCell.name)"
-            cell.charmSubtitle.text = "\(beanForCell.identifier.UUIDString)"
+            let metaWearForCell = self.devices[indexPath.row]
+            cell.charmTitle.text = "\(metaWearForCell.name)"
+            cell.charmSubtitle.text = "\(metaWearForCell.identifier.UUIDString)"
             return cell
         case 3:
             let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
@@ -99,9 +106,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             return 1
         case 1:
-            return self.appDelegate.connectedBeans.count
+            return self.savedDevices.count
         case 2:
-            return self.appDelegate.beans.count
+            return self.devices.count
         case 3:
             return 1
         default:
@@ -113,11 +120,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch section{
         case 1:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "\(self.appDelegate.connectedBeans.count) Charms Connected"
+            headerView.sectionTitle.text = "\(self.savedDevices.count) Charms Connected"
             return headerView
         case 2:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "\(self.appDelegate.beans.count) Charms Discovered"
+            headerView.sectionTitle.text = "\(self.devices.count) Charms Discovered"
             return headerView
         default:
             return UIView()
@@ -136,9 +143,19 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section{
         case 1:
-            self.appDelegate.beanManager.disconnectBean(self.connectedBeansArray[indexPath.row], error: nil)
+            self.savedDevices[indexPath.row].led.setLEDOn(false, withOptions: 1)
+            self.savedDevices[indexPath.row].disconnectWithHandler({(error) -> Void in
+                print(self.savedDevices[indexPath.row])
+                self.savedDevices[indexPath.row].forgetDevice()
+                self.startScanning()
+            })
         case 2:
-            self.appDelegate.beanManager.connectToBean(self.discoveredBeansArray[indexPath.row], error: nil)
+            self.devices[indexPath.row].connectWithHandler({(error) -> Void in
+                self.devices[indexPath.row].led.flashLEDColor(UIColor.blueColor(), withIntensity: 1.0)
+                print(self.devices[indexPath.row])
+                self.devices[indexPath.row].rememberDevice()
+                self.startScanning()
+            })
         default:break
         }
     }
@@ -200,4 +217,26 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.discoveredBeansArray = self.appDelegate.beans.objectsForKeys(keysOfDiscoveredBeans, notFoundMarker: NSNull()) as! [PTDBean]
         
     }
+    
+    // MARK: MetaWear Manager Methods
+    
+    func startScanning(){
+        self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
+            self.devices = devices as! [MBLMetaWear]
+            self.retrieveSavedMetaWear()
+        })
+    }
+    func retrieveSavedMetaWear(){
+        MBLMetaWearManager.sharedManager().retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
+            self.savedDevices = devices as! [MBLMetaWear]
+            self.updateMetaWearTableViewSections()
+        })
+    }
+    
+    func updateMetaWearTableViewSections(){
+        self.accountTableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(1, 2)), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    
+
 }

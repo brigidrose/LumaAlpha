@@ -11,4 +11,5 @@
 
 #import <PTDBeanManager.h>
 #import <Parse/Parse.h>
+#import <MetaWear/MetaWear.h>
 #endif /* ProtoLuma_Bridging_Header_h */

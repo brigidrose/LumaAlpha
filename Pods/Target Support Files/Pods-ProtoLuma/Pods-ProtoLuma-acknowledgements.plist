@@ -79,6 +79,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>See https://www.mbientlab.com/terms/</string>
+			<key>Title</key>
+			<string>Metawear-iOSAPI</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>See https://www.parse.com/about/terms</string>
 			<key>Title</key>
 			<string>Parse</string>
