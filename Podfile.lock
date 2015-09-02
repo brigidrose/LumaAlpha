@@ -1,19 +1,44 @@
 PODS:
   - Bean-iOS-OSX-SDK (0.9.0)
+  - Bolts (1.2.0):
+    - Bolts/AppLinks (= 1.2.0)
+    - Bolts/Tasks (= 1.2.0)
+  - Bolts/AppLinks (1.2.0):
+    - Bolts/Tasks
   - Bolts/Tasks (1.2.0)
+  - DateTools (1.6.1)
+  - Facebook-iOS-SDK (3.23.2):
+    - Bolts (~> 1.0)
   - Metawear-iOSAPI (1.9.3)
   - Parse (1.8.0):
     - Bolts/Tasks (>= 1.2.0)
+  - ParseFacebookUtils (1.8.1):
+    - Bolts/Tasks (>= 1.2.0)
+    - Facebook-iOS-SDK (~> 3.23)
+    - Parse (~> 1.8.0)
+  - ParseTwitterUtils (1.8.1):
+    - Bolts/Tasks (>= 1.2.0)
+    - Parse (~> 1.8.0)
+  - TPKeyboardAvoiding (1.2.9)
 
 DEPENDENCIES:
   - Bean-iOS-OSX-SDK
+  - DateTools
   - Metawear-iOSAPI
   - Parse
+  - ParseFacebookUtils
+  - ParseTwitterUtils
+  - TPKeyboardAvoiding
 
 SPEC CHECKSUMS:
   Bean-iOS-OSX-SDK: 76add3bb4feb1801dc8d62bd9d44ccbfac062b52
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
+  DateTools: 9bcc89e4f2f9004d8a7a2bd1b49269cf78968e65
+  Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
   Metawear-iOSAPI: e21c23e1a40e861152dddbafac0cac8da4d15de5
   Parse: 6ea05adb378fbfd6f8726ab67ef74330d96fc903
+  ParseFacebookUtils: f3e670d3f8edd0cfb8429ac39b30959d4ab13f0b
+  ParseTwitterUtils: 80512bea19d3d0950ad04d7300a434f86977feeb
+  TPKeyboardAvoiding: ff1ee4e5a5a0c119b965552af8f183868ea20207
 
 COCOAPODS: 0.38.2

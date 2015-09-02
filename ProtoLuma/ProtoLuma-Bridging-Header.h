@@ -12,4 +12,13 @@
 #import <PTDBeanManager.h>
 #import <Parse/Parse.h>
 #import <MetaWear/MetaWear.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
+#import "PFFacebookUtils.h"
+#import "PFTwitterUtils.h"
+#import "FacebookSDK.h"
+#import "TPKeyboardAvoidingScrollView.h"
+#import "TPKeyboardAvoidingTableView.h"
+#import "TPKeyboardAvoidingCollectionView.h"
 #endif /* ProtoLuma_Bridging_Header_h */

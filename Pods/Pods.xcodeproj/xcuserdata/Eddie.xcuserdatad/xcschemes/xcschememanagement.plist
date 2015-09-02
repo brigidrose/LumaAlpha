@@ -14,7 +14,27 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>DateTools.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Facebook-iOS-SDK.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Parse.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ParseFacebookUtils.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ParseTwitterUtils.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -24,25 +44,55 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>TPKeyboardAvoiding.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>018EF9B6907EA943213A574E1ABBBE74</key>
+		<key>4C6443515AFBAD3BADFA7578BD0BF3B8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1BAAAAD92908890B7747771FE559C3F1</key>
+		<key>599C99EE17FD9F5237E3891D8A192EAF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8051DA210FAFE6B85179DB11A4EC8FFC</key>
+		<key>6877A2B41A84EAFD0ED8E0EDBF934A05</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A17A8A8A8CE0EC864622DF2DBE76DCD1</key>
+		<key>755B4C03DE1FBBD6C372E1397D97A984</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>77AA80B8EFB1334FCA48CCEF81DF1A17</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>792BCCD3139769E90D73AF35C2445B78</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9BB7B54C4E520EF463D829425631362A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AF02DE907B5FB497D432BE0E8E56F848</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DAEDF84ADFE71D87C0C330B7C37675DA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

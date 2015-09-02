@@ -6,6 +6,11 @@ target 'ProtoLuma' do
 pod 'Bean-iOS-OSX-SDK'
 pod 'Parse'
 pod 'Metawear-iOSAPI'
+pod 'ParseFacebookUtils'
+pod 'ParseTwitterUtils'
+pod 'DateTools'
+pod 'TPKeyboardAvoiding'
+
 end
 
 target 'ProtoLumaTests' do

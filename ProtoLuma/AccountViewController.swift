@@ -60,7 +60,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
         
-        self.startScanning()
+        self.retrieveSavedMetaWear()
         
     }
 
@@ -83,13 +83,13 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
             let metaWearForCell = self.savedDevices[indexPath.row]
             cell.charmTitle.text = "\(metaWearForCell.name)"
-            cell.charmSubtitle.text = "\(metaWearForCell.identifier.UUIDString)"
+            cell.charmSubtitle.text = "\(metaWearForCell.deviceInfo.serialNumber)"
             return cell
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
             let metaWearForCell = self.devices[indexPath.row]
             cell.charmTitle.text = "\(metaWearForCell.name)"
-            cell.charmSubtitle.text = "\(metaWearForCell.identifier.UUIDString)"
+            cell.charmSubtitle.text = "\(metaWearForCell.deviceInfo.serialNumber)"
             return cell
         case 3:
             let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
@@ -117,14 +117,27 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var charmStringOnCount = "Charms"
         switch section{
         case 1:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "\(self.savedDevices.count) Charms Connected"
+            if (self.savedDevices.count == 0){
+                charmStringOnCount = "No Charms"
+            }
+            else if (self.savedDevices.count == 1){
+                charmStringOnCount = "Charm"
+            }
+            headerView.sectionTitle.text = "\(self.savedDevices.count) \(charmStringOnCount) Connected"
             return headerView
         case 2:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "\(self.devices.count) Charms Discovered"
+            if (self.devices.count == 0){
+                charmStringOnCount = "No Charms"
+            }
+            else if (self.devices.count == 1){
+                charmStringOnCount = "Charm"
+            }
+            headerView.sectionTitle.text = "\(self.devices.count) \(charmStringOnCount) Discovered"
             return headerView
         default:
             return UIView()
@@ -147,14 +160,14 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.savedDevices[indexPath.row].disconnectWithHandler({(error) -> Void in
                 print(self.savedDevices[indexPath.row])
                 self.savedDevices[indexPath.row].forgetDevice()
-                self.startScanning()
+                self.retrieveSavedMetaWear()
             })
         case 2:
             self.devices[indexPath.row].connectWithHandler({(error) -> Void in
                 self.devices[indexPath.row].led.flashLEDColor(UIColor.blueColor(), withIntensity: 1.0)
                 print(self.devices[indexPath.row])
                 self.devices[indexPath.row].rememberDevice()
-                self.startScanning()
+                self.retrieveSavedMetaWear()
             })
         default:break
         }
@@ -170,6 +183,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func logoutButtonTapped(sender:UIBarButtonItem){
         print("Logout button tapped")
+        PFUser.logOut()
+        self.performSegueWithIdentifier("loggedOut", sender: self)
     }
     
     func setupButtonTapped(){
@@ -222,14 +237,21 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func startScanning(){
         self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
-            self.devices = devices as! [MBLMetaWear]
-            self.retrieveSavedMetaWear()
+            for device in devices{
+                if !self.savedDevices.contains(device as! MBLMetaWear){
+                    self.devices.append(device as! MBLMetaWear)
+                }
+                else{
+                   self.devices.removeAtIndex(self.devices.indexOf(device as! MBLMetaWear)!)
+                }
+            }
+            self.updateMetaWearTableViewSections()
         })
     }
     func retrieveSavedMetaWear(){
         MBLMetaWearManager.sharedManager().retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             self.savedDevices = devices as! [MBLMetaWear]
-            self.updateMetaWearTableViewSections()
+            self.startScanning()
         })
     }
     

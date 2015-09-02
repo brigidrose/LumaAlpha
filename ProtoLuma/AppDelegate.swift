@@ -29,7 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         // Initialize Parse.
         Parse.setApplicationId("xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d",
             clientKey: "VPxuBA4ASQBaPpusXfocIPKAKNrtJALBYd6LKlSx")
+        PFFacebookUtils.initializeFacebook()
         
+        PFTwitterUtils.initializeWithConsumerKey("lHc76e87Hs94HCNkw3NPV0lwW",  consumerSecret:"aRGu4WrbVfezsca8gpBQ1z24yPF2KvkcZRndDGBHND3BWbpNoy")
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         
@@ -53,6 +55,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         return true
     }
 
+    func application(application: UIApplication,
+        openURL url: NSURL,
+        sourceApplication: String?,
+        annotation: AnyObject) -> Bool {
+            return FBSDKApplicationDelegate.sharedInstance().application(application,
+                openURL: url,
+                sourceApplication: sourceApplication,
+                annotation: annotation)
+    }
+
+    
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -73,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
             PFInstallation.currentInstallation().badge = 0
             PFInstallation.currentInstallation().saveEventually(nil)
         }
-
+        FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(application: UIApplication) {

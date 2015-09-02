@@ -64,6 +64,14 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
+        
+        if (PFUser.currentUser() != nil){
+            
+        }
+        else{
+            self.performSegueWithIdentifier("showLogin", sender: self)
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
