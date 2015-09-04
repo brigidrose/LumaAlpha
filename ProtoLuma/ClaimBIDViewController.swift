@@ -62,7 +62,7 @@ class ClaimBIDViewController: UIViewController {
     
     func submitButtonTapped(sender: UIButton) {
         
-        // Get BIG from user input
+        // Get BID from user input
         let BID = self.enterBIDTextField.text
         
         // Check if BID submitted is found in purchased inventory

@@ -203,6 +203,43 @@
             </objects>
             <point key="canvasLocation" x="635" y="1983"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Tjp-dq-lar">
+            <objects>
+                <navigationController id="GTI-gC-ZlV" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WOm-IQ-9KJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="EfU-EN-g2o" kind="relationship" relationship="rootViewController" id="kac-1d-Zgf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nfV-Xe-GJb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1389" y="1983"/>
+        </scene>
+        <!--Add Charm View Controller-->
+        <scene sceneID="GSE-Tv-SPZ">
+            <objects>
+                <viewController id="EfU-EN-g2o" customClass="AddCharmViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aiK-Fy-YUY"/>
+                        <viewControllerLayoutGuide type="bottom" id="iHc-fS-dtF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9Ws-tQ-i1N">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="0Mv-J0-Pbq"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Loa-Rn-wFv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1389" y="2815"/>
+        </scene>
         <!--Account-->
         <scene sceneID="Oa8-xT-5OO">
             <objects>
@@ -220,6 +257,7 @@
                     <navigationItem key="navigationItem" id="JYZ-VU-nTj"/>
                     <connections>
                         <segue destination="mkt-53-6MV" kind="presentation" identifier="loggedOut" modalTransitionStyle="flipHorizontal" id="rtd-Xa-2b6"/>
+                        <segue destination="GTI-gC-ZlV" kind="presentation" identifier="showAddCharm" id="EZh-75-GBa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S68-I0-l2A" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -229,7 +267,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="vWd-DU-Abb"/>
-        <segue reference="J2m-Nf-nZC"/>
+        <segue reference="rtd-Xa-2b6"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.70980392156862748" green="0.64313725490196083" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
 </document>

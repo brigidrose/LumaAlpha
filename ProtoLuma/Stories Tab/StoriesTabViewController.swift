@@ -10,8 +10,8 @@ import UIKit
 
 class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate{
 
-    var charmsGalleryCollectionView:UICollectionView!
-    var storiesTableView:UITableView!
+    var charmsGalleryCollectionViewController:UICollectionViewController!
+    var storiesTableViewController:UITableViewController!
     var userInfo:AnyObject!
     var savedDevices:[MBLMetaWear] = []
     var devices:[MBLMetaWear] = []
@@ -53,33 +53,39 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
         layout.sectionInset = UIEdgeInsets(top: 7, left: 16, bottom: 7, right: 16)
         layout.minimumLineSpacing = 28
-        self.charmsGalleryCollectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
-        self.charmsGalleryCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.charmsGalleryCollectionView.delegate = self
-        self.charmsGalleryCollectionView.dataSource = self
-        self.charmsGalleryCollectionView.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "CharmsGalleryCollectionViewCell")
-        self.charmsGalleryCollectionView.directionalLockEnabled = true
-        self.charmsGalleryCollectionView.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
-        self.charmsGalleryCollectionView.showsHorizontalScrollIndicator = false
-        self.view.addSubview(self.charmsGalleryCollectionView)
         
-        self.storiesTableView = UITableView(frame: CGRectZero)
-        self.storiesTableView.translatesAutoresizingMaskIntoConstraints = false
-        self.storiesTableView.delegate = self
-        self.storiesTableView.dataSource = self
-        self.storiesTableView.estimatedRowHeight = 210
-        self.storiesTableView.rowHeight = UITableViewAutomaticDimension
-        self.storiesTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.storiesTableView.registerClass(StoriesTableViewCell.self, forCellReuseIdentifier: "StoriesTableViewCell")
-        self.storiesTableView.registerClass(CharmTitleBlurbHeaderTableViewCell.self, forCellReuseIdentifier: "CharmTitleBlurbHeaderTableViewCell")
-        self.view.addSubview(self.storiesTableView)
+        self.charmsGalleryCollectionViewController = UICollectionViewController()
+        self.addChildViewController(self.charmsGalleryCollectionViewController)
+        self.charmsGalleryCollectionViewController.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+        self.charmsGalleryCollectionViewController.collectionView!.translatesAutoresizingMaskIntoConstraints = false
+        self.charmsGalleryCollectionViewController.collectionView!.delegate = self
+        self.charmsGalleryCollectionViewController.collectionView!.dataSource = self
+        self.charmsGalleryCollectionViewController.collectionView!.scrollsToTop = false
+        self.charmsGalleryCollectionViewController.collectionView!.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "CharmsGalleryCollectionViewCell")
+        self.charmsGalleryCollectionViewController.collectionView!.directionalLockEnabled = true
+        self.charmsGalleryCollectionViewController.collectionView!.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
+        self.charmsGalleryCollectionViewController.collectionView!.showsHorizontalScrollIndicator = false
+        self.view.addSubview(self.charmsGalleryCollectionViewController.collectionView!)
         
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "loadNewStoriesForCharm:", forControlEvents: UIControlEvents.ValueChanged)
-        self.storiesTableView.addSubview(refreshControl)
+        self.storiesTableViewController = UITableViewController(style: UITableViewStyle.Plain)
+        self.addChildViewController(self.storiesTableViewController)
+        self.storiesTableViewController.tableView.frame = CGRectZero
+        self.storiesTableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.storiesTableViewController.tableView.delegate = self
+        self.storiesTableViewController.tableView.scrollsToTop = true
+        self.storiesTableViewController.tableView.dataSource = self
+        self.storiesTableViewController.tableView.estimatedRowHeight = 210
+        self.storiesTableViewController.tableView.rowHeight = UITableViewAutomaticDimension
+        self.storiesTableViewController.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.storiesTableViewController.tableView.registerClass(StoriesTableViewCell.self, forCellReuseIdentifier: "StoriesTableViewCell")
+        self.storiesTableViewController.tableView.registerClass(CharmTitleBlurbHeaderTableViewCell.self, forCellReuseIdentifier: "CharmTitleBlurbHeaderTableViewCell")
+        self.view.addSubview(self.storiesTableViewController.tableView)
+        
+        self.storiesTableViewController.refreshControl = UIRefreshControl()
+        self.storiesTableViewController.refreshControl!.addTarget(self, action: "loadNewStoriesForCharm:", forControlEvents: UIControlEvents.ValueChanged)
         
         let metricsDictionary = ["zero":0]
-        let viewsDictionary = ["charmsGalleryCollectionView":self.charmsGalleryCollectionView, "storiesTableView":self.storiesTableView]
+        let viewsDictionary = ["charmsGalleryCollectionView":self.charmsGalleryCollectionViewController.collectionView!, "storiesTableView":self.storiesTableViewController.tableView]
         
         let horizontalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[charmsGalleryCollectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-64-[charmsGalleryCollectionView(84)][storiesTableView]|", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: metricsDictionary, views: viewsDictionary)
@@ -140,7 +146,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showAccount"){
-            let destinationVC = segue.destinationViewController.childViewControllers[0] as! AccountViewController
+//            let destinationVC = segue.destinationViewController.childViewControllers[0] as! AccountViewController
         }
     }
     

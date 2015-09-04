@@ -15,7 +15,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     var accountTableView:UITableView!
     var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var metawearManager:MBLMetaWearManager!
-    var charms:[MBLMetaWear]!
+    var charms:[PFObject] = []
     var bracelet:MBLMetaWear!
     
     override func viewDidLoad() {
@@ -27,7 +27,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.metawearManager = MBLMetaWearManager.sharedManager()
         
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneButtonTapped:")
-        self.navigationItem.rightBarButtonItem = doneButton
+        self.navigationItem.leftBarButtonItem = doneButton
         
         self.navigationItem.title = "Settings"
         
@@ -52,6 +52,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
         
+        self.loadCharms()
         self.retrieveSavedMetaWear()
         
     }
@@ -83,10 +84,26 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         case 2:
             // Charms
-            let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-            cell.charmTitle.text = "Charm Title"
-            cell.charmSubtitle.text = "connection state"
-            return cell
+            if (indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1){
+//                let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "commandWithSubtitle")
+//                cell.textLabel?.text = "Add a New Charm"
+//                cell.detailTextLabel?.text = "tap to begin"
+//                cell.backgroundColor = UIColor.clearColor()
+//                cell.textLabel?.textColor = UIColor.whiteColor()
+//                cell.detailTextLabel?.textColor = UIColor(white: 1, alpha: 0.8)
+//                cell.selectionStyle = UITableViewCellSelectionStyle.None
+                let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
+                cell.promptLabel.text = "Received a new Charm?"
+                cell.button.setTitle("Add Charm", forState: UIControlState.Normal)
+                cell.button.addTarget(self, action: "addCharmButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
+                cell.charmTitle.text = "Charm Title"
+                cell.charmSubtitle.text = "connection state"
+                return cell
+            }
         case 3:
             switch indexPath.row{
             // Account Options
@@ -116,7 +133,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 1:
             return 1
         case 2:
-            return 3
+            return self.charms.count + 1
         case 3:
             return 2
         default:
@@ -161,7 +178,14 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
 //                self.bracelets[indexPath.row].forgetDevice()
 //                self.retrieveSavedMetaWear()
 //            })
-        case 2: break
+        case 2:
+            if (indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1){
+                // Add a New Charm selected
+                
+            }
+            else{
+                // Existing Charm selected
+            }
 //            self.charms[indexPath.row].connectWithHandler({(error) -> Void in
 //                self.charms[indexPath.row].led.flashLEDColor(UIColor.blueColor(), withIntensity: 1.0)
 //                print(self.charms[indexPath.row])
@@ -189,6 +213,22 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             PFUser.logOut()
             self.performSegueWithIdentifier("loggedOut", sender: self)
         })
+    }
+    
+    func addCharmButtonTapped(sender:UIButton){
+        print("add charm button tapped")
+        self.performSegueWithIdentifier("showAddCharm", sender: self)
+    }
+    
+    func loadCharms(){
+        let queryForCharms = PFQuery(className: "Charm")
+        queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
+        queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+            self.charms = objects as! [PFObject]
+            print("charms loaded")
+            self.accountTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
+        })
+        
     }
     
     // MARK: MetaWear Manager Methods
