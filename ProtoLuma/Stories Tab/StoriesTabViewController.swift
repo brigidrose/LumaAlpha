@@ -13,19 +13,41 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     var charmsGalleryCollectionView:UICollectionView!
     var storiesTableView:UITableView!
     var userInfo:AnyObject!
+    var savedDevices:[MBLMetaWear] = []
+    var devices:[MBLMetaWear] = []
+    var bracelet:MBLMetaWear!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let accountButton = UIBarButtonItem(image: UIImage(named: "AccountBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "accountButtonTapped:")
         let newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "presentTestImageView:", name: "showTestImage", object: nil)
         
         self.navigationItem.rightBarButtonItem = newStoryButton
         self.navigationItem.leftBarButtonItem = accountButton
-        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
-        
+
+        // currentUser exists
+        if (PFUser.currentUser() != nil){
+            self.layoutUIPostBraceletPairingANCS()
+        }
+        else{
+            self.performSegueWithIdentifier("showLogin", sender: self)
+        }
+
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        // Check self.bracelet state to display disconnected alert if so
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // Layout after Bracelet connection
+    func layoutUIPostBraceletPairingANCS(){
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 50, height: 50)
         layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
@@ -64,22 +86,8 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
-        
-        if (PFUser.currentUser() != nil){
-            
-        }
-        else{
-            self.performSegueWithIdentifier("showLogin", sender: self)
-        }
-
+        print("layoutUIPostBraceletPairingANCS")
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
     
     
     
@@ -131,11 +139,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "showTempImageView"){
-            let destinationVC = segue.destinationViewController.childViewControllers[0] as! TempImageViewController
-            destinationVC.url = NSURL(string: self.userInfo["url"] as! String)
+        if (segue.identifier == "showAccount"){
+            let destinationVC = segue.destinationViewController.childViewControllers[0] as! AccountViewController
         }
     }
+    
     
     
     // MARK: Navigation Methods
@@ -151,12 +159,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         print("Load new stories for charm.")
         sender.endRefreshing()
     }
-    
-    func presentTestImageView(notification:NSNotification){
-        self.userInfo = notification.object!
-        print(notification.object)
-        self.performSegueWithIdentifier("showTempImageView", sender: self)
-    }
-    
+        
 
+    
 }

@@ -14,7 +14,7 @@ class ClaimBIDViewController: UIViewController {
     var enterBIDInstructionLabel:UILabel!
     var enterBIDTextField:UITextField!
     var submitButton:UIButton!
-    
+    var bracelet:PFObject!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,7 +68,6 @@ class ClaimBIDViewController: UIViewController {
         // Check if BID submitted is found in purchased inventory
         let queryCheckBIDExistsAndOrphaned = PFQuery(className: "Bracelet")
         queryCheckBIDExistsAndOrphaned.whereKey("serialNumber", equalTo: BID!)
-        queryCheckBIDExistsAndOrphaned.includeKey("owner")
         queryCheckBIDExistsAndOrphaned.includeKey("gifter")
         queryCheckBIDExistsAndOrphaned.findObjectsInBackgroundWithBlock({(objects:[AnyObject]?, error:NSError?) -> Void in
             if (error == nil){
@@ -84,25 +83,8 @@ class ClaimBIDViewController: UIViewController {
                 else{
                     // BID Exists
                     let bracelet = objects![0] as! PFObject
-                    if (bracelet["owner"] == nil){
-                        // Bracelet is orphaned, register current user as owner of BID
-                        bracelet["owner"] = PFUser.currentUser()
-                        bracelet.saveInBackgroundWithBlock({(success, error) -> Void in
-                            if (success){
-                                let alert = UIAlertController(title: "Bracelet Registered", message: "You are now the owner of Bracelet(\(BID!))", preferredStyle: UIAlertControllerStyle.Alert)
-                                let alertAction = UIAlertAction(title: "Great!", style: UIAlertActionStyle.Cancel, handler: {(alertAction:UIAlertAction) -> Void in
-                                    self.performSegueWithIdentifier("braceletRegistered", sender: self)
-                                })
-                                alert.addAction(alertAction)
-                                self.presentViewController(alert, animated: true, completion: nil)
-                            }
-                            else{
-                                print(error)
-                            }
-                        })
-                        // Transition to Feed View Controller
-                    }
-                    else{
+                    // BID Claimed
+                    if (bracelet["claimed"] as! Bool){
                         // Bracelet is not orphaned, display message
                         let alert = UIAlertController(title: "Bracelet Already Registered", message: "This Bracelet belongs to another user. If you forgot your login info, get in touch.", preferredStyle: UIAlertControllerStyle.Alert)
                         let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: {(alertAction:UIAlertAction) -> Void in
@@ -111,31 +93,50 @@ class ClaimBIDViewController: UIViewController {
                         alert.addAction(alertAction)
                         self.presentViewController(alert, animated: true, completion: nil)
                     }
-
+                    // BID Unclaimed
+                    else{
+                        // Register current user as owner of BID
+                        self.bracelet = bracelet
+                        PFUser.currentUser()?["bracelet"] = bracelet
+                        PFUser.currentUser()?.saveEventually({(success, error) -> Void in
+                        if (success){
+                            self.bracelet["claimed"] = true
+                            print(bracelet)
+                            self.bracelet.saveEventually({(success, error) -> Void in
+                                if (!success){
+                                    print(error)
+                                }
+                                else{
+                                    print("BID claimed on Parse")
+                                }
+                                
+                            })
+                            let alert = UIAlertController(title: "Bracelet Registered", message: "You are now the owner of Bracelet(\(BID!))", preferredStyle: UIAlertControllerStyle.Alert)
+                            let alertAction = UIAlertAction(title: "Great!", style: UIAlertActionStyle.Cancel, handler: {(alertAction:UIAlertAction) -> Void in
+                                self.performSegueWithIdentifier("showPairBracelet", sender: self)
+                            })
+                            alert.addAction(alertAction)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        }
+                        else{
+                            print(error)
+                        }
+                        })
+                        // Transition to Feed View Controller
+                    }
                 }
             }
             else{
                 print(error)
             }
         })
-        
-        
-        
-        
-        
-
-        
-        
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if (segue.identifier == "showPairBracelet"){
+            let destinationVC = segue.destinationViewController as! PairBraceletViewController
+            destinationVC.braceletSerialNumber = self.bracelet["serialNumber"] as! String
+        }
     }
-    */
 
 }

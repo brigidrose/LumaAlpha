@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mkt-53-6MV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Kti-Ah-weI">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
@@ -20,7 +20,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="Kti-Ah-weI" kind="presentation" identifier="braceletRegistered" id="xO0-do-Wes"/>
+                        <segue destination="R81-np-RcF" kind="show" identifier="showPairBracelet" id="Dn3-QF-fo1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-oI-rry" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -76,12 +76,33 @@
                     </navigationBar>
                     <connections>
                         <segue destination="rf6-Oy-7bt" kind="relationship" relationship="rootViewController" id="lIJ-9f-Fcm"/>
-                        <segue destination="mkt-53-6MV" kind="presentation" identifier="showLogin" id="1Uf-Lr-Swf"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3xo-tF-ey1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-190" y="339"/>
+        </scene>
+        <!--Pair Bracelet View Controller-->
+        <scene sceneID="mFH-Mv-oZV">
+            <objects>
+                <viewController title="Pair Bracelet View Controller" id="R81-np-RcF" customClass="PairBraceletViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dsv-4w-pu7"/>
+                        <viewControllerLayoutGuide type="bottom" id="EgE-r6-4Dh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="go4-bt-NuI">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="Kti-Ah-weI" kind="presentation" identifier="RegisteredAndPaired" id="vWd-DU-Abb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wUe-XE-JA9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1049" y="1191"/>
         </scene>
         <!--Feed-->
         <scene sceneID="vom-AO-DHA">
@@ -102,7 +123,7 @@
                         <segue destination="syx-Qf-0WI" kind="show" identifier="showStoryDetail" id="YaX-F2-hyf"/>
                         <segue destination="Zuw-ZQ-xEi" kind="presentation" identifier="showNewStory" id="MLz-NT-2Yf"/>
                         <segue destination="3rt-jV-9id" kind="presentation" identifier="showAccount" id="che-mF-G8g"/>
-                        <segue destination="FVX-zX-uMY" kind="presentation" identifier="showTempImageView" id="q6C-v8-mGB"/>
+                        <segue destination="mkt-53-6MV" kind="presentation" identifier="showLogin" id="J2m-Nf-nZC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T5H-pC-m46" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -165,59 +186,6 @@
             </objects>
             <point key="canvasLocation" x="635" y="1191"/>
         </scene>
-        <!--Temp Image View Controller-->
-        <scene sceneID="G3R-RE-tqJ">
-            <objects>
-                <viewController id="Q4f-mg-U2k" customClass="TempImageViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="CT9-Wf-Eho"/>
-                        <viewControllerLayoutGuide type="bottom" id="Lsq-Ig-4LL"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="zRv-nJ-dOc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fq9-ZQ-4qS">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Lsq-Ig-4LL" firstAttribute="top" secondItem="fq9-ZQ-4qS" secondAttribute="bottom" id="16F-vj-r9B"/>
-                            <constraint firstItem="fq9-ZQ-4qS" firstAttribute="leading" secondItem="zRv-nJ-dOc" secondAttribute="leading" id="EHu-RM-IqF"/>
-                            <constraint firstAttribute="trailing" secondItem="fq9-ZQ-4qS" secondAttribute="trailing" id="dSl-wd-utO"/>
-                            <constraint firstItem="fq9-ZQ-4qS" firstAttribute="top" secondItem="CT9-Wf-Eho" secondAttribute="bottom" id="gWr-jH-YMH"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="ylb-oo-wLI"/>
-                    <connections>
-                        <outlet property="webView" destination="fq9-ZQ-4qS" id="8y7-He-ybr"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="l2K-RJ-Dqa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="635" y="-445"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="dge-32-QSN">
-            <objects>
-                <navigationController id="FVX-zX-uMY" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qxx-bR-i0g">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="Q4f-mg-U2k" kind="relationship" relationship="rootViewController" id="zib-3T-Ydm"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TSW-CH-NCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="635" y="-1257"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="37F-Oh-ulr">
             <objects>
@@ -260,8 +228,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="xO0-do-Wes"/>
-        <segue reference="1Uf-Lr-Swf"/>
+        <segue reference="vWd-DU-Abb"/>
+        <segue reference="J2m-Nf-nZC"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.70980392156862748" green="0.64313725490196083" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
 </document>

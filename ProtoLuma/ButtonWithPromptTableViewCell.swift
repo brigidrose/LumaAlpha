@@ -52,7 +52,7 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
         let horizontalConstraintsButton = NSLayoutConstraint.constraintsWithVisualFormat("H:|->=20-[button(>=280)]->=20-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(horizontalConstraintsButton)
         
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-18-[promptLabel]-12-[button(40)]-34-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-18-[promptLabel]-12-[button(40)]-16-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(verticalConstraints)
     }
     

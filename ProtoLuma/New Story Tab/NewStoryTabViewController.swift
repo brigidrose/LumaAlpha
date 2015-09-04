@@ -19,7 +19,7 @@ class NewStoryTabViewController: UIViewController {
         let sendButton = UIBarButtonItem(title: "Send", style: UIBarButtonItemStyle.Done, target: self, action: "sendButtonTapped:")
         self.navigationItem.rightBarButtonItem = sendButton
         
-        self.navigationItem.title = "New Story"
+        self.navigationItem.title = "Moment"
     }
 
     override func didReceiveMemoryWarning() {

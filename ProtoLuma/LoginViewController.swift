@@ -12,7 +12,6 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("hello")
         // Do any additional setup after loading the view.
     }
 
@@ -49,8 +48,8 @@ class LoginViewController: UIViewController {
                                 }
                                 let birthday:NSDate = dateFormatter.dateFromString(birthdayString)!
                                 PFUser.currentUser()?["birthday"] = birthday
-                                PFUser.currentUser()?["first_name"] = user.objectForKey("first_name")
-                                PFUser.currentUser()?["last_name"] = user.objectForKey("last_name")
+                                PFUser.currentUser()?["firstName"] = user.objectForKey("first_name")
+                                PFUser.currentUser()?["lastName"] = user.objectForKey("last_name")
                                 PFUser.currentUser()?["gender"] = user.objectForKey("gender")
                                 let locationDictionary = user.objectForKey("location") as! NSDictionary
                                 PFUser.currentUser()?["location"] = locationDictionary["name"]
@@ -74,18 +73,14 @@ class LoginViewController: UIViewController {
                 } else {
                     print("User logged in through Facebook!")
                     // Check if logged-in user owns a bracelet
-                    let queryCheckUserOwnsBracelet = PFQuery(className: "Bracelet")
-                    queryCheckUserOwnsBracelet.whereKey("owner", equalTo: PFUser.currentUser()!)
-                    queryCheckUserOwnsBracelet.findObjectsInBackgroundWithBlock({(objects:[AnyObject]?, error:NSError?) -> Void in
-                        if (objects!.count == 0){
-                            // User doesn't own a bracelet, show BID registration
-                            self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
-                        }
-                        else{
-                            // User owns a bracelet, show Feed
-                            self.performSegueWithIdentifier("loggedIn", sender: self)
-                        }
-                    })
+                    if (PFUser.currentUser()?["bracelet"] == nil){
+                        // User doesn't own a bracelet, show BID registration
+                        self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
+                    }
+                    else{
+                        // User owns a bracelet, show Feed
+                        self.performSegueWithIdentifier("loggedIn", sender: self)
+                    }
                 }
 
             } else {

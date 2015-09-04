@@ -10,16 +10,14 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, PTDBeanDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var beanManager = PTDBeanManager()
     var beans:NSMutableDictionary!
     var connectedBeans:NSMutableDictionary!
     var disconnectedBeans:NSMutableDictionary!
-    var bean:PTDBean!
     var metawearManager:MBLMetaWearManager!
-
+//    var myCentralManager:CBCentralManager!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -40,18 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         application.registerForRemoteNotifications()
         
         UIStyleController.applyStyle()
-        
-        self.beanManager.delegate = self
-        self.beans = NSMutableDictionary(dictionary: NSMutableDictionary())
-        self.connectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
-        self.disconnectedBeans = NSMutableDictionary(dictionary: NSMutableDictionary())
-                
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "vibrateForNotification:", name: "notificationReceived", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmX:", name: "charmX", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "pulseCharmY:", name: "charmY", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmX:", name: "actionAOnCharmX", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recallCharmY:", name: "actionBOnCharmY", object: nil)
-
+        self.metawearManager = MBLMetaWearManager.sharedManager()
+//
+//        self.myCentralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionRestoreIdentifierKey:"mainCentralManagerIdentifier"])
         return true
     }
 
@@ -75,19 +64,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        print("application did enter background")
+
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        
+        print("application will enter foreground")
+        
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        print("application did become active")
         if (PFInstallation.currentInstallation().badge != 0) {
             PFInstallation.currentInstallation().badge = 0
             PFInstallation.currentInstallation().saveEventually(nil)
         }
         FBSDKAppEvents.activateApp()
+        self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
+            if (devices.count > 0){
+                let bracelet = devices[0] as! MBLMetaWear
+                if (bracelet.state != MBLConnectionState.Connected){
+                    bracelet.connectWithHandler({(error) -> Void in
+                        print("reconnected with \(bracelet)")
+                    })
+                }
+            }
+            else{
+                print("no saved bracelet found")
+            }
+        })
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -107,17 +116,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
     // MARK: Handle notifications when app is in foreground
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        // "N" case
-        NSNotificationCenter.defaultCenter().postNotificationName("notificationReceived", object: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("showTestImage", object:userInfo)
-        // Switch for userInfo["notificationType"]
-        switch userInfo["notificationType"] as! String{
-            case "X": NSNotificationCenter.defaultCenter().postNotificationName("charmX", object: nil)
-            case "Y": NSNotificationCenter.defaultCenter().postNotificationName("charmY", object: nil)
-            case "A": NSNotificationCenter.defaultCenter().postNotificationName("actionAOnCharmX", object: nil)
-            case "B": NSNotificationCenter.defaultCenter().postNotificationName("actionBOnCharmY", object: nil)
-            default: break
-        }
     }
     
     // MARK: - Core Data stack
@@ -183,109 +181,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTDBeanManagerDelegate, P
         }
     }
     
-    // MARK: PLBeanManager delegate methods
-    // MARK: PTDBeanManager Delegates
+//    func centralManagerDidUpdateState(central: CBCentralManager) {
+//        print("centralManager didUpdateState")
+//    }
+//    
+//    func centralManager(central: CBCentralManager, willRestoreState dict: [String : AnyObject]) {
+//        print("centralManager willRestoreState")
+//    }
+//    
+//    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+//        print("centralManager didConnectPeripheral")
+//    }
     
-    func beanManagerDidUpdateState(beanManager: PTDBeanManager!) {
-        if beanManager.state == BeanManagerState.PoweredOn {
-            beanManager.startScanningForBeans_error(nil)
-        }
-        else{
-            let alert = UIAlertView(title: "Bluetooth Unavailable", message: "Turn on Bluetooth to scan for beans.", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
-        }
-    }
-    
-    func BeanManager(beanManager: PTDBeanManager!, didDiscoverBean bean: PTDBean!, error: NSError!) {
-        let key = bean.identifier
-        NSLog("%@", key)
-        if(self.beans.objectForKey(key) == nil){
-            // New Bean
-            print("A New Bean")
-            self.beans.setObject(bean, forKey: key)
-            if (bean.state == BeanState.ConnectedAndValidated){
-                if (self.connectedBeans.objectForKey(bean.identifier) == nil){
-                    self.connectedBeans.setObject(bean, forKey: bean.identifier)
-                }
-            }
-        }
-        else{
-            print("Existing Bean")
-        }
-        print(self.beans)
-        // Post notification for didDiscoverBean
-        NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidDiscoverBean", object: nil)
-    }
-    
-    func BeanManager(beanManager: PTDBeanManager!, didConnectToBean bean: PTDBean!, error: NSError!) {
-        self.connectedBeans.setObject(bean, forKey: bean.identifier)
-        self.disconnectedBeans.removeObjectForKey(bean.identifier)
-        self.bean = bean
-        self.bean.delegate = self
-        NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidConnectBean", object: bean)
-        // Post notification for didConnectToBean
-        // Register Bean to User Account
-    }
-    
-    func BeanManager(beanManager: PTDBeanManager!, didDisconnectBean bean: PTDBean!, error: NSError!) {
-        self.disconnectedBeans.setObject(bean, forKey: bean.identifier)
-        self.connectedBeans.removeObjectForKey(bean.identifier)
-        self.bean = nil
-        NSNotificationCenter.defaultCenter().postNotificationName("beanManagerDidDisconnectBean", object: nil)
-
-        // Post notification for didDisconnectBean
-        // Deregister Bean from User Account
-    }
-    
-    // MARK: PTDBean delegate methods
-    func vibrateForNotification(notification:NSNotification){
-        let messageString = "N"
-        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("Sent \(messageString)")
-    }
-    
-    func pulseCharmX(notification:NSNotification){
-        let messageString = "X"
-        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("Sent \(messageString)")
-    }
-    
-    func pulseCharmY(notification:NSNotification){
-        let messageString = "Y"
-        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("Sent \(messageString)")
-    }
-        
-    func recallCharmX(notification:NSNotification){
-        let messageString = "A"
-        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("Sent \(messageString)")
-    }
-    
-    func recallCharmY(notification:NSNotification){
-        let messageString = "B"
-        self.bean.sendSerialData(messageString.dataUsingEncoding(NSUTF8StringEncoding))
-        print("Sent \(messageString)")
-    }
-
-    func bean(bean: PTDBean!, serialDataReceived data: NSData!) {
-        print("PRINT")
-        let feedback = NSString(data: data, encoding: NSUTF8StringEncoding)
-        print("feedback is \(feedback)")
-        switch feedback as! String{
-        case "buttonAPushed":
-            //            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
-            print("Button A Pushed")
-            NSNotificationCenter.defaultCenter().postNotificationName("showTestImage", object:["url":"https://d1qb2nb5cznatu.cloudfront.net/startups/i/568822-bde3f767ecfc9172f32ca29359fd739b-medium_jpg.jpg"])
-        case "buttonBPushed":
-            //            (self.view.window?.rootViewController as! UITabBarController).selectedIndex = 1
-            print("Button B Pushed")
-            NSNotificationCenter.defaultCenter().postNotificationName("showTestImage", object:["url":"https://d1qb2nb5cznatu.cloudfront.net/startups/i/568822-bde3f767ecfc9172f32ca29359fd739b-medium_jpg.jpg"])
-        default:
-            break
-        }
-    }
-
 
 }
 

@@ -10,7 +10,7 @@ pod 'ParseFacebookUtils'
 pod 'ParseTwitterUtils'
 pod 'DateTools'
 pod 'TPKeyboardAvoiding'
-
+pod 'MBProgressHUD'
 end
 
 target 'ProtoLumaTests' do

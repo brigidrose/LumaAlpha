@@ -21,4 +21,5 @@
 #import "TPKeyboardAvoidingScrollView.h"
 #import "TPKeyboardAvoidingTableView.h"
 #import "TPKeyboardAvoidingCollectionView.h"
+#import "MBProgressHUD.h"
 #endif /* ProtoLuma_Bridging_Header_h */

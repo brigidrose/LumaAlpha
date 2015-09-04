@@ -19,6 +19,7 @@
 		2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */; };
 		2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */; };
 		2C30A1C91B965BDA00B64582 /* ClaimBIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		2C813EF31B992B1200A6EDA7 /* BraceletSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C813EF21B992B1200A6EDA7 /* BraceletSettings.swift */; settings = {ASSET_TAGS = (); }; };
 		2C947F9C1B87A81B00607770 /* StoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */; };
 		2C947FA01B87AB2C00607770 /* ProtoLumaTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */; };
 		2C947FA21B87AC8500607770 /* NewStoryTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */; };
@@ -28,7 +29,8 @@
 		2C947FAA1B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FA91B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift */; };
 		2C947FAC1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FAB1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift */; };
 		2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FAD1B88039E00607770 /* CharmsTableViewHeader.swift */; };
-		2C947FB01B8813BF00607770 /* TempImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FAF1B8813BF00607770 /* TempImageViewController.swift */; };
+		2CAB01211B98C88700652C76 /* ProfileBlurbTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAB01201B98C88700652C76 /* ProfileBlurbTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		2CAC3DFC1B9A1C0C00C41BE9 /* PairBraceletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC3DFB1B9A1C0C00C41BE9 /* PairBraceletViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */; };
 		2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */; };
 		2CF2FE211B7EBB6200F4E11D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */; };
@@ -71,6 +73,7 @@
 		2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharmTitleBlurbHeaderTableViewCell.swift; path = "Stories Tab/CharmTitleBlurbHeaderTableViewCell.swift"; sourceTree = "<group>"; };
 		2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClaimBIDViewController.swift; sourceTree = "<group>"; };
 		2C6278D11B7F1E08006DDBE7 /* ProtoLuma-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtoLuma-Bridging-Header.h"; sourceTree = "<group>"; };
+		2C813EF21B992B1200A6EDA7 /* BraceletSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraceletSettings.swift; sourceTree = "<group>"; };
 		2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryDetailViewController.swift; path = "Stories Tab/StoryDetailViewController.swift"; sourceTree = "<group>"; };
 		2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtoLumaTabBarViewController.swift; sourceTree = "<group>"; };
 		2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewStoryTabViewController.swift; path = "New Story Tab/NewStoryTabViewController.swift"; sourceTree = "<group>"; };
@@ -80,7 +83,8 @@
 		2C947FA91B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonWithPromptTableViewCell.swift; sourceTree = "<group>"; };
 		2C947FAB1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmWithSubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		2C947FAD1B88039E00607770 /* CharmsTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmsTableViewHeader.swift; sourceTree = "<group>"; };
-		2C947FAF1B8813BF00607770 /* TempImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempImageViewController.swift; sourceTree = "<group>"; };
+		2CAB01201B98C88700652C76 /* ProfileBlurbTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileBlurbTableViewCell.swift; sourceTree = "<group>"; };
+		2CAC3DFB1B9A1C0C00C41BE9 /* PairBraceletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PairBraceletViewController.swift; sourceTree = "<group>"; };
 		2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoriesTabViewController.swift; path = "Stories Tab/StoriesTabViewController.swift"; sourceTree = "<group>"; };
 		2CF2FE181B7EBB6200F4E11D /* ProtoLuma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtoLuma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -158,7 +162,10 @@
 			children = (
 				2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */,
 				2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */,
+				2CAC3DFB1B9A1C0C00C41BE9 /* PairBraceletViewController.swift */,
+				2C813EF21B992B1200A6EDA7 /* BraceletSettings.swift */,
 				2C1FA10D1B93DD9D00B3C535 /* LoginViewController.swift */,
+				2CAB01201B98C88700652C76 /* ProfileBlurbTableViewCell.swift */,
 				2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */,
 				2C947FA51B87E2A500607770 /* UIStyleController.swift */,
 				2C947FA71B87E6D900607770 /* AccountViewController.swift */,
@@ -172,7 +179,6 @@
 				2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */,
 				2C26F9B31B86951C0081388C /* CharmsGalleryCollectionViewCell.swift */,
 				2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */,
-				2C947FAF1B8813BF00607770 /* TempImageViewController.swift */,
 				2C947FA31B87B7C600607770 /* NewStoryTransitionViewController.swift */,
 				2C1FA1091B93D83300B3C535 /* OnboardingPageViewController.swift */,
 				2C1FA10B1B93D98100B3C535 /* OnboardingContentViewController.swift */,
@@ -294,6 +300,11 @@
 				TargetAttributes = {
 					2CF2FE171B7EBB6200F4E11D = {
 						CreatedOnToolsVersion = 7.0;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					2CF2FE2E1B7EBB6200F4E11D = {
 						CreatedOnToolsVersion = 7.0;
@@ -402,12 +413,14 @@
 				2C1FA10C1B93D98100B3C535 /* OnboardingContentViewController.swift in Sources */,
 				2C1FA10A1B93D83300B3C535 /* OnboardingPageViewController.swift in Sources */,
 				2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */,
+				2C813EF31B992B1200A6EDA7 /* BraceletSettings.swift in Sources */,
 				2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */,
-				2C947FB01B8813BF00607770 /* TempImageViewController.swift in Sources */,
 				2C947FA41B87B7C600607770 /* NewStoryTransitionViewController.swift in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,
+				2CAC3DFC1B9A1C0C00C41BE9 /* PairBraceletViewController.swift in Sources */,
 				2C26F9B41B86951C0081388C /* CharmsGalleryCollectionViewCell.swift in Sources */,
 				2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */,
+				2CAB01211B98C88700652C76 /* ProfileBlurbTableViewCell.swift in Sources */,
 				2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */,
 				2C947FA61B87E2A500607770 /* UIStyleController.swift in Sources */,
 			);

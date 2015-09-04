@@ -21,6 +21,7 @@ class CharmsTableViewHeader: UIView {
         self.sectionTitle = UILabel(frame: CGRectZero)
         self.sectionTitle.translatesAutoresizingMaskIntoConstraints = false
         self.sectionTitle.text = "Section Title"
+        self.sectionTitle.textAlignment = NSTextAlignment.Center
         self.sectionTitle.textColor = UIColor.whiteColor()
         self.sectionTitle.font = UIFont.systemFontOfSize(16, weight: UIFontWeightRegular)
         self.addSubview(self.sectionTitle)
@@ -32,7 +33,7 @@ class CharmsTableViewHeader: UIView {
         
         let viewsDictionary = ["sectionTitle":self.sectionTitle, "sectionSeparator":self.sectionSeparator]
         let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[sectionTitle]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-4-[sectionTitle][sectionSeparator(2)]|", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: nil, views: viewsDictionary)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-4-[sectionTitle]-0-[sectionSeparator(1)]|", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: nil, views: viewsDictionary)
         self.addConstraints(horizontalConstraints)
         self.addConstraints(verticalConstraints)
         

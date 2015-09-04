@@ -9,6 +9,7 @@ PODS:
   - DateTools (1.6.1)
   - Facebook-iOS-SDK (3.23.2):
     - Bolts (~> 1.0)
+  - MBProgressHUD (0.9.1)
   - Metawear-iOSAPI (1.9.3)
   - Parse (1.8.0):
     - Bolts/Tasks (>= 1.2.0)
@@ -24,6 +25,7 @@ PODS:
 DEPENDENCIES:
   - Bean-iOS-OSX-SDK
   - DateTools
+  - MBProgressHUD
   - Metawear-iOSAPI
   - Parse
   - ParseFacebookUtils
@@ -35,6 +37,7 @@ SPEC CHECKSUMS:
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
   DateTools: 9bcc89e4f2f9004d8a7a2bd1b49269cf78968e65
   Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Metawear-iOSAPI: e21c23e1a40e861152dddbafac0cac8da4d15de5
   Parse: 6ea05adb378fbfd6f8726ab67ef74330d96fc903
   ParseFacebookUtils: f3e670d3f8edd0cfb8429ac39b30959d4ab13f0b
