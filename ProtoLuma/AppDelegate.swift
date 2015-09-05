@@ -92,6 +92,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         print("reconnected with \(bracelet)")
                     })
                 }
+                else{
+                    print("\(bracelet) already connected")
+                }
             }
             else{
                 print("no saved bracelet found")

@@ -10,9 +10,12 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
+    var metawearManager:MBLMetaWearManager!
+    var bracelet:PFObject!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.metawearManager = MBLMetaWearManager.sharedManager()
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,7 +82,31 @@ class LoginViewController: UIViewController {
                     }
                     else{
                         // User owns a bracelet, show Feed
-                        self.performSegueWithIdentifier("loggedIn", sender: self)
+                        self.metawearManager.startScanForMetaWearsAllowDuplicates(true, handler: {(devices:[AnyObject]!) -> Void in
+                            for device in devices as! [MBLMetaWear]{
+                                device.connectWithHandler({(error) -> Void in
+
+                                    PFUser.currentUser()?["bracelet"]?.fetchInBackgroundWithBlock({(object, error) -> Void in
+                                        if (error == nil){
+                                            self.bracelet = object! as PFObject
+                                            if ((self.bracelet["serialNumber"] as! String) == device.deviceInfo.serialNumber){
+                                                device.rememberDevice()
+                                                self.performSegueWithIdentifier("loggedIn", sender: self)
+                                            }
+                                            else{
+                                                device.forgetDevice()
+                                                device.disconnectWithHandler({(error) -> Void in
+                                                    print("non-matching metawear disconnected")
+                                                })
+                                            }
+                                        }
+                                        else{
+                                            print(error)
+                                        }
+                                    })
+                                })
+                            }
+                        })
                     }
                 }
 
