@@ -34,8 +34,15 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 
         // currentUser exists
         if (PFUser.currentUser() != nil){
-            self.layoutUIPostBraceletPairingANCS()
-            self.loadCharms()
+            MBLMetaWearManager.sharedManager().retrieveSavedMetaWearsWithHandler({(devices) -> Void in
+                if ((devices as! [MBLMetaWear]).count > 0){
+                    self.layoutUIPostBraceletPairingANCS()
+                    self.loadCharms()
+                }
+                else{
+                    self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
+                }
+            })
         }
         else{
             self.performSegueWithIdentifier("showLogin", sender: self)

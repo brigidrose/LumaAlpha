@@ -8,15 +8,17 @@
 
 import UIKit
 import CoreData
-
+import MapKit
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
     var beans:NSMutableDictionary!
     var connectedBeans:NSMutableDictionary!
     var disconnectedBeans:NSMutableDictionary!
     var metawearManager:MBLMetaWearManager!
+    var locationManager:CLLocationManager!
 //    var myCentralManager:CBCentralManager!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -41,6 +43,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.metawearManager = MBLMetaWearManager.sharedManager()
 //
 //        self.myCentralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionRestoreIdentifierKey:"mainCentralManagerIdentifier"])
+        self.window?.tintColor = UIColor(red:0.83, green:0.75, blue:0.63, alpha:1)
+        
+        self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.startUpdatingLocation()
+
         return true
     }
 

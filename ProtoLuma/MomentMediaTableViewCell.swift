@@ -37,7 +37,7 @@ class MomentMediaTableViewCell: UITableViewCell {
         self.mediaPreviewImageView = UIImageView(frame: CGRectZero)
         self.mediaPreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         self.mediaPreviewImageView.userInteractionEnabled = true
-        self.mediaPreviewImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        self.mediaPreviewImageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.mediaPreviewImageView.clipsToBounds = true
         self.momentMediaSheet.addSubview(self.mediaPreviewImageView)
         

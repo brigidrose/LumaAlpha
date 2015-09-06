@@ -19,6 +19,9 @@
 		2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */; };
 		2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */; };
 		2C30A1C91B965BDA00B64582 /* ClaimBIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */; };
+		2C35037B1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		2C7E34441B9B73C200EFA603 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		2C7E34461B9B7F0E00EFA603 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		2C7E34481B9B927100EFA603 /* MomentMediaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
@@ -76,6 +79,9 @@
 		2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoriesTableViewCell.swift; path = "Stories Tab/StoriesTableViewCell.swift"; sourceTree = "<group>"; };
 		2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharmTitleBlurbHeaderTableViewCell.swift; path = "Stories Tab/CharmTitleBlurbHeaderTableViewCell.swift"; sourceTree = "<group>"; };
 		2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClaimBIDViewController.swift; sourceTree = "<group>"; };
+		2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlTableViewCell.swift; sourceTree = "<group>"; };
+		2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTimePickerTableViewCell.swift; sourceTree = "<group>"; };
+		2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerTableViewCell.swift; sourceTree = "<group>"; };
 		2C6278D11B7F1E08006DDBE7 /* ProtoLuma-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtoLuma-Bridging-Header.h"; sourceTree = "<group>"; };
 		2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
@@ -170,8 +176,8 @@
 		2C7E34411B9B730300EFA603 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */,
 				2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */,
+				2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */,
 				2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */,
 				2C26F9B31B86951C0081388C /* CharmsGalleryCollectionViewCell.swift */,
 				2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */,
@@ -183,9 +189,12 @@
 			isa = PBXGroup;
 			children = (
 				2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */,
+				2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */,
+				2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */,
 				2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */,
 				2CAC3E001B9B550E00C41BE9 /* CharmPickerTableViewCell.swift */,
 				2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */,
+				2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */,
 				2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */,
 			);
 			name = "New Moment";
@@ -455,13 +464,16 @@
 				2CAC3E011B9B550E00C41BE9 /* CharmPickerTableViewCell.swift in Sources */,
 				2C1FA10E1B93DD9D00B3C535 /* LoginViewController.swift in Sources */,
 				2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */,
+				2C35037B1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift in Sources */,
 				2C7E34481B9B927100EFA603 /* MomentMediaTableViewCell.swift in Sources */,
 				2C947FAC1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift in Sources */,
 				2C947F9C1B87A81B00607770 /* StoryDetailViewController.swift in Sources */,
 				2C1FA10C1B93D98100B3C535 /* OnboardingContentViewController.swift in Sources */,
 				2C1FA10A1B93D83300B3C535 /* OnboardingPageViewController.swift in Sources */,
+				2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */,
 				2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */,
 				2C813EF31B992B1200A6EDA7 /* BraceletSettings.swift in Sources */,
+				2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */,
 				2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */,
 				2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,

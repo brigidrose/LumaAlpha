@@ -7,8 +7,8 @@
 //
 
 import UIKit
-
-class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, CTAssetsPickerControllerDelegate {
+import MapKit
+class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, CTAssetsPickerControllerDelegate, MKMapViewDelegate {
 
     var cancelButton:UIBarButtonItem!
     var sendButton:UIBarButtonItem!
@@ -20,6 +20,12 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     var mediaDescriptions:[String] = []
     var momentTitle = ""
     var momentDescription = ""
+    var unlockParameterType:String!
+    var unlockTime:NSDate!
+    var unlockLocation:PFGeoPoint!
+    var unlockLocationPlacemark:CLPlacemark!
+    var showUnlockParameterPicker = false
+    var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +43,11 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         self.tableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "charmCell")
         self.tableView.registerClass(TextFieldTableViewCell.self, forCellReuseIdentifier: "TextFieldTableViewCell")
         self.tableView.registerClass(TextViewTableViewCell.self, forCellReuseIdentifier: "TextViewTableViewCell")
+        self.tableView.registerClass(SegmentedControlTableViewCell.self, forCellReuseIdentifier: "SegmentedControlTableViewCell")
         self.tableView.registerClass(ButtonWithPromptTableViewCell.self, forCellReuseIdentifier: "ButtonWithPromptTableViewCell")
         self.tableView.registerClass(MomentMediaTableViewCell.self, forCellReuseIdentifier: "MomentMediaTableViewCell")
+        self.tableView.registerClass(DateTimePickerTableViewCell.self, forCellReuseIdentifier: "DateTimePickerTableViewCell")
+        self.tableView.registerClass(LocationPickerTableViewCell.self, forCellReuseIdentifier: "LocationPickerTableViewCell")
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 60
         self.tableView.delegate = self
@@ -69,6 +78,14 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         story["description"] = self.momentDescription
         story["sender"] = PFUser.currentUser()
         story["forCharm"] = self.forCharm
+        story["unlockType"] = self.unlockParameterType
+        if (self.unlockParameterType == "time"){
+            story["unlockTime"] = self.unlockTime
+        }
+        else{
+            story["unlockLocation"] = self.unlockLocation
+        }
+        story["readStatus"] = false
         let manager = PHImageManager.defaultManager()
         let storyUnitsRelation:PFRelation = story.relationForKey("storyUnits")
         for mediaAsset in self.mediaAssets{
@@ -111,7 +128,19 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             switch section{
             case 0: return 1
             case 1: return 2
-            case 2: return self.mediaAssets.count + 1
+            case 2:
+                if (self.unlockParameterType == nil){
+                    return 1
+                }
+                else{
+                    if (self.showUnlockParameterPicker == true){
+                        return 3
+                    }
+                    else{
+                        return 2
+                    }
+                }
+            case 3: return self.mediaAssets.count + 1
             default: return 0
             }
             
@@ -167,7 +196,97 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 default: return UITableViewCell()
                 }
             case 2:
-                if (indexPath.row == self.tableView.numberOfRowsInSection(2) - 1){
+                switch indexPath.row{
+                case 0:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("SegmentedControlTableViewCell") as! SegmentedControlTableViewCell
+                    cell.segmentedControl.setTitle("Time", forSegmentAtIndex: 0)
+                    cell.segmentedControl.setTitle("Location", forSegmentAtIndex: 1)
+                    if (self.unlockParameterType != nil){
+                        if (self.unlockParameterType == "time"){
+                            cell.segmentedControl.selectedSegmentIndex = 0
+                        }
+                        else{
+                            cell.segmentedControl.selectedSegmentIndex = 1
+                        }
+                    }
+                    cell.segmentedControl.addTarget(self, action: "unlockParameterPicked:", forControlEvents: UIControlEvents.ValueChanged)
+                    return cell
+                case 1:
+                    if (self.unlockParameterType == "time"){
+                        // show date & time picker
+                        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "value1")
+                        cell.textLabel?.text = "Time"
+                        if (self.unlockTime == nil){
+                            cell.detailTextLabel?.text = "Not Set"
+                        }
+                        else{
+                            cell.textLabel?.text = "Unlocks on"
+                            let dateFormatter = NSDateFormatter()
+                            dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+                            dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+                            cell.detailTextLabel?.text = dateFormatter.stringFromDate(self.unlockTime)
+                        }
+                        return cell
+                    }
+                    else{
+                        // show location picker
+                        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "value1")
+                        cell.textLabel?.text = "Location"
+                        if (self.unlockLocation == nil){
+                            cell.detailTextLabel?.text = "Tap to Set"
+                        }
+                        else{
+                            cell.textLabel?.text = "Unlocks in"
+                            if (self.unlockLocationPlacemark == nil){
+                                cell.detailTextLabel?.text = "\(self.unlockLocation.latitude), \(self.unlockLocation.longitude)"
+                            }
+                            else{
+                                cell.detailTextLabel?.text = "\(self.unlockLocationPlacemark.locality!), \(self.unlockLocationPlacemark.administrativeArea!)"
+                            }
+                        }
+                        return cell
+                    }
+                case 2:
+                    // hidden picker row
+                    if (self.unlockParameterType == "time"){
+                        // present date & time picker
+                        let cell = tableView.dequeueReusableCellWithIdentifier("DateTimePickerTableViewCell") as! DateTimePickerTableViewCell
+                        if (self.unlockTime != nil){
+                            cell.dateTimePicker.date = self.unlockTime
+                        }
+                        return cell
+                    }
+                    else{
+                        // present location picker
+                        let cell = tableView.dequeueReusableCellWithIdentifier("LocationPickerTableViewCell") as! LocationPickerTableViewCell
+                        cell.mapView.delegate = self
+                        cell.mapView.showsUserLocation = true
+                        cell.longPressGestureRecognizer.addTarget(self, action: "mapViewLongPressed:")
+                        if(self.unlockLocation == nil){
+                            let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                            let location = CLLocationCoordinate2D(latitude: (self.appDelegate.locationManager.location?.coordinate.latitude)!, longitude: (self.appDelegate.locationManager.location?.coordinate.longitude)!)
+                            let region = MKCoordinateRegion(center: location, span: span)
+                            cell.mapView.setRegion(region, animated: true)
+                        }
+                        else{
+                            let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                            let location = CLLocationCoordinate2D(latitude: self.unlockLocation.latitude, longitude: self.unlockLocation.longitude)
+                            print(location)
+                            let region = MKCoordinateRegion(center: location, span: span)
+                            cell.mapView.removeAnnotations(cell.mapView.annotations)
+                            let annotation = MKPointAnnotation()
+                            annotation.coordinate = CLLocationCoordinate2D(latitude: self.unlockLocation.latitude, longitude: self.unlockLocation.longitude)
+                            cell.mapView.addAnnotation(annotation)
+                            cell.mapView.setRegion(region, animated: true)
+                        }
+                        return cell
+                    }
+                default:
+                    print("default case")
+                    return UITableViewCell()
+                }
+            case 3:
+                if (indexPath.row == self.tableView.numberOfRowsInSection(3) - 1){
                     let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                     cell.promptLabel.text = "Upload pictures and videos to complete the moment."
                     cell.button.setTitle("Add Media", forState: UIControlState.Normal)
@@ -195,6 +314,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     cell.tag = Int(manager.requestImageForAsset(asset, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.AspectFill, options: nil) { (result, _) in
                         // this result handler is called on the main thread for asynchronous requests
                             cell.mediaPreviewImageView?.image = result
+//                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
                         })
                     return cell
                 }
@@ -222,7 +342,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 return "Select Charm"
             }
         case 1: return "About Moment"
-        case 2: return "Add Media"
+        case 2: return "Unlock Parameter"
+        case 3: return "Add Media"
         default: return ""
         }
     }
@@ -234,7 +355,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         }
         else{
             // If charm is selected, show additional input fields for About Charm and Add Media section
-            return 3
+            return 4
         }
 
     }
@@ -251,7 +372,21 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 print("did select selected charm")
             }
         case 1: print("did select row in section 1")
-        case 2: print("did select row in section 2")
+        case 2:
+            print("did select row in section 2")
+            if (indexPath.row == 1){
+                if (self.showUnlockParameterPicker){
+                    if (self.unlockParameterType == "time"){
+                        self.unlockTime = (tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 2)) as! DateTimePickerTableViewCell).dateTimePicker.date
+                    }
+                    else{
+                        
+                    }
+                }
+                self.showUnlockParameterPicker = !self.showUnlockParameterPicker
+                self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+        case 3: print("did select row in section 3")
         default: print("didSelectSomeRow")
         }
     }
@@ -343,13 +478,47 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         print("long pressed")
     }
     
+    func unlockParameterPicked(sender:UISegmentedControl){
+        if (sender.selectedSegmentIndex == 0){
+            self.unlockParameterType = "time"
+        }
+        else{
+            self.unlockParameterType = "location"
+        }
+        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    func mapViewLongPressed(sender:UILongPressGestureRecognizer){
+        let mapView = sender.view as! MKMapView
+        // Here we get the CGPoint for the touch and convert it to latitude and longitude coordinates to display on the map
+        let point:CGPoint = sender.locationInView(mapView)
+        let locationCoordinate:CLLocationCoordinate2D = mapView.convertPoint(point, toCoordinateFromView: mapView)
+
+        // Then all you have to do is create the annotation and add it to the map
+        let dropPin = MKPointAnnotation()
+        dropPin.coordinate = locationCoordinate
+        print(locationCoordinate)
+        dropPin.title = "Selected Location"
+        dropPin.subtitle = "\(locationCoordinate)"
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.addAnnotation(dropPin)
+        self.unlockLocation = PFGeoPoint(location: CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude))
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude), completionHandler: {(placemarks, error) -> Void in
+            let placemark = (placemarks as [CLPlacemark]!)[0]
+            self.unlockLocationPlacemark = placemark
+            if (self.unlockParameterType == "location"){
+                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+        })
+    }
+    
     func assetsPickerController(picker: CTAssetsPickerController!, didFinishPickingAssets assets: [AnyObject]!) {
         print(assets)
         let presentingVC = (picker.presentingViewController?.childViewControllers[0] as! NewStoryTabViewController)
         presentingVC.mediaAssets.appendContentsOf(assets as! [PHAsset])
         presentingVC.mediaDescriptions.appendContentsOf(Array(count: assets.count, repeatedValue: ""))
-        presentingVC.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
+        presentingVC.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(3, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
-    
 }
