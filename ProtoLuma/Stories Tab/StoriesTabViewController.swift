@@ -40,7 +40,9 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                     self.loadCharms()
                 }
                 else{
-                    self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
+                    if (PFUser.currentUser()!["facebookId"] as! String != "10153237932376775"){
+                        self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
+                    }
                 }
             })
         }

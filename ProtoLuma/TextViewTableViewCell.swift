@@ -25,7 +25,7 @@ class TextViewTableViewCell: UITableViewCell {
         
         self.textView = JVFloatLabeledTextView(frame: CGRectZero)
         self.textView.translatesAutoresizingMaskIntoConstraints = false
-
+        self.textView.scrollsToTop = false
         let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
         
         doneButton.title = "Done"

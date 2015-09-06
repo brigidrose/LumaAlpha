@@ -12,7 +12,7 @@ class MomentMediaTableViewCell: UITableViewCell {
 
     var momentMediaSheet:UIView!
     var mediaPreviewImageView:UIImageView!
-    var mediaCaptionTextView:JVFloatLabeledTextView!
+    var mediaCaptionTextView:UITextView!
     let keyboardAccessoryView = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
     var doneButton = UIBarButtonItem()
 
@@ -47,9 +47,9 @@ class MomentMediaTableViewCell: UITableViewCell {
         doneButton.style = UIBarButtonItemStyle.Done
         self.keyboardAccessoryView.setItems([flexSpace,doneButton], animated: true)
         
-        self.mediaCaptionTextView = JVFloatLabeledTextView(frame: CGRectZero)
+        self.mediaCaptionTextView = UITextView(frame: CGRectZero)
+        self.mediaCaptionTextView.scrollsToTop = false
         self.mediaCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        self.mediaCaptionTextView.placeholder = "Description (Optional)"
         self.mediaCaptionTextView.inputAccessoryView = self.keyboardAccessoryView
         self.momentMediaSheet.addSubview(self.mediaCaptionTextView)
         
@@ -69,8 +69,9 @@ class MomentMediaTableViewCell: UITableViewCell {
         let horizontalConstraintsInsideSheetForCaption = NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[mediaCaptionTextView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         self.momentMediaSheet.addConstraints(horizontalConstraintsInsideSheetForCaption)
 
-        let verticalConstraintsInsideSheet = NSLayoutConstraint.constraintsWithVisualFormat("V:|[mediaPreviewImageView(squareWidth)]-4-[mediaCaptionTextView(>=60)]-8-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: metricsDictionary, views: viewsDictionary)
+        let verticalConstraintsInsideSheet = NSLayoutConstraint.constraintsWithVisualFormat("V:|[mediaPreviewImageView(squareWidth)]-4-[mediaCaptionTextView(60)]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         self.momentMediaSheet.addConstraints(verticalConstraintsInsideSheet)
+        super.updateConstraints()
     }
     
     override func awakeFromNib() {

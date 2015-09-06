@@ -29,7 +29,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped:")
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
@@ -72,7 +72,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     
     func sendButtonTapped(sender:UIBarButtonItem){
         print("Send button tapped")
-        
+        self.navigationItem.leftBarButtonItem?.enabled = false
+        self.navigationItem.rightBarButtonItem?.enabled = false
         let story = PFObject(className: "Story")
         story["title"] = self.momentTitle
         story["description"] = self.momentDescription
@@ -88,6 +89,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         story["readStatus"] = false
         let manager = PHImageManager.defaultManager()
         let storyUnitsRelation:PFRelation = story.relationForKey("storyUnits")
+        var savedCount = 0
         for mediaAsset in self.mediaAssets{
             print(mediaAsset)
             manager.requestImageDataForAsset(mediaAsset, options: nil, resultHandler:{(data:NSData?,dataUTI:String?,orientation:UIImageOrientation, info:[NSObject:AnyObject]? ) -> Void in
@@ -97,8 +99,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 storyUnit.saveInBackgroundWithBlock({(success, error) -> Void in
                     if (error == nil){
                         print("\(storyUnit) saved!")
+                        savedCount++
                         storyUnitsRelation.addObject(storyUnit)
-                        if (self.mediaAssets.indexOf(mediaAsset) == self.mediaAssets.count - 1){
+                        if (savedCount == self.mediaAssets.count){
                             story.saveInBackgroundWithBlock({(success, error) -> Void in
                                 if (error == nil){
                                     self.dismissViewControllerAnimated(true, completion: nil)
@@ -117,6 +120,15 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             })
         }
     }
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if (indexPath.section == 3){
+            return 400
+        }
+        else{
+            return 60
+        }
+    }
+    
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (self.forCharm == nil){
@@ -298,10 +310,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     cell.mediaCaptionTextView.delegate = self
                     (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
                     (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
+//                    cell.mediaCaptionTextView.placeholder = "Description (Optional)"
                     cell.mediaCaptionTextView.text = self.mediaDescriptions[indexPath.row]
                     cell.mediaPreviewImageView.backgroundColor = UIColor(white: 0.85, alpha: 1)
-                    let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "storyUnitLongPressed:")
-                    cell.momentMediaSheet.addGestureRecognizer(longPressGestureRecognizer)
                     
                     let manager = PHImageManager.defaultManager()
                     
@@ -311,7 +322,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 
                     let asset = self.mediaAssets[indexPath.row]
                     
-                    cell.tag = Int(manager.requestImageForAsset(asset, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.AspectFill, options: nil) { (result, _) in
+                    cell.tag = Int(manager.requestImageForAsset(asset, targetSize: CGSizeMake(800, 800), contentMode: PHImageContentMode.AspectFill, options: nil) { (result, _) in
                         // this result handler is called on the main thread for asynchronous requests
                             cell.mediaPreviewImageView?.image = result
 //                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -424,7 +435,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         // Handle text entry and save on didfinishediting
         let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(textView, inTableView: self.tableView)!
         print(indexPathForTextView)
-        if (indexPathForTextView.section == 2){
+        if (indexPathForTextView.section == 3){
             self.mediaDescriptions[indexPathForTextView.row] = textView.text
         }
         else{
@@ -441,14 +452,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     
     func textViewDoneButtonTapped(sender:UIBarButtonItem){
         print("done button tapped")
-
         self.view.endEditing(true)
-        
-//        let indexPathForTextView = self.tableView.indexPathForCell(textView.superview as! TextViewTableViewCell)!
-//        print(indexPathForTextView)
-//        if (indexPathForTextView.section == 2){
-//            self.mediaDescriptions[indexPathForTextView.row] = textView.text
-//        }
     }
 
     func addMediaButtonTapped(sender:UIButton){
@@ -472,10 +476,6 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 self.presentViewController(picker, animated: true, completion: nil)
             })
         })
-    }
-    
-    func storyUnitLongPressed(sender:UILongPressGestureRecognizer){
-        print("long pressed")
     }
     
     func unlockParameterPicked(sender:UISegmentedControl){
@@ -518,7 +518,17 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         let presentingVC = (picker.presentingViewController?.childViewControllers[0] as! NewStoryTabViewController)
         presentingVC.mediaAssets.appendContentsOf(assets as! [PHAsset])
         presentingVC.mediaDescriptions.appendContentsOf(Array(count: assets.count, repeatedValue: ""))
-        presentingVC.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(3, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
+        presentingVC.tableView.reloadData()
         picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
+        print("tests")
+        if (scrollView == self.tableView){
+            return true
+        }
+        else{
+            return false
+        }
     }
 }
