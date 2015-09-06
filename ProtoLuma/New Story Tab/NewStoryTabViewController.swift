@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTAssetsPickerControllerDelegate {
+class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, CTAssetsPickerControllerDelegate {
 
     var cancelButton:UIBarButtonItem!
     var sendButton:UIBarButtonItem!
@@ -17,7 +17,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
     var forCharm:PFObject!
     var storyUnits:[PFObject] = []
     var mediaAssets:[PHAsset] = []
+    var mediaDescriptions:[String] = []
     var momentTitle = ""
+    var momentDescription = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,11 +57,48 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
     // MARK: - Navigation
 
     func cancelButtonTapped(sender:UIBarButtonItem){
+        self.view.endEditing(true)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func sendButtonTapped(sender:UIBarButtonItem){
         print("Send button tapped")
+        
+        let story = PFObject(className: "Story")
+        story["title"] = self.momentTitle
+        story["description"] = self.momentDescription
+        story["sender"] = PFUser.currentUser()
+        story["forCharm"] = self.forCharm
+        let manager = PHImageManager.defaultManager()
+        let storyUnitsRelation:PFRelation = story.relationForKey("storyUnits")
+        for mediaAsset in self.mediaAssets{
+            print(mediaAsset)
+            manager.requestImageDataForAsset(mediaAsset, options: nil, resultHandler:{(data:NSData?,dataUTI:String?,orientation:UIImageOrientation, info:[NSObject:AnyObject]? ) -> Void in
+                let storyUnit = PFObject(className: "Story_Unit")
+                storyUnit["file"] = PFFile(data: data!)
+                storyUnit["description"] = self.mediaDescriptions[self.mediaAssets.indexOf(mediaAsset)!]
+                storyUnit.saveInBackgroundWithBlock({(success, error) -> Void in
+                    if (error == nil){
+                        print("\(storyUnit) saved!")
+                        storyUnitsRelation.addObject(storyUnit)
+                        if (self.mediaAssets.indexOf(mediaAsset) == self.mediaAssets.count - 1){
+                            story.saveInBackgroundWithBlock({(success, error) -> Void in
+                                if (error == nil){
+                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                }
+                                else{
+                                    print(error)
+                                }
+
+                            })
+                        }
+                    }
+                    else{
+                        print(error)
+                    }
+                })
+            })
+        }
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -82,9 +121,13 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (self.forCharm == nil){
             let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
-            cell.charmTitle.text = (self.charms[indexPath.row])["name"] as? String
+            let charm = self.charms[indexPath.row]
+            let charmGifter = charm["gifter"] as! PFUser
+            let gifterFirstName = charmGifter["firstName"] as! String
+            let gifterLastName = charmGifter["lastName"] as! String
+            cell.charmTitle.text = charm["name"] as? String
             cell.charmTitle.textColor = UIColor.blackColor()
-            cell.charmSubtitle.text = "gifter"
+            cell.charmSubtitle.text = "\(gifterFirstName) \(gifterLastName)"
             cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
             cell.backgroundColor = UIColor.whiteColor()
             cell.accessoryType = UITableViewCellAccessoryType.None
@@ -94,9 +137,13 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
             switch indexPath.section{
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
+                let charm = self.charms[indexPath.row]
+                let charmGifter = charm["gifter"] as! PFUser
+                let gifterFirstName = charmGifter["firstName"] as! String
+                let gifterLastName = charmGifter["lastName"] as! String
                 cell.charmTitle.text = self.forCharm["name"] as? String
                 cell.charmTitle.textColor = UIColor.blackColor()
-                cell.charmSubtitle.text = "gifter"
+                cell.charmSubtitle.text = "\(gifterFirstName) \(gifterLastName)"
                 cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
                 cell.backgroundColor = UIColor.whiteColor()
                 cell.accessoryType = UITableViewCellAccessoryType.None
@@ -112,6 +159,10 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
                 case 1:
                     let cell = tableView.dequeueReusableCellWithIdentifier("TextViewTableViewCell") as! TextViewTableViewCell
                     cell.textView.placeholder = "Description (Optional)"
+                    cell.textView.returnKeyType = UIReturnKeyType.Default
+                    cell.textView.delegate = self
+                    (((cell.textView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
+                    (((cell.textView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
                     return cell
                 default: return UITableViewCell()
                 }
@@ -125,7 +176,10 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
                 }
                 else{
                     let cell = tableView.dequeueReusableCellWithIdentifier("MomentMediaTableViewCell") as! MomentMediaTableViewCell
-                    cell.mediaCaptionTextView.placeholder = "Caption (Optional)"
+                    cell.mediaCaptionTextView.delegate = self
+                    (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
+                    (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
+                    cell.mediaCaptionTextView.text = self.mediaDescriptions[indexPath.row]
                     cell.mediaPreviewImageView.backgroundColor = UIColor(white: 0.85, alpha: 1)
                     let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "storyUnitLongPressed:")
                     cell.momentMediaSheet.addGestureRecognizer(longPressGestureRecognizer)
@@ -138,7 +192,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
 
                     let asset = self.mediaAssets[indexPath.row]
                     
-                    cell.tag = Int(manager.requestImageForAsset(asset, targetSize: CGSizeMake(357, 357), contentMode: PHImageContentMode.AspectFill, options: nil) { (result, _) in
+                    cell.tag = Int(manager.requestImageForAsset(asset, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.AspectFill, options: nil) { (result, _) in
                         // this result handler is called on the main thread for asynchronous requests
                             cell.mediaPreviewImageView?.image = result
                         })
@@ -221,10 +275,45 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
     func textFieldDidEndEditing(textField: UITextField) {
         if (textField.text != ""){
             self.sendButton.enabled = true
+            self.momentTitle = textField.text!
         }
         else{
             self.sendButton.enabled = false
         }
+        
+        // Handle text entry and save
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        print("textview did end editing")
+        // Handle text entry and save on didfinishediting
+        let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(textView, inTableView: self.tableView)!
+        print(indexPathForTextView)
+        if (indexPathForTextView.section == 2){
+            self.mediaDescriptions[indexPathForTextView.row] = textView.text
+        }
+        else{
+            // == 1
+            self.momentDescription = textView.text
+        }
+    }
+    
+    func indexPathForCellContainingView(view: UIView, inTableView tableView:UITableView) -> NSIndexPath? {
+        let viewCenterRelativeToTableview = tableView.convertPoint(CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds)), fromView:view)
+        return tableView.indexPathForRowAtPoint(viewCenterRelativeToTableview)
+    }
+
+    
+    func textViewDoneButtonTapped(sender:UIBarButtonItem){
+        print("done button tapped")
+
+        self.view.endEditing(true)
+        
+//        let indexPathForTextView = self.tableView.indexPathForCell(textView.superview as! TextViewTableViewCell)!
+//        print(indexPathForTextView)
+//        if (indexPathForTextView.section == 2){
+//            self.mediaDescriptions[indexPathForTextView.row] = textView.text
+//        }
     }
 
     func addMediaButtonTapped(sender:UIButton){
@@ -258,7 +347,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, CTA
         print(assets)
         let presentingVC = (picker.presentingViewController?.childViewControllers[0] as! NewStoryTabViewController)
         presentingVC.mediaAssets.appendContentsOf(assets as! [PHAsset])
+        presentingVC.mediaDescriptions.appendContentsOf(Array(count: assets.count, repeatedValue: ""))
         presentingVC.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
+    
 }

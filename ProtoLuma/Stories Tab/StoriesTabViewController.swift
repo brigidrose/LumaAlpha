@@ -181,6 +181,8 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     func loadCharms(){
         let queryForCharms = PFQuery(className: "Charm")
         queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
+        queryForCharms.includeKey("owner")
+        queryForCharms.includeKey("gifter")
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             self.charms = objects as! [PFObject]
             print("charms loaded")

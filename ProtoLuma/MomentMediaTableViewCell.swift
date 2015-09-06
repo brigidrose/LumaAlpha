@@ -13,7 +13,9 @@ class MomentMediaTableViewCell: UITableViewCell {
     var momentMediaSheet:UIView!
     var mediaPreviewImageView:UIImageView!
     var mediaCaptionTextView:JVFloatLabeledTextView!
-    
+    let keyboardAccessoryView = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
+    var doneButton = UIBarButtonItem()
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -39,8 +41,16 @@ class MomentMediaTableViewCell: UITableViewCell {
         self.mediaPreviewImageView.clipsToBounds = true
         self.momentMediaSheet.addSubview(self.mediaPreviewImageView)
         
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        
+        doneButton.title = "Done"
+        doneButton.style = UIBarButtonItemStyle.Done
+        self.keyboardAccessoryView.setItems([flexSpace,doneButton], animated: true)
+        
         self.mediaCaptionTextView = JVFloatLabeledTextView(frame: CGRectZero)
         self.mediaCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
+        self.mediaCaptionTextView.placeholder = "Description (Optional)"
+        self.mediaCaptionTextView.inputAccessoryView = self.keyboardAccessoryView
         self.momentMediaSheet.addSubview(self.mediaCaptionTextView)
         
         let viewsDictionary = ["mediaPreviewImageView":self.mediaPreviewImageView, "mediaCaptionTextView":self.mediaCaptionTextView, "momentMediaSheet":self.momentMediaSheet]

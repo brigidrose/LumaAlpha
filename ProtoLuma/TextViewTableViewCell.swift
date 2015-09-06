@@ -11,6 +11,8 @@ import UIKit
 class TextViewTableViewCell: UITableViewCell {
 
     var textView:JVFloatLabeledTextView!
+    let keyboardAccessoryView = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
+    var doneButton = UIBarButtonItem()
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -23,6 +25,13 @@ class TextViewTableViewCell: UITableViewCell {
         
         self.textView = JVFloatLabeledTextView(frame: CGRectZero)
         self.textView.translatesAutoresizingMaskIntoConstraints = false
+
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        
+        doneButton.title = "Done"
+        doneButton.style = UIBarButtonItemStyle.Done
+        self.keyboardAccessoryView.setItems([flexSpace,doneButton], animated: true)
+        self.textView.inputAccessoryView = self.keyboardAccessoryView
         self.contentView.addSubview(self.textView)
         
         let viewsDictionary = ["textView":self.textView]
