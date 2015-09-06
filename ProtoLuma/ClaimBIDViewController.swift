@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 class ClaimBIDViewController: UIViewController {
     
     var scrollView:TPKeyboardAvoidingScrollView!

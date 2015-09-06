@@ -50,6 +50,7 @@ class LoginViewController: UIViewController {
                                     dateFormatter.dateFormat = "MM/dd"
                                 }
                                 let birthday:NSDate = dateFormatter.dateFromString(birthdayString)!
+                                PFUser.currentUser()?["facebookId"] = user.objectForKey("id")
                                 PFUser.currentUser()?["birthday"] = birthday
                                 PFUser.currentUser()?["firstName"] = user.objectForKey("first_name")
                                 PFUser.currentUser()?["lastName"] = user.objectForKey("last_name")

@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             clientKey: "VPxuBA4ASQBaPpusXfocIPKAKNrtJALBYd6LKlSx")
         PFFacebookUtils.initializeFacebook()
         
-        PFTwitterUtils.initializeWithConsumerKey("lHc76e87Hs94HCNkw3NPV0lwW",  consumerSecret:"aRGu4WrbVfezsca8gpBQ1z24yPF2KvkcZRndDGBHND3BWbpNoy")
+//        PFTwitterUtils.initializeWithConsumerKey("lHc76e87Hs94HCNkw3NPV0lwW",  consumerSecret:"aRGu4WrbVfezsca8gpBQ1z24yPF2KvkcZRndDGBHND3BWbpNoy")
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         

@@ -10,18 +10,23 @@ import UIKit
 
 class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate{
 
+    var accountButton:UIBarButtonItem!
+    var newStoryButton:UIBarButtonItem!
+    
+    // To be reimplemented with UIStackView
     var charmsGalleryCollectionViewController:UICollectionViewController!
+    
     var storiesTableViewController:UITableViewController!
     var userInfo:AnyObject!
-    var savedDevices:[MBLMetaWear] = []
-    var devices:[MBLMetaWear] = []
     var bracelet:MBLMetaWear!
+    var charms:[PFObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let accountButton = UIBarButtonItem(image: UIImage(named: "AccountBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "accountButtonTapped:")
-        let newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
+        self.accountButton = UIBarButtonItem(image: UIImage(named: "AccountBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "accountButtonTapped:")
+        self.newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
+        self.newStoryButton.enabled = false
         
         self.navigationItem.rightBarButtonItem = newStoryButton
         self.navigationItem.leftBarButtonItem = accountButton
@@ -30,6 +35,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         // currentUser exists
         if (PFUser.currentUser() != nil){
             self.layoutUIPostBraceletPairingANCS()
+            self.loadCharms()
         }
         else{
             self.performSegueWithIdentifier("showLogin", sender: self)
@@ -61,6 +67,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.charmsGalleryCollectionViewController.collectionView!.delegate = self
         self.charmsGalleryCollectionViewController.collectionView!.dataSource = self
         self.charmsGalleryCollectionViewController.collectionView!.scrollsToTop = false
+        self.charmsGalleryCollectionViewController.collectionView!.alwaysBounceHorizontal = true
         self.charmsGalleryCollectionViewController.collectionView!.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "CharmsGalleryCollectionViewCell")
         self.charmsGalleryCollectionViewController.collectionView!.directionalLockEnabled = true
         self.charmsGalleryCollectionViewController.collectionView!.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
@@ -100,7 +107,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: Collection View delegate methods
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return self.charms.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -146,7 +153,12 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showAccount"){
-//            let destinationVC = segue.destinationViewController.childViewControllers[0] as! AccountViewController
+            let destinationVC = segue.destinationViewController.childViewControllers[0] as! AccountViewController
+            destinationVC.charms = self.charms
+        }
+        else if (segue.identifier == "showNewMoment"){
+            let destinationVC = segue.destinationViewController.childViewControllers[0] as! NewStoryTabViewController
+            destinationVC.charms = self.charms
         }
     }
     
@@ -158,7 +170,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func newStoryButtonTapped(sender:UIBarButtonItem){
-        self.performSegueWithIdentifier("showNewStory", sender: self)
+        self.performSegueWithIdentifier("showNewMoment", sender: self)
     }
     
     func loadNewStoriesForCharm(sender:UIRefreshControl){
@@ -166,6 +178,17 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         sender.endRefreshing()
     }
         
+    func loadCharms(){
+        let queryForCharms = PFQuery(className: "Charm")
+        queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
+        queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+            self.charms = objects as! [PFObject]
+            print("charms loaded")
+            self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
+            self.newStoryButton.enabled = true
+        })
+        
+    }
 
     
 }

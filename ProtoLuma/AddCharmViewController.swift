@@ -56,7 +56,6 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillDisappear(animated: Bool) {
         self.enterCIDTextField.resignFirstResponder()
-        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! AccountViewController).loadCharms()
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,6 +92,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                         charm["claimed"] = true
                         charm.saveEventually({(error) -> Void in
                             print("charm claimed and registered on Parse")
+                            (self.parentViewController?.presentingViewController?.childViewControllers[0] as! AccountViewController).loadCharms()
                             self.dismissViewControllerAnimated(true, completion: nil)
                         })
                     }

@@ -9,17 +9,19 @@
 #ifndef ProtoLuma_Bridging_Header_h
 #define ProtoLuma_Bridging_Header_h
 
-#import <PTDBeanManager.h>
 #import <Parse/Parse.h>
 #import <MetaWear/MetaWear.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 #import "PFFacebookUtils.h"
-#import "PFTwitterUtils.h"
 #import "FacebookSDK.h"
 #import "TPKeyboardAvoidingScrollView.h"
 #import "TPKeyboardAvoidingTableView.h"
 #import "TPKeyboardAvoidingCollectionView.h"
 #import "MBProgressHUD.h"
+#import "UIImageView+WebCache.h"
+#import "JVFloatLabeledTextField.h"
+#import "JVFloatLabeledTextView.h"
+#import <CTAssetsPickerController/CTAssetsPickerController.h>
 #endif /* ProtoLuma_Bridging_Header_h */

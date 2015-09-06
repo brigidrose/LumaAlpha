@@ -3,14 +3,15 @@
 
 target 'ProtoLuma' do
 
-pod 'Bean-iOS-OSX-SDK'
 pod 'Parse'
 pod 'Metawear-iOSAPI'
 pod 'ParseFacebookUtils'
-pod 'ParseTwitterUtils'
 pod 'DateTools'
 pod 'TPKeyboardAvoiding'
 pod 'MBProgressHUD'
+pod 'SDWebImage'
+pod 'CTAssetsPickerController',  '~> 3.0.0'
+pod 'JVFloatLabeledTextField'
 end
 
 target 'ProtoLumaTests' do

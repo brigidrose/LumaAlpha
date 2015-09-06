@@ -37,6 +37,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.accountTableView.rowHeight = UITableViewAutomaticDimension
         self.accountTableView.delegate = self
         self.accountTableView.dataSource = self
+        self.accountTableView.registerClass(ProfileBlurbTableViewCell.self, forCellReuseIdentifier: "ProfileBlurbTableViewCell")
         self.accountTableView.registerClass(ButtonWithPromptTableViewCell.self, forCellReuseIdentifier:
             "ButtonWithPromptTableViewCell")
         self.accountTableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "CharmWithSubtitleTableViewCell")
@@ -52,7 +53,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
         
-        self.loadCharms()
         self.retrieveSavedMetaWear()
         
     }
@@ -68,7 +68,18 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch indexPath.section{
         case 0:
             // Profile Detail
-            let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("ProfileBlurbTableViewCell") as! ProfileBlurbTableViewCell
+            let fullName = (PFUser.currentUser()!["firstName"] as! String) + " " + (PFUser.currentUser()!["lastName"] as! String)
+            cell.nameLabel.text = fullName
+            let block: SDWebImageCompletionBlock! = {(image: UIImage!, error: NSError!, cacheType: SDImageCacheType, imageURL: NSURL!) -> Void in
+
+            }
+            
+            let id = PFUser.currentUser()!["facebookId"] as! String
+            let url = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")
+            
+            cell.profileImageView.sd_setImageWithURL(url, completed: block)
+
             return cell
         case 1:
             // Bracelet
@@ -100,7 +111,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             else{
                 let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-                cell.charmTitle.text = "Charm Title"
+                cell.charmTitle.text = self.charms[indexPath.row]["name"] as? String
                 cell.charmSubtitle.text = "connection state"
                 return cell
             }
@@ -129,7 +140,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section{
         case 0:
-            return 0
+            return 1
         case 1:
             return 1
         case 2:
@@ -156,7 +167,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             headerView.sectionTitle.text = "Account"
             return headerView
         default:
-            return UIView()
+            return nil
         }
     }
     
@@ -201,6 +212,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func doneButtonTapped(sender:UIBarButtonItem){
+        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).charms = self.charms
+        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -248,6 +261,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     func updateMetaWearTableViewSections(){
         self.accountTableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(1, 2)), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
+    
     
     func getMBLConnectionStateString(state:MBLConnectionState) -> String{
         switch state{

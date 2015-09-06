@@ -121,7 +121,7 @@
                     <navigationItem key="navigationItem" title="Luma" id="eEy-rX-ytS"/>
                     <connections>
                         <segue destination="syx-Qf-0WI" kind="show" identifier="showStoryDetail" id="YaX-F2-hyf"/>
-                        <segue destination="Zuw-ZQ-xEi" kind="presentation" identifier="showNewStory" id="MLz-NT-2Yf"/>
+                        <segue destination="Zuw-ZQ-xEi" kind="presentation" identifier="showNewMoment" id="MLz-NT-2Yf"/>
                         <segue destination="3rt-jV-9id" kind="presentation" identifier="showAccount" id="che-mF-G8g"/>
                         <segue destination="mkt-53-6MV" kind="presentation" identifier="showLogin" id="J2m-Nf-nZC"/>
                     </connections>
@@ -159,30 +159,42 @@
                         <animations/>
                     </navigationBar>
                     <connections>
-                        <segue destination="KaY-QD-dDx" kind="relationship" relationship="rootViewController" id="7QK-rD-sbo"/>
+                        <segue destination="ope-10-rHZ" kind="relationship" relationship="rootViewController" id="jAm-FI-ZVU"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ow-lh-IzW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="635" y="339"/>
         </scene>
-        <!--New Moment-->
-        <scene sceneID="uVO-db-zQE">
+        <!--New Story Tab View Controller-->
+        <scene sceneID="WXX-qH-IWv">
             <objects>
-                <viewController title="New Moment" id="KaY-QD-dDx" customClass="NewStoryTabViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="nGJ-6R-lsG"/>
-                        <viewControllerLayoutGuide type="bottom" id="9Di-je-Ihh"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="YWl-N4-Xy5">
+                <tableViewController id="ope-10-rHZ" customClass="NewStoryTabViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="FUi-88-HDM">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="New Story" id="HZJ-gp-hOc"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kk9-tI-zAv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fgi-sn-Vvr">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fgi-sn-Vvr" id="HcH-Xh-N2q">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ope-10-rHZ" id="s1G-Ly-tna"/>
+                            <outlet property="delegate" destination="ope-10-rHZ" id="lw0-lj-hmc"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="KOc-mO-16m"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aWF-Gx-xBd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="635" y="1191"/>
         </scene>

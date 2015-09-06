@@ -58,16 +58,14 @@ install_resource()
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgA.bin"
-  install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgB.bin"
   install_resource "DateTools/DateTools/DateTools.bundle"
-  install_resource "Parse/Parse/Resources/Localizable.strings"
+  install_resource "Parse/Parse/Resources/en.lproj"
+  install_resource "${BUILT_PRODUCTS_DIR}/CTAssetsPickerController.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgA.bin"
-  install_resource "Bean-iOS-OSX-SDK/firmware/201504270003_BEAN_imgB.bin"
   install_resource "DateTools/DateTools/DateTools.bundle"
-  install_resource "Parse/Parse/Resources/Localizable.strings"
+  install_resource "Parse/Parse/Resources/en.lproj"
+  install_resource "${BUILT_PRODUCTS_DIR}/CTAssetsPickerController.bundle"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
