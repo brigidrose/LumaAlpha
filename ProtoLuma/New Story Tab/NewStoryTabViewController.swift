@@ -160,12 +160,12 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     return 1
                 }
                 else{
-                    if (self.showUnlockParameterPicker == true){
+//                    if (self.showUnlockParameterPicker == true){
                         return 3
-                    }
-                    else{
-                        return 2
-                    }
+//                    }
+//                    else{
+//                        return 2
+//                    }
                 }
             case 3: return self.mediaAssets.count + 1
             default: return 0
@@ -247,12 +247,13 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     cell.segmentedControl.addTarget(self, action: "unlockParameterPicked:", forControlEvents: UIControlEvents.ValueChanged)
                     return cell
                 case 1:
+                    let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "value1")
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
                     if (self.unlockParameterType == "time"){
                         // show date & time picker
-                        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "value1")
                         cell.textLabel?.text = "Time"
                         if (self.unlockTime == nil){
-                            cell.detailTextLabel?.text = "Not Set"
+                            cell.detailTextLabel?.text = "Tap Here to Set"
                         }
                         else{
                             cell.textLabel?.text = "Unlocks on"
@@ -265,10 +266,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     }
                     else{
                         // show location picker
-                        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "value1")
                         cell.textLabel?.text = "Location"
                         if (self.unlockLocation == nil){
-                            cell.detailTextLabel?.text = "Tap to Set"
+                            cell.detailTextLabel?.text = "Press & Hold on Map to Set"
                         }
                         else{
                             cell.textLabel?.text = "Unlocks in"
@@ -289,6 +289,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                         if (self.unlockTime != nil){
                             cell.dateTimePicker.date = self.unlockTime
                         }
+                        cell.dateTimePicker.addTarget(self, action: "dateTimePickerPicked:", forControlEvents: UIControlEvents.ValueChanged)
                         return cell
                     }
                     else{
@@ -410,6 +411,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             }
             else{
                 print("did select selected charm")
+                self.forCharm = nil
+                self.tableView.reloadData()
             }
         case 1: print("did select row in section 1")
         case 2:
@@ -418,13 +421,14 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 if (self.showUnlockParameterPicker){
                     if (self.unlockParameterType == "time"){
                         self.unlockTime = (tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 2)) as! DateTimePickerTableViewCell).dateTimePicker.date
+                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
                     }
                     else{
                         
                     }
                 }
-                self.showUnlockParameterPicker = !self.showUnlockParameterPicker
-                self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
+//                self.showUnlockParameterPicker = !self.showUnlockParameterPicker
+                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
         case 3: print("did select row in section 3")
         default: print("didSelectSomeRow")
@@ -510,11 +514,14 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     func unlockParameterPicked(sender:UISegmentedControl){
         if (sender.selectedSegmentIndex == 0){
             self.unlockParameterType = "time"
+            self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.unlockTime = (tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 2)) as! DateTimePickerTableViewCell).dateTimePicker.date
+            self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
         else{
             self.unlockParameterType = "location"
+            self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(2, 1)), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     func mapViewLongPressed(sender:UILongPressGestureRecognizer){
@@ -549,6 +556,11 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         presentingVC.mediaDescriptions.appendContentsOf(Array(count: assets.count, repeatedValue: ""))
         presentingVC.tableView.reloadData()
         picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func dateTimePickerPicked(sender:UIDatePicker){
+        self.unlockTime = sender.date
+        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     override func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {

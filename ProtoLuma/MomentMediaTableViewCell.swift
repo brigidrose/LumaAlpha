@@ -11,7 +11,7 @@ import UIKit
 class MomentMediaTableViewCell: UITableViewCell {
 
     var momentMediaSheet:UIView!
-    var mediaPreviewImageView:UIImageView!
+    var mediaPreviewImageView:PFImageView!
     var mediaCaptionTextView:UITextView!
     let keyboardAccessoryView = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
     var doneButton = UIBarButtonItem()
@@ -34,7 +34,7 @@ class MomentMediaTableViewCell: UITableViewCell {
         self.momentMediaSheet.clipsToBounds = true
         self.contentView.addSubview(self.momentMediaSheet)
         
-        self.mediaPreviewImageView = UIImageView(frame: CGRectZero)
+        self.mediaPreviewImageView = PFImageView(frame: CGRectZero)
         self.mediaPreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         self.mediaPreviewImageView.userInteractionEnabled = true
         self.mediaPreviewImageView.contentMode = UIViewContentMode.ScaleAspectFit

@@ -6,12 +6,14 @@ target 'ProtoLuma' do
 pod 'Parse'
 pod 'Metawear-iOSAPI'
 pod 'ParseFacebookUtils'
+pod 'ParseUI'
 pod 'DateTools'
 pod 'TPKeyboardAvoiding'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 pod 'CTAssetsPickerController',  '~> 3.0.0'
 pod 'JVFloatLabeledTextField'
+pod 'RACollectionViewReorderableTripletLayout'
 end
 
 target 'ProtoLumaTests' do

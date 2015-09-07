@@ -30,9 +30,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.leftBarButtonItem = doneButton
         
         self.navigationItem.title = "Settings"
-//        let tableViewController = UITableViewController()
-//        tableViewController.tableView = self.accountTableView
-//        self.addChildViewController(tableViewController)
+        let tableViewController = UITableViewController()
+        tableViewController.tableView = self.accountTableView
+        self.addChildViewController(tableViewController)
         self.accountTableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
         self.accountTableView.estimatedRowHeight = 50
         self.accountTableView.rowHeight = UITableViewAutomaticDimension
@@ -44,7 +44,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.accountTableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "CharmWithSubtitleTableViewCell")
         self.accountTableView.backgroundColor = UIColor(white: 0.1, alpha: 1)
         self.accountTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.view.addSubview(self.accountTableView)
+        self.view = self.accountTableView
 
         self.retrieveSavedMetaWear()
         
@@ -99,7 +99,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let addCharmCell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                 addCharmCell.promptLabel.text = "Received a new Charm?"
                 addCharmCell.button.setTitle("Add Charm", forState: UIControlState.Normal)
-                addCharmCell.button.addTarget(self, action: "addCharmButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+                addCharmCell.button.userInteractionEnabled = false
+//                addCharmCell.button.addTarget(self, action: "addCharmButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
                 return addCharmCell
             }
             else{
@@ -124,14 +125,16 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let logoutCell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                 logoutCell.promptLabel.text = "Need some time off?"
                 logoutCell.button.setTitle("Logout", forState: UIControlState.Normal)
-                logoutCell.button.addTarget(self, action: "logoutButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+                logoutCell.button.userInteractionEnabled = false
+//                logoutCell.button.addTarget(self, action: "logoutButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
                 return logoutCell
 
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                 cell.promptLabel.text = "Want a fresh start? Reset and erase all content."
                 cell.button.setTitle("Reset All Charms", forState: UIControlState.Normal)
-                cell.button.addTarget(self, action: "resetButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.button.userInteractionEnabled = false
+//                cell.button.addTarget(self, action: "resetButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
                 return cell
 
             default:
@@ -210,6 +213,16 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
 //            })
         default:break
         }
+        
+        if (indexPath == NSIndexPath(forRow: tableView.numberOfRowsInSection(2) - 1, inSection: 2)){
+            self.performSegueWithIdentifier("showAddCharm", sender: self)
+        }
+        else if (indexPath == NSIndexPath(forRow: 0, inSection: 3)){
+            self.performSegueWithIdentifier("loggedOut", sender: self)
+        }
+        else if (indexPath == NSIndexPath(forRow: 1, inSection: 3)){
+            print("reset charms button tapped")
+        }
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -229,7 +242,10 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 device.forgetDevice()
             }
             PFUser.logOut()
-            self.performSegueWithIdentifier("loggedOut", sender: self)
+            PFInstallation.currentInstallation()["currentUser"] = nil
+            PFInstallation.currentInstallation().saveInBackgroundWithBlock({(success, error) -> Void in
+                self.performSegueWithIdentifier("loggedOut", sender: self)
+            })
         })
     }
     

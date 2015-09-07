@@ -45,7 +45,7 @@ class ProfileBlurbTableViewCell: UITableViewCell {
         let verticalConstraint = NSLayoutConstraint(item: self.profileImageView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.contentView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
         self.contentView.addConstraint(verticalConstraint)
         
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-104-[profileImageView(100)]-18-[nameLabel]-30-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-40-[profileImageView(100)]-18-[nameLabel]-30-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(verticalConstraints)
         
         let imageViewHConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|->=0-[profileImageView(100)]->=0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)

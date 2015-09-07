@@ -10,7 +10,7 @@ import UIKit
 
 class CharmsGalleryCollectionViewCell: UICollectionViewCell {
 
-    var charmThumbnailImageView:UIImageView!
+    var charmThumbnailImageView:PFImageView!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -23,7 +23,7 @@ class CharmsGalleryCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = frame.size.width/2
         self.clipsToBounds = true
         
-        self.charmThumbnailImageView = UIImageView(frame: CGRectZero)
+        self.charmThumbnailImageView = PFImageView(frame: CGRectZero)
         self.charmThumbnailImageView.translatesAutoresizingMaskIntoConstraints = false
         self.charmThumbnailImageView.image = UIImage(named: "CharmThumbnail")
         self.charmThumbnailImageView.contentMode = UIViewContentMode.ScaleAspectFill

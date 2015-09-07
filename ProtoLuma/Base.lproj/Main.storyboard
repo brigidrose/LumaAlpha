@@ -124,7 +124,7 @@
                         <segue destination="Zuw-ZQ-xEi" kind="presentation" identifier="showNewMoment" id="MLz-NT-2Yf"/>
                         <segue destination="3rt-jV-9id" kind="presentation" identifier="showAccount" id="che-mF-G8g"/>
                         <segue destination="mkt-53-6MV" kind="presentation" identifier="showLogin" id="J2m-Nf-nZC"/>
-                        <segue destination="R81-np-RcF" kind="presentation" identifier="showLoggedInWithoutBracelet" id="gx3-k8-NWx"/>
+                        <segue destination="Qns-7h-Ftg" kind="presentation" identifier="showLoggedInWithoutBracelet" id="NXJ-9h-4kM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T5H-pC-m46" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -280,7 +280,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="vWd-DU-Abb"/>
-        <segue reference="gx3-k8-NWx"/>
+        <segue reference="NXJ-9h-4kM"/>
         <segue reference="J2m-Nf-nZC"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.70980392156862748" green="0.64313725490196083" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>

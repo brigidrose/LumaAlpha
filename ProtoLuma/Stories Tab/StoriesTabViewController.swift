@@ -22,7 +22,9 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     var charms:[PFObject] = []
     var indexOfCharmViewed:Int!
     var stories:[PFObject] = []
+    var storiesStoryUnits:[[PFObject]] = []
     var lockedStories:[PFObject] = []
+    var lockedStoriesStoryUnits:[[PFObject]] = []
     var indexPathOfStoryViewed:NSIndexPath!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +84,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.charmsGalleryCollectionViewController.collectionView!.alwaysBounceHorizontal = true
         self.charmsGalleryCollectionViewController.collectionView!.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "CharmsGalleryCollectionViewCell")
         self.charmsGalleryCollectionViewController.collectionView!.directionalLockEnabled = true
-        self.charmsGalleryCollectionViewController.collectionView!.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+        self.charmsGalleryCollectionViewController.collectionView!.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         self.charmsGalleryCollectionViewController.collectionView!.showsHorizontalScrollIndicator = false
         self.view.addSubview(self.charmsGalleryCollectionViewController.collectionView!)
         
@@ -112,7 +114,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
-        print("layoutUIPostBraceletPairingANCS")
+//        print("layoutUIPostBraceletPairingANCS")
     }
     
     
@@ -120,27 +122,76 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: Collection View delegate methods
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.charms.count
+        if (collectionView == self.charmsGalleryCollectionViewController.collectionView){
+            return self.charms.count
+        }
+        else{
+            let indexPathOfCollectionView = self.indexPathForCellContainingView(collectionView, inTableView: self.storiesTableViewController.tableView)
+//            print(indexPathOfCollectionView)
+            
+            if (indexPathOfCollectionView?.section == 0){
+                if (self.lockedStoriesStoryUnits[(indexPathOfCollectionView?.row)!].count != 0){
+                    return self.lockedStoriesStoryUnits[(indexPathOfCollectionView?.row)!].count
+                }
+            }
+            else if (indexPathOfCollectionView?.section == 2){
+                if (self.storiesStoryUnits[(indexPathOfCollectionView?.row)!].count != 0){
+                    return self.storiesStoryUnits[(indexPathOfCollectionView?.row)!].count
+                }
+            }
+            else{
+                return 0
+            }
+            return 0
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CharmsGalleryCollectionViewCell", forIndexPath: indexPath) as! CharmsGalleryCollectionViewCell
-        if (self.indexOfCharmViewed != nil){
-            if (indexPath.row == self.indexOfCharmViewed){
-                cell.contentView.alpha = 1
-                cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+        if (collectionView == self.charmsGalleryCollectionViewController.collectionView){
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CharmsGalleryCollectionViewCell", forIndexPath: indexPath) as! CharmsGalleryCollectionViewCell
+            if (self.indexOfCharmViewed != nil){
+                if (indexPath.row == self.indexOfCharmViewed){
+                    cell.contentView.alpha = 1
+                    cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+                }
+                else{
+                    cell.contentView.alpha = 0.5
+                    cell.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 0.1)
+                }
             }
-            else{
-                cell.contentView.alpha = 0.5
-                cell.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
-            }
+            return cell
         }
-        return cell
+        else{
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagePreviewCollectionViewCell", forIndexPath: indexPath) as! ImagePreviewCollectionViewCell
+            let indexPathOfCollectionView = self.indexPathForCellContainingView(collectionView, inTableView: self.storiesTableViewController.tableView)
+            var storyUnits:[PFObject]!
+            if (indexPathOfCollectionView?.section == 0){
+                storyUnits = self.lockedStoriesStoryUnits[(indexPathOfCollectionView?.row)!]
+            }
+            else if (indexPathOfCollectionView?.section == 2){
+                storyUnits = self.storiesStoryUnits[(indexPathOfCollectionView?.row)!]
+            }
+            if (storyUnits != nil){
+                if (indexPath.item < storyUnits.count){
+                    cell.imagePreviewImageView.file = storyUnits[indexPath.row]["file"] as? PFFile
+                    cell.imagePreviewImageView.loadInBackground()
+                }
+            }
+            return cell
+        }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if (collectionView == self.charmsGalleryCollectionViewController.collectionView){
+            self.indexOfCharmViewed = indexPath.row
+            self.loadStoriesForCharmViewed()
+        }
+        else{
+        
+        }
     }
+
+    
     
     
     // MARK: Table View delegate methods
@@ -169,6 +220,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
             let cell = tableView.dequeueReusableCellWithIdentifier("StoriesTableViewCell") as! StoriesTableViewCell
             cell.storyTitleLabel.text = self.lockedStories[indexPath.row]["title"] as? String
             cell.storySummaryLabel.text = self.lockedStories[indexPath.row]["description"] as? String
+//            cell.storyUnits = self.lockedStoriesStoryUnits[indexPath.row]
+//            print(self.lockedStoriesStoryUnits[indexPath.row])
+            cell.storyImagePreviewCollectionView.delegate = self
+            cell.storyImagePreviewCollectionView.dataSource = self
+            cell.storyImagePreviewCollectionView.reloadData()
             return cell
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmTitleBlurbHeaderTableViewCell") as! CharmTitleBlurbHeaderTableViewCell
@@ -195,18 +251,26 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
             let cell = tableView.dequeueReusableCellWithIdentifier("StoriesTableViewCell") as! StoriesTableViewCell
             cell.storyTitleLabel.text = self.stories[indexPath.row]["title"] as? String
             cell.storySummaryLabel.text = self.stories[indexPath.row]["description"] as? String
+//            cell.storyUnits = self.storiesStoryUnits[indexPath.row]
+            cell.storyImagePreviewCollectionView.delegate = self
+            cell.storyImagePreviewCollectionView.dataSource = self
+            cell.storyImagePreviewCollectionView.reloadData()
+//            print(self.storiesStoryUnits[indexPath.row])
             return cell
         default: return UITableViewCell()
         }
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 3
+    }
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (indexPath.section != 1){
             self.indexPathOfStoryViewed = indexPath
             self.performSegueWithIdentifier("showStoryDetail", sender: self)
         }
     }
-    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showAccount"){
@@ -228,10 +292,6 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.indexOfCharmViewed = indexPath.row
-        self.loadStoriesForCharmViewed()
-    }
     
     
     
@@ -259,7 +319,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         queryForCharms.includeKey("gifter")
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             self.charms = objects as! [PFObject]
-            print("charms loaded")
+//            print("charms loaded")
             self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
             if (self.charms.count > 0){
                 self.newStoryButton.enabled = true
@@ -272,6 +332,39 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         
     }
     
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        var story:PFObject!
+//        print("lockedStories count is \(self.lockedStories.count)")
+//        print("stories count is \(self.stories.count)")
+//        print("indexPath row is \(indexPath.row) and section is \(indexPath.section)")
+        if (indexPath.section == 0 && self.lockedStories.count != 0 && (self.lockedStoriesStoryUnits[indexPath.row]).count == 0){
+            story = self.lockedStories[indexPath.row]
+        }
+        else if(indexPath.section == 2 && self.stories.count != 0 && (self.storiesStoryUnits[indexPath.row]).count == 0){
+            story = self.stories[indexPath.row]
+        }
+
+        
+
+        if (story != nil){
+            // fetch and provide cell with storyUnit array
+//            print("story is not nil")
+            let relation = story.relationForKey("storyUnits")
+            let queryForStoryUnits = relation.query()
+            queryForStoryUnits?.limit = 3
+            queryForStoryUnits?.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+//                print(objects as! [PFObject])
+                if (story["unlocked"] as! Bool){
+                    self.storiesStoryUnits[indexPath.row] = objects as! [PFObject]
+                }
+                else{
+                    self.lockedStoriesStoryUnits[indexPath.row] = objects as! [PFObject]
+                }
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            })
+        }
+    }
+    
     func loadStoriesForCharmViewed(){
         self.storiesTableViewController.refreshControl?.beginRefreshing()
         let queryForStoriesForCharmViewed = PFQuery(className: "Story")
@@ -280,16 +373,46 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         queryForStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if (error == nil){
                 self.stories = objects as! [PFObject]
+                self.storiesStoryUnits = Array(count: self.stories.count, repeatedValue: [])
                 let queryForLockedStoriesForCharmViewed = PFQuery(className: "Story")
                 queryForLockedStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charms[self.indexOfCharmViewed])
                 queryForLockedStoriesForCharmViewed.whereKey("unlocked", equalTo: false)
                 queryForLockedStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
                     self.lockedStories = objects as! [PFObject]
+                    self.lockedStoriesStoryUnits = Array(count: self.lockedStories.count, repeatedValue: [])
                     self.storiesTableViewController.refreshControl?.endRefreshing()
-                    self.storiesTableViewController.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.None)
+                    self.storiesTableViewController.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Fade)
                     self.storiesTableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
-                    print(self.indexOfCharmViewed)
                     self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 1)))
+                    // load lockedStoriesStoryUnits
+                    var lockedStoriesStoryUnitsFoundCount = 0
+                    for lockedStory in self.lockedStories{
+                        let lockedStoryRelation = lockedStory.relationForKey("storyUnits")
+                        let queryForLockedStoryStoryUnits:PFQuery = lockedStoryRelation.query()!
+                        queryForLockedStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+                            self.lockedStoriesStoryUnits[self.lockedStories.indexOf(lockedStory)!] = objects as! [PFObject]
+                            lockedStoriesStoryUnitsFoundCount++
+                            if (lockedStoriesStoryUnitsFoundCount == self.lockedStories.count){
+                                // load storiesStoryUnits
+                                var storiesStoryUnitsFoundCount = 0
+                                for story in self.stories{
+                                    let storyRelation = story.relationForKey("storyUnits")
+                                    let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
+                                    queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+                                        self.storiesStoryUnits[self.stories.indexOf(story)!] = objects as! [PFObject]
+                                        storiesStoryUnitsFoundCount++
+                                        if (storiesStoryUnitsFoundCount == self.stories.count){
+                                            // load storiesStoryUnits
+//                                            self.storiesTableViewController.refreshControl?.endRefreshing()
+                                            self.storiesTableViewController.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Fade)
+                                            self.storiesTableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                                            self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 1)))
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
                 })
             }
             else{
@@ -299,5 +422,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         
     }
 
+    func indexPathForCellContainingView(view: UIView, inTableView tableView:UITableView) -> NSIndexPath? {
+        let viewCenterRelativeToTableview = tableView.convertPoint(CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds)), fromView:view)
+        return tableView.indexPathForRowAtPoint(viewCenterRelativeToTableview)
+    }
+
+    
     
 }

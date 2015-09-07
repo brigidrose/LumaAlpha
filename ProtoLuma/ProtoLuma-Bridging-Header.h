@@ -24,4 +24,6 @@
 #import "JVFloatLabeledTextField.h"
 #import "JVFloatLabeledTextView.h"
 #import <CTAssetsPickerController/CTAssetsPickerController.h>
+#import "RACollectionViewTripletLayout.h"
+#import "ParseUI.h"
 #endif /* ProtoLuma_Bridging_Header_h */

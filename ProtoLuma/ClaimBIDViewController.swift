@@ -14,6 +14,7 @@ class ClaimBIDViewController: UIViewController {
     var enterBIDTextField:UITextField!
     var submitButton:UIButton!
     var bracelet:PFObject!
+    var braceletSerialNumber:String!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,8 +50,9 @@ class ClaimBIDViewController: UIViewController {
         let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|->=60-[instructionLabel(30)]-12-[BIDTextField(50)]-30-[submitButton(40)]->=0-|", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: nil, views: viewsDictionary)
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
-        
         self.enterBIDTextField.becomeFirstResponder()
+
+        print(PFUser.currentUser()?["bracelet"])
         // Do any additional setup after loading the view.
     }
 
@@ -60,6 +62,19 @@ class ClaimBIDViewController: UIViewController {
     }
     
     func submitButtonTapped(sender: UIButton) {
+        
+        if (PFUser.currentUser()?["bracelet"] == nil){
+            
+        }
+        else{
+            print("helo")
+            PFUser.currentUser()?["bracelet"]?.fetchIfNeededInBackgroundWithBlock({(result, error) -> Void in
+                print(result)
+                self.braceletSerialNumber = result!.objectForKey("serialNumber") as! String
+                self.performSegueWithIdentifier("showPairBracelet", sender: self)
+            })
+        }
+
         
         // Get BID from user input
         let BID = self.enterBIDTextField.text
@@ -104,6 +119,7 @@ class ClaimBIDViewController: UIViewController {
                             self.bracelet.saveEventually({(success, error) -> Void in
                                 if (!success){
                                     print(error)
+                                    self.braceletSerialNumber = BID
                                 }
                                 else{
                                     print("BID claimed on Parse")
@@ -134,7 +150,7 @@ class ClaimBIDViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showPairBracelet"){
             let destinationVC = segue.destinationViewController as! PairBraceletViewController
-            destinationVC.braceletSerialNumber = self.bracelet["serialNumber"] as! String
+            destinationVC.braceletSerialNumber = self.braceletSerialNumber
         }
     }
 

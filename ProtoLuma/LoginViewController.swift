@@ -76,6 +76,10 @@ class LoginViewController: UIViewController {
                     print("User signed up and logged in through Facebook!")
                 } else {
                     print("User logged in through Facebook!")
+                    PFInstallation.currentInstallation()["currentUser"] = PFUser.currentUser()
+                    PFInstallation.currentInstallation().saveInBackgroundWithBlock({(success, error) -> Void in
+                        print("current user saved to current installation")
+                    })
                     // Check if logged-in user owns a bracelet
                     if (PFUser.currentUser()?["bracelet"] == nil){
                         // User doesn't own a bracelet, show BID registration
