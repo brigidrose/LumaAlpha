@@ -10,10 +10,12 @@ import UIKit
 
 class StoryDetailViewController: UIViewController {
 
+    var story:PFObject!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.navigationItem.title = "Story"
+        self.navigationItem.title = self.story["title"] as? String
     }
 
     override func didReceiveMemoryWarning() {

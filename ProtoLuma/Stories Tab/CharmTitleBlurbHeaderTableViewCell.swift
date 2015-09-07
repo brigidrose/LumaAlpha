@@ -43,7 +43,7 @@ class CharmTitleBlurbHeaderTableViewCell: UITableViewCell {
         
         let viewsDictionary = ["charmTitleLabel":self.charmTitleLabel, "charmBlurbLabel":self.charmBlurbLabel]
         let horizontalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[charmTitleLabel]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-28-[charmTitleLabel]-2-[charmBlurbLabel]-20-|", options: [NSLayoutFormatOptions.AlignAllRight, NSLayoutFormatOptions.AlignAllLeft], metrics: nil, views: viewsDictionary)
+        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[charmTitleLabel]-2-[charmBlurbLabel]-20-|", options: [NSLayoutFormatOptions.AlignAllRight, NSLayoutFormatOptions.AlignAllLeft], metrics: nil, views: viewsDictionary)
         
         self.contentView.addConstraints(horizontalConstraints)
         self.contentView.addConstraints(verticalConstraints)

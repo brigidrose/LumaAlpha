@@ -10,7 +10,7 @@
 
 import UIKit
 
-class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
 
     var accountTableView:UITableView!
     var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -30,9 +30,10 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.leftBarButtonItem = doneButton
         
         self.navigationItem.title = "Settings"
-        
-        self.accountTableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
-        self.accountTableView.translatesAutoresizingMaskIntoConstraints = false
+//        let tableViewController = UITableViewController()
+//        tableViewController.tableView = self.accountTableView
+//        self.addChildViewController(tableViewController)
+        self.accountTableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
         self.accountTableView.estimatedRowHeight = 50
         self.accountTableView.rowHeight = UITableViewAutomaticDimension
         self.accountTableView.delegate = self
@@ -41,18 +42,10 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.accountTableView.registerClass(ButtonWithPromptTableViewCell.self, forCellReuseIdentifier:
             "ButtonWithPromptTableViewCell")
         self.accountTableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "CharmWithSubtitleTableViewCell")
-        self.accountTableView.contentInset.top = 64
         self.accountTableView.backgroundColor = UIColor(white: 0.1, alpha: 1)
         self.accountTableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.view.addSubview(self.accountTableView)
 
-        
-        let viewsDictionary = ["accountTableView":self.accountTableView]
-        let horizontalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[accountTableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|[accountTableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        self.view.addConstraints(horizontalConstraints)
-        self.view.addConstraints(verticalConstraints)
-        
         self.retrieveSavedMetaWear()
         
     }
@@ -103,32 +96,44 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
 //                cell.textLabel?.textColor = UIColor.whiteColor()
 //                cell.detailTextLabel?.textColor = UIColor(white: 1, alpha: 0.8)
 //                cell.selectionStyle = UITableViewCellSelectionStyle.None
-                let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
-                cell.promptLabel.text = "Received a new Charm?"
-                cell.button.setTitle("Add Charm", forState: UIControlState.Normal)
-                cell.button.addTarget(self, action: "addCharmButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-                return cell
+                let addCharmCell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
+                addCharmCell.promptLabel.text = "Received a new Charm?"
+                addCharmCell.button.setTitle("Add Charm", forState: UIControlState.Normal)
+                addCharmCell.button.addTarget(self, action: "addCharmButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+                return addCharmCell
             }
             else{
                 let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-                cell.charmTitle.text = self.charms[indexPath.row]["name"] as? String
-                cell.charmSubtitle.text = "connection state"
+                let charm = self.charms[indexPath.row]
+                cell.charmTitle.text = charm["name"] as? String
+                let charmOwner = charm["owner"] as! PFUser
+                let charmOwnerFirstName = charmOwner["firstName"] as? String
+                let charmOwnerLastName = charmOwner["lastName"] as? String
+                if (charmOwner != PFUser.currentUser()!){
+                    cell.charmSubtitle.text = "Gifted to \(charmOwnerFirstName!) \(charmOwnerLastName!)"
+                }
+                else{
+                    cell.charmSubtitle.text = "connection state"
+                }
                 return cell
             }
         case 3:
             switch indexPath.row{
             // Account Options
             case 0:
-                let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
-                cell.promptLabel.text = "Need some time off?"
-                cell.button.setTitle("Logout", forState: UIControlState.Normal)
-                cell.button.addTarget(self, action: "logoutButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-                return cell
+                let logoutCell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
+                logoutCell.promptLabel.text = "Need some time off?"
+                logoutCell.button.setTitle("Logout", forState: UIControlState.Normal)
+                logoutCell.button.addTarget(self, action: "logoutButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+                return logoutCell
+
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                 cell.promptLabel.text = "Want a fresh start? Reset and erase all content."
                 cell.button.setTitle("Reset All Charms", forState: UIControlState.Normal)
+                cell.button.addTarget(self, action: "resetButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
                 return cell
+
             default:
                 return UITableViewCell()
             }
@@ -156,15 +161,15 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch section{
         case 1:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "Bracelet"
+            headerView.sectionTitle.text = "My Bracelet"
             return headerView
         case 2:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "Charms"
+            headerView.sectionTitle.text = "My Charms"
             return headerView
         case 3:
             let headerView = CharmsTableViewHeader()
-            headerView.sectionTitle.text = "Account"
+            headerView.sectionTitle.text = "My Account"
             return headerView
         default:
             return nil
@@ -231,6 +236,10 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     func addCharmButtonTapped(sender:UIButton){
         print("add charm button tapped")
         self.performSegueWithIdentifier("showAddCharm", sender: self)
+    }
+    
+    func resetButtonTapped(sender:UIButton){
+        print("reset charms button tapped")
     }
     
     func loadCharms(){

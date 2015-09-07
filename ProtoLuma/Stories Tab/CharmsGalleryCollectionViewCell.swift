@@ -18,8 +18,8 @@ class CharmsGalleryCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+
+        self.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
         self.layer.cornerRadius = frame.size.width/2
         self.clipsToBounds = true
         
@@ -27,6 +27,7 @@ class CharmsGalleryCollectionViewCell: UICollectionViewCell {
         self.charmThumbnailImageView.translatesAutoresizingMaskIntoConstraints = false
         self.charmThumbnailImageView.image = UIImage(named: "CharmThumbnail")
         self.charmThumbnailImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        self.contentView.alpha = 0.5
         
         self.contentView.addSubview(self.charmThumbnailImageView)
 

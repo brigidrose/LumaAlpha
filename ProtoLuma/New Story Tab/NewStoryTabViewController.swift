@@ -79,12 +79,18 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         story["description"] = self.momentDescription
         story["sender"] = PFUser.currentUser()
         story["forCharm"] = self.forCharm
-        story["unlockType"] = self.unlockParameterType
-        if (self.unlockParameterType == "time"){
-            story["unlockTime"] = self.unlockTime
+        if (self.unlockParameterType != nil){
+            story["unlockType"] = self.unlockParameterType
+            if (self.unlockParameterType == "time"){
+                story["unlockTime"] = self.unlockTime
+            }
+            else{
+                story["unlockLocation"] = self.unlockLocation
+            }
+            story["unlocked"] = false
         }
         else{
-            story["unlockLocation"] = self.unlockLocation
+            story["unlocked"] = true
         }
         story["readStatus"] = false
         let manager = PHImageManager.defaultManager()
@@ -92,9 +98,16 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         var savedCount = 0
         for mediaAsset in self.mediaAssets{
             print(mediaAsset)
-            manager.requestImageDataForAsset(mediaAsset, options: nil, resultHandler:{(data:NSData?,dataUTI:String?,orientation:UIImageOrientation, info:[NSObject:AnyObject]? ) -> Void in
+            let options = PHImageRequestOptions()
+            options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+            options.synchronous = false
+            options.networkAccessAllowed = true
+            options.progressHandler = {(progress, error, stop, info) -> Void in
+                print(progress)
+            }
+            manager.requestImageForAsset(mediaAsset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
                 let storyUnit = PFObject(className: "Story_Unit")
-                storyUnit["file"] = PFFile(data: data!)
+                storyUnit["file"] = PFFile(data: UIImagePNGRepresentation(image!)!)
                 storyUnit["description"] = self.mediaDescriptions[self.mediaAssets.indexOf(mediaAsset)!]
                 storyUnit.saveInBackgroundWithBlock({(success, error) -> Void in
                     if (error == nil){
@@ -104,12 +117,14 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                         if (savedCount == self.mediaAssets.count){
                             story.saveInBackgroundWithBlock({(success, error) -> Void in
                                 if (error == nil){
+                                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
                                     self.dismissViewControllerAnimated(true, completion: nil)
                                 }
                                 else{
                                     print(error)
                                 }
-
+                                
                             })
                         }
                     }
@@ -163,12 +178,20 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         if (self.forCharm == nil){
             let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
             let charm = self.charms[indexPath.row]
+            let charmOwner = charm["owner"] as! PFUser
+            let charmOwnerFirstName = charmOwner["firstName"] as! String
+            let charmOwnerLastName = charmOwner["lastName"] as! String
             let charmGifter = charm["gifter"] as! PFUser
-            let gifterFirstName = charmGifter["firstName"] as! String
-            let gifterLastName = charmGifter["lastName"] as! String
+            let charmGifterFirstName = charmGifter["firstName"] as! String
+            let charmGifterLastName = charmGifter["lastName"] as! String
+            if (charmOwner == PFUser.currentUser()!){
+                cell.charmSubtitle.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName)."
+            }
+            else{
+                cell.charmSubtitle.text = "Gifted to \(charmOwnerFirstName) \(charmOwnerLastName)."
+            }
             cell.charmTitle.text = charm["name"] as? String
             cell.charmTitle.textColor = UIColor.blackColor()
-            cell.charmSubtitle.text = "\(gifterFirstName) \(gifterLastName)"
             cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
             cell.backgroundColor = UIColor.whiteColor()
             cell.accessoryType = UITableViewCellAccessoryType.None
@@ -321,10 +344,16 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     }
 
                     let asset = self.mediaAssets[indexPath.row]
-                    
-                    cell.tag = Int(manager.requestImageForAsset(asset, targetSize: CGSizeMake(800, 800), contentMode: PHImageContentMode.AspectFill, options: nil) { (result, _) in
+                    let options = PHImageRequestOptions()
+                    options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+                    options.synchronous = false
+                    options.networkAccessAllowed = true
+                    options.progressHandler = {(progress, error, stop, info) -> Void in
+                        print(progress)
+                    }
+                    manager.requestImageForAsset(asset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
                         // this result handler is called on the main thread for asynchronous requests
-                            cell.mediaPreviewImageView?.image = result
+                            cell.mediaPreviewImageView?.image = image
 //                        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
                         })
                     return cell
