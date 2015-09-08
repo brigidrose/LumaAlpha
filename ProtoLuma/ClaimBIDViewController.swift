@@ -150,7 +150,7 @@ class ClaimBIDViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showPairBracelet"){
             let destinationVC = segue.destinationViewController as! PairBraceletViewController
-            destinationVC.braceletSerialNumber = self.braceletSerialNumber
+            destinationVC.braceletSerialNumber = self.bracelet["serialNumber"] as? String
         }
     }
 

@@ -229,23 +229,24 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmTitleBlurbHeaderTableViewCell") as! CharmTitleBlurbHeaderTableViewCell
             let charm = self.charms[self.indexOfCharmViewed]
-            let charmOwner = charm["owner"] as! PFUser
-            let charmOwnerFirstName = charmOwner["firstName"] as! String
-            let charmOwnerLastName = charmOwner["lastName"] as! String
-            let charmGifter = charm["gifter"] as! PFUser
-            let charmGifterFirstName = charmGifter["firstName"] as! String
-            let charmGifterLastName = charmGifter["lastName"] as! String
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "MM/dd/yyyy"
-            let updatedString = "\(dateFormatter.stringFromDate(charm.updatedAt!))"
-            cell.charmTitleLabel.text = charm["name"] as? String
-            if (charmOwner == PFUser.currentUser()!){
-                cell.charmBlurbLabel.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName.characters.first!). on \(updatedString)"
+            let charmOwner = charm["owner"] as? PFUser
+            if (charmOwner != nil){
+                let charmOwnerFirstName = charmOwner?["firstName"] as! String
+                let charmOwnerLastName = charmOwner?["lastName"] as! String
+                let charmGifter = charm["gifter"] as! PFUser
+                let charmGifterFirstName = charmGifter["firstName"] as! String
+                let charmGifterLastName = charmGifter["lastName"] as! String
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "MM/dd/yyyy"
+                let updatedString = "\(dateFormatter.stringFromDate(charm.updatedAt!))"
+                cell.charmTitleLabel.text = charm["name"] as? String
+                if (charmOwner == PFUser.currentUser()!){
+                    cell.charmBlurbLabel.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName.characters.first!). on \(updatedString)"
+                }
+                else{
+                    cell.charmBlurbLabel.text = "Gifted to \(charmOwnerFirstName) \(charmOwnerLastName.characters.first!). on \(updatedString)"
+                }
             }
-            else{
-                cell.charmBlurbLabel.text = "Gifted to \(charmOwnerFirstName) \(charmOwnerLastName.characters.first!). on \(updatedString)"
-            }
-
             return cell
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("StoriesTableViewCell") as! StoriesTableViewCell

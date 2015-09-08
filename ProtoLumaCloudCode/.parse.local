@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "ProtoLuma": {
+      "applicationId": "xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d"
+    },
+    "_default": {
+      "link": "ProtoLuma"
+    }
+  }
+}

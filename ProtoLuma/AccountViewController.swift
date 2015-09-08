@@ -107,14 +107,16 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
                 let charm = self.charms[indexPath.row]
                 cell.charmTitle.text = charm["name"] as? String
-                let charmOwner = charm["owner"] as! PFUser
-                let charmOwnerFirstName = charmOwner["firstName"] as? String
-                let charmOwnerLastName = charmOwner["lastName"] as? String
-                if (charmOwner != PFUser.currentUser()!){
-                    cell.charmSubtitle.text = "Gifted to \(charmOwnerFirstName!) \(charmOwnerLastName!)"
-                }
-                else{
-                    cell.charmSubtitle.text = "connection state"
+                let charmOwner = charm["owner"] as? PFUser
+                if (charmOwner != nil){
+                    let charmOwnerFirstName = charmOwner?["firstName"] as? String
+                    let charmOwnerLastName = charmOwner?["lastName"] as? String
+                    if (charmOwner != PFUser.currentUser()!){
+                        cell.charmSubtitle.text = "Gifted to \(charmOwnerFirstName!) \(charmOwnerLastName!)"
+                    }
+                    else{
+                        cell.charmSubtitle.text = "connection state"
+                    }
                 }
                 return cell
             }
@@ -230,8 +232,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func doneButtonTapped(sender:UIBarButtonItem){
-        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).charms = self.charms
-        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
+        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadCharms()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
