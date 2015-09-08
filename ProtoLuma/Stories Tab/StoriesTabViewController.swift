@@ -266,7 +266,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.section != 1){
+        if (indexPath.section != 1 && indexPath.section != 0){
             self.indexPathOfStoryViewed = indexPath
             self.performSegueWithIdentifier("showStoryDetail", sender: self)
         }

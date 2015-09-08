@@ -82,7 +82,7 @@ class StoriesTableViewCell: UITableViewCell {
         let cardContainerHorizontalConstraintsStoryTitle = NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[storyTitleLabel]-12-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: cardContainerViewViewsDictionary)
         self.cardContainer.addConstraints(cardContainerHorizontalConstraintsStoryTitle)
         
-        let cardContainerVerticalConstraintsStoryHeroImage = NSLayoutConstraint.constraintsWithVisualFormat("V:|[storyImagePreviewCollectionView(220)]-10-[storyTitleLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: cardContainerViewViewsDictionary)
+        let cardContainerVerticalConstraintsStoryHeroImage = NSLayoutConstraint.constraintsWithVisualFormat("V:|[storyImagePreviewCollectionView(250)]-10-[storyTitleLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: cardContainerViewViewsDictionary)
         self.cardContainer.addConstraints(cardContainerVerticalConstraintsStoryHeroImage)
         
         let cardContainerVerticalConstraintsStoryTitleSummary = NSLayoutConstraint.constraintsWithVisualFormat("V:[storyTitleLabel]-4-[storySummaryLabel]-14-|", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: nil, views: cardContainerViewViewsDictionary)
