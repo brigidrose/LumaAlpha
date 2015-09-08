@@ -272,8 +272,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                             cell.detailTextLabel?.text = "Press & Hold on Map to Set"
                         }
                         else{
-                            cell.textLabel?.text = "Unlocks in"
-                            if (self.unlockLocationPlacemark == nil){
+                            cell.textLabel?.text = "Unlocks near"
+                            if (self.unlockLocationPlacemark == nil || self.unlockLocationPlacemark.locality == nil || self.unlockLocationPlacemark.administrativeArea == nil){
                                 cell.detailTextLabel?.text = "\(self.unlockLocation.latitude), \(self.unlockLocation.longitude)"
                             }
                             else{
