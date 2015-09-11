@@ -12,6 +12,7 @@ class CharmTitleBlurbHeaderTableViewCell: UITableViewCell {
 
     var charmTitleLabel:UILabel!
     var charmBlurbLabel:UILabel!
+    var sectionSeparator:UIView!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -23,6 +24,7 @@ class CharmTitleBlurbHeaderTableViewCell: UITableViewCell {
         
 //        self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.selectionStyle = UITableViewCellSelectionStyle.None
+        self.backgroundColor = nil
         
         self.charmTitleLabel = UILabel(frame: CGRectZero)
         self.charmTitleLabel.text = "Charm Title"
@@ -41,9 +43,15 @@ class CharmTitleBlurbHeaderTableViewCell: UITableViewCell {
         self.charmBlurbLabel.textColor = UIColor(white: 0.3, alpha: 1)
         self.contentView.addSubview(self.charmBlurbLabel)
         
-        let viewsDictionary = ["charmTitleLabel":self.charmTitleLabel, "charmBlurbLabel":self.charmBlurbLabel]
+        self.sectionSeparator = UIView(frame: CGRectZero)
+        self.sectionSeparator.translatesAutoresizingMaskIntoConstraints = false
+        self.sectionSeparator.backgroundColor = UIColor.blackColor()
+        self.contentView.addSubview(self.sectionSeparator)
+
+        
+        let viewsDictionary = ["charmTitleLabel":self.charmTitleLabel, "charmBlurbLabel":self.charmBlurbLabel, "sectionSeparator":self.sectionSeparator]
         let horizontalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[charmTitleLabel]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[charmTitleLabel]-2-[charmBlurbLabel]-20-|", options: [NSLayoutFormatOptions.AlignAllRight, NSLayoutFormatOptions.AlignAllLeft], metrics: nil, views: viewsDictionary)
+        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[charmTitleLabel]-2-[charmBlurbLabel]-8-[sectionSeparator(1)]-6-|", options: [NSLayoutFormatOptions.AlignAllRight, NSLayoutFormatOptions.AlignAllLeft], metrics: nil, views: viewsDictionary)
         
         self.contentView.addConstraints(horizontalConstraints)
         self.contentView.addConstraints(verticalConstraints)

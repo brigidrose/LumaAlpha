@@ -24,7 +24,7 @@ class StoryDetailViewController: UIViewController, UITableViewDelegate, UITableV
         self.storyUnitsTableViewController.tableView = self.storyUnitsTableView
         self.addChildViewController(self.storyUnitsTableViewController)
         self.storyUnitsTableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
-        self.storyUnitsTableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        self.storyUnitsTableView.backgroundColor = UIColor(white: 0.92, alpha: 1)
         self.storyUnitsTableView.delegate = self
         self.storyUnitsTableView.dataSource = self
         self.storyUnitsTableView.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -84,7 +84,7 @@ class StoryDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let queryForStoryUnits = storyUnitsRelation.query()
         queryForStoryUnits?.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             self.storyUnits = objects!
-            self.storyUnitsTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.storyUnitsTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.None)
         })
     }
 

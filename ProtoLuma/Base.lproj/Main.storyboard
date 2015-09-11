@@ -38,22 +38,8 @@
                     <view key="view" contentMode="scaleToFill" id="lRC-bi-zAX">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E6F-sM-nEV">
-                                <rect key="frame" x="230" y="256" width="141" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Login with Facebook"/>
-                                <connections>
-                                    <action selector="signupWithFB:" destination="mkt-53-6MV" eventType="touchUpInside" id="OEV-V1-tuU"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="E6F-sM-nEV" firstAttribute="centerX" secondItem="lRC-bi-zAX" secondAttribute="centerX" id="OAD-q6-2Kr"/>
-                            <constraint firstItem="E6F-sM-nEV" firstAttribute="top" secondItem="Dmd-au-vJ7" secondAttribute="bottom" constant="236" id="zsR-AJ-9cb"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mly-gm-LPa"/>
                     <connections>
@@ -291,9 +277,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="vWd-DU-Abb"/>
-        <segue reference="NXJ-9h-4kM"/>
+        <segue reference="6eT-gI-a6Y"/>
         <segue reference="O42-oJ-8jX"/>
+        <segue reference="Bod-17-CgP"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" red="0.80784313725490198" green="0.023529411764705882" blue="0.396078431372549" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
 </document>

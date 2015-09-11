@@ -45,12 +45,12 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                     self.loadCharms()
                 }
                 else{
-                    if (PFUser.currentUser()!["facebookId"] as! String != "10205231912339433"){
-                        self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
-                    }
-                    else{
+                    if (PFUser.currentUser()!["bracelet"] != nil){
                         self.layoutUIPostBraceletPairingANCS()
                         self.loadCharms()
+                    }
+                    else{
+                        self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
                     }
                 }
             })
@@ -78,19 +78,6 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         layout.sectionInset = UIEdgeInsets(top: 7, left: 16, bottom: 7, right: 16)
         layout.minimumLineSpacing = 28
         
-        self.charmsGalleryCollectionViewController = UICollectionViewController()
-        self.addChildViewController(self.charmsGalleryCollectionViewController)
-        self.charmsGalleryCollectionViewController.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
-        self.charmsGalleryCollectionViewController.collectionView!.translatesAutoresizingMaskIntoConstraints = false
-        self.charmsGalleryCollectionViewController.collectionView!.delegate = self
-        self.charmsGalleryCollectionViewController.collectionView!.dataSource = self
-        self.charmsGalleryCollectionViewController.collectionView!.scrollsToTop = false
-        self.charmsGalleryCollectionViewController.collectionView!.alwaysBounceHorizontal = true
-        self.charmsGalleryCollectionViewController.collectionView!.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "CharmsGalleryCollectionViewCell")
-        self.charmsGalleryCollectionViewController.collectionView!.directionalLockEnabled = true
-        self.charmsGalleryCollectionViewController.collectionView!.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
-        self.charmsGalleryCollectionViewController.collectionView!.showsHorizontalScrollIndicator = false
-        self.view.addSubview(self.charmsGalleryCollectionViewController.collectionView!)
         
         self.storiesTableViewController = UITableViewController(style: UITableViewStyle.Plain)
         self.addChildViewController(self.storiesTableViewController)
@@ -98,26 +85,55 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         self.storiesTableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.storiesTableViewController.tableView.delegate = self
         self.storiesTableViewController.tableView.scrollsToTop = true
+        self.storiesTableViewController.tableView.backgroundColor = UIColor(white: 1, alpha: 1)
         self.storiesTableViewController.tableView.dataSource = self
         self.storiesTableViewController.tableView.estimatedRowHeight = 210
         self.storiesTableViewController.tableView.rowHeight = UITableViewAutomaticDimension
         self.storiesTableViewController.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.storiesTableViewController.tableView.contentInset.top = 20
+        self.storiesTableViewController.tableView.contentInset.top = 148
         self.storiesTableViewController.tableView.registerClass(StoriesTableViewCell.self, forCellReuseIdentifier: "StoriesTableViewCell")
         self.storiesTableViewController.tableView.registerClass(CharmTitleBlurbHeaderTableViewCell.self, forCellReuseIdentifier: "CharmTitleBlurbHeaderTableViewCell")
         self.view.addSubview(self.storiesTableViewController.tableView)
         
+        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light)) as UIVisualEffectView
+        visualEffectView.frame = CGRectMake(0, 64, UIScreen.mainScreen().bounds.width, 84)
+//        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(visualEffectView)
+
+        
         self.storiesTableViewController.refreshControl = UIRefreshControl()
         self.storiesTableViewController.refreshControl!.addTarget(self, action: "loadNewStoriesForCharm:", forControlEvents: UIControlEvents.ValueChanged)
+        
+        self.charmsGalleryCollectionViewController = UICollectionViewController()
+        self.addChildViewController(self.charmsGalleryCollectionViewController)
+        self.charmsGalleryCollectionViewController.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+
+        self.charmsGalleryCollectionViewController.collectionView!.translatesAutoresizingMaskIntoConstraints = false
+        self.charmsGalleryCollectionViewController.collectionView!.delegate = self
+        self.charmsGalleryCollectionViewController.collectionView!.dataSource = self
+        self.charmsGalleryCollectionViewController.collectionView!.scrollsToTop = false
+        self.charmsGalleryCollectionViewController.collectionView!.alwaysBounceHorizontal = true
+        self.charmsGalleryCollectionViewController.collectionView!.registerClass(CharmsGalleryCollectionViewCell.self, forCellWithReuseIdentifier: "CharmsGalleryCollectionViewCell")
+        self.charmsGalleryCollectionViewController.collectionView!.directionalLockEnabled = true
+        self.charmsGalleryCollectionViewController.collectionView!.backgroundColor = UIColor(white: 1, alpha: 0.7)
+        self.charmsGalleryCollectionViewController.collectionView!.showsHorizontalScrollIndicator = false
+        self.view.addSubview(self.charmsGalleryCollectionViewController.collectionView!)
+
         
         let metricsDictionary = ["zero":0]
         let viewsDictionary = ["charmsGalleryCollectionView":self.charmsGalleryCollectionViewController.collectionView!, "storiesTableView":self.storiesTableViewController.tableView]
         
+        let storiesTableViewConstraintsVertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[storiesTableView]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
+        let storiesTableViewConstraintsHorizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[storiesTableView]|", options: NSLayoutFormatOptions(rawValue: 0)  , metrics: nil, views: viewsDictionary)
+
         let horizontalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[charmsGalleryCollectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
-        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-64-[charmsGalleryCollectionView(84)][storiesTableView]|", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: metricsDictionary, views: viewsDictionary)
-        
+        let verticalConstraints:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-64-[charmsGalleryCollectionView(84)]", options: [NSLayoutFormatOptions.AlignAllLeft, NSLayoutFormatOptions.AlignAllRight], metrics: metricsDictionary, views: viewsDictionary)
+
+        self.view.addConstraints(storiesTableViewConstraintsVertical)
+        self.view.addConstraints(storiesTableViewConstraintsHorizontal)
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
+
 //        print("layoutUIPostBraceletPairingANCS")
     }
     
@@ -376,6 +392,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         let queryForStoriesForCharmViewed = PFQuery(className: "Story")
         queryForStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charms[self.indexOfCharmViewed])
         queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: true)
+        queryForStoriesForCharmViewed.orderByDescending("createdAt")
         queryForStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if (error == nil){
                 self.stories = objects!
@@ -411,7 +428,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                                             // load storiesStoryUnits
 //                                            self.storiesTableViewController.refreshControl?.endRefreshing()
 //                                            self.storiesTableViewController.tableView.reloadData()
-                                            self.storiesTableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                                            self.storiesTableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
 //                                            self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 1)))
                                         }
                                     })

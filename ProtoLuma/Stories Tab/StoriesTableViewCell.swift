@@ -37,16 +37,18 @@ class StoriesTableViewCell: UITableViewCell {
         
         self.selectionStyle = UITableViewCellSelectionStyle.None
         
+        self.backgroundColor = nil
+        
         self.cardContainer = UIView(frame: CGRectZero)
         self.cardContainer.translatesAutoresizingMaskIntoConstraints = false
         self.cardContainer.layer.borderColor = UIColor(white: 0.85, alpha: 1).CGColor
-        self.cardContainer.layer.borderWidth = 0.75
-        self.cardContainer.layer.cornerRadius = 6
+        self.cardContainer.layer.borderWidth = 1
+        self.cardContainer.backgroundColor = UIColor(white: 1, alpha: 1)
         self.cardContainer.clipsToBounds = true
         
         self.storyImagePreviewCollectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: RACollectionViewTripletLayout())
         self.storyImagePreviewCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.storyImagePreviewCollectionView.backgroundColor = UIColor(white: 0.7, alpha: 1)
+        self.storyImagePreviewCollectionView.backgroundColor = UIColor(white: 0.98, alpha: 1)
         self.storyImagePreviewCollectionView.userInteractionEnabled = false
         self.storyImagePreviewCollectionView.registerClass(ImagePreviewCollectionViewCell.self, forCellWithReuseIdentifier: "ImagePreviewCollectionViewCell")
 

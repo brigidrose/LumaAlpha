@@ -24,14 +24,24 @@ Parse.Cloud.afterSave("Story", function(request) {
 
                         var receiverNotificationText = senderName + " added a Moment to " + charmName + ".";
                         var receiverPushQuery = new Parse.Query(Parse.Installation);
-				        var receiverObject = charmObjectReal.get('owner');
-
+				        var ownerObject = charmObjectReal.get('owner');
+                        var targetUserObject;
+                        console.log(senderObject);
+                        console.log(ownerObject);
+                        if (senderObject.id === ownerObject.id){
+                            targetUserObject = charmObjectReal.get("gifter");
+                        }
+                        else{
+                            targetUserObject = ownerObject;
+                        }
                         receiverPushQuery.equalTo('deviceType', 'ios');
-                        receiverPushQuery.equalTo('currentUser', receiverObject);
+                        receiverPushQuery.equalTo('currentUser', targetUserObject);
                         Parse.Push.send({
                             where: receiverPushQuery, // Set our Installation query
                             data: {
-                                alert: receiverNotificationText
+                                alert: receiverNotificationText,
+                                sound: "",
+                                charmId: charmObjectReal.id
                             }
                         }, {
                             success: function() {

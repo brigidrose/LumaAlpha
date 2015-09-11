@@ -15,11 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     var window: UIWindow?
     var beans:NSMutableDictionary!
-    var connectedBeans:NSMutableDictionary!
-    var disconnectedBeans:NSMutableDictionary!
     var metawearManager:MBLMetaWearManager!
     var locationManager:CLLocationManager!
-//    var myCentralManager:CBCentralManager!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -41,8 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         UIStyleController.applyStyle()
         self.metawearManager = MBLMetaWearManager.sharedManager()
-//
-//        self.myCentralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionRestoreIdentifierKey:"mainCentralManagerIdentifier"])
+
         self.window?.tintColor = UIColor(red:0.95, green:0.09, blue:0.25, alpha:1)
         
         self.locationManager = CLLocationManager()
@@ -128,8 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // MARK: Handle notifications when app is in foreground
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        userInfo
-        
+        print(userInfo)
     }
     
     // MARK: - Core Data stack
@@ -160,7 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
 
-            dict[NSUnderlyingErrorKey] = error as NSError
+            dict[NSUnderlyingErrorKey] = error as? NSError
             let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -195,17 +190,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-//    func centralManagerDidUpdateState(central: CBCentralManager) {
-//        print("centralManager didUpdateState")
-//    }
-//    
-//    func centralManager(central: CBCentralManager, willRestoreState dict: [String : AnyObject]) {
-//        print("centralManager willRestoreState")
-//    }
-//    
-//    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
-//        print("centralManager didConnectPeripheral")
-//    }
+    func imageWithColor(color:UIColor) -> UIImage{
+        let rect = CGRectMake(0, 0, 1, 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+
     
 
 }

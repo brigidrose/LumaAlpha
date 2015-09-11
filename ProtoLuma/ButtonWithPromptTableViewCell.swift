@@ -42,7 +42,8 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
         self.button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Highlighted)
         self.button.titleLabel?.textColor = UIColor.whiteColor()
         self.button.titleLabel?.font = UIFont.systemFontOfSize(17, weight: UIFontWeightLight)
-        self.button.setBackgroundImage(self.imageWithColor(((UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor)!), forState: UIControlState.Highlighted)
+        self.button.setBackgroundImage((UIApplication.sharedApplication().delegate as! AppDelegate)
+.imageWithColor(((UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor)!), forState: UIControlState.Highlighted)
         self.button.showsTouchWhenHighlighted = false
         self.contentView.addSubview(self.button)
         
@@ -56,7 +57,7 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
         let horizontalConstraintsButton = NSLayoutConstraint.constraintsWithVisualFormat("H:|->=20-[button(>=280)]->=20-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(horizontalConstraintsButton)
         
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-18-[promptLabel]-12-[button(40)]-16-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-18-[promptLabel]-12-[button(44)]-16-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(verticalConstraints)
     }
     
@@ -70,17 +71,4 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    
-    func imageWithColor(color:UIColor) -> UIImage{
-        let rect = CGRectMake(0, 0, 1, 1)
-        UIGraphicsBeginImageContext(rect.size)
-        let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
-    }
-    
 }
