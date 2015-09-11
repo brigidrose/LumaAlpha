@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.metawearManager = MBLMetaWearManager.sharedManager()
 //
 //        self.myCentralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionRestoreIdentifierKey:"mainCentralManagerIdentifier"])
-        self.window?.tintColor = UIColor(red:0.83, green:0.75, blue:0.63, alpha:1)
+        self.window?.tintColor = UIColor(red:0.95, green:0.09, blue:0.25, alpha:1)
         
         self.locationManager = CLLocationManager()
         self.locationManager.delegate = self

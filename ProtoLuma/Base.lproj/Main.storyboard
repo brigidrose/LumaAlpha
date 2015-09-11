@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Kti-Ah-weI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Kti-Ah-weI">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <scenes>
         <!--Claim Bracelet-->
@@ -209,7 +209,7 @@
                         <animations/>
                     </navigationBar>
                     <connections>
-                        <segue destination="eTB-q2-laf" kind="relationship" relationship="rootViewController" id="ALP-4g-eJ3"/>
+                        <segue destination="x7Q-3d-Ci6" kind="relationship" relationship="rootViewController" id="Xpb-n4-Cny"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uf1-8i-stN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -253,27 +253,39 @@
             </objects>
             <point key="canvasLocation" x="1389" y="2815"/>
         </scene>
-        <!--Account-->
-        <scene sceneID="Oa8-xT-5OO">
+        <!--Account View Controller-->
+        <scene sceneID="T5h-Da-cBf">
             <objects>
-                <viewController title="Account" id="eTB-q2-laf" customClass="AccountViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="dKC-t2-54z"/>
-                        <viewControllerLayoutGuide type="bottom" id="zpl-yX-bhm"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="QSQ-vi-Mxh">
+                <tableViewController id="x7Q-3d-Ci6" customClass="AccountViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="0Va-ZO-iHb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="JYZ-VU-nTj"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BEN-nS-rcF">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BEN-nS-rcF" id="kBZ-sM-6k6">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="x7Q-3d-Ci6" id="fM3-VN-Z55"/>
+                            <outlet property="delegate" destination="x7Q-3d-Ci6" id="CDI-Hf-f6q"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="dVi-t6-mp6"/>
                     <connections>
-                        <segue destination="mkt-53-6MV" kind="presentation" identifier="loggedOut" modalTransitionStyle="flipHorizontal" id="rtd-Xa-2b6"/>
-                        <segue destination="GTI-gC-ZlV" kind="presentation" identifier="showAddCharm" id="EZh-75-GBa"/>
+                        <segue destination="GTI-gC-ZlV" kind="presentation" identifier="showAddCharm" id="0HD-Rl-Zl5"/>
+                        <segue destination="mkt-53-6MV" kind="presentation" identifier="loggedOut" modalTransitionStyle="flipHorizontal" id="O42-oJ-8jX"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="S68-I0-l2A" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dAJ-8N-7cp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="635" y="2815"/>
         </scene>
@@ -281,7 +293,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="vWd-DU-Abb"/>
         <segue reference="NXJ-9h-4kM"/>
-        <segue reference="J2m-Nf-nZC"/>
+        <segue reference="O42-oJ-8jX"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" red="0.70980392156862748" green="0.64313725490196083" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" red="0.80784313725490198" green="0.023529411764705882" blue="0.396078431372549" alpha="1" colorSpace="calibratedRGB"/>
 </document>

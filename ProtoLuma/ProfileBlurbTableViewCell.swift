@@ -21,15 +21,15 @@ class ProfileBlurbTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        self.backgroundColor = UIColor(white: 1, alpha: 1)
         
         self.profileImageView = UIImageView(frame: CGRectZero)
         self.profileImageView.translatesAutoresizingMaskIntoConstraints = false
         self.profileImageView.layer.cornerRadius = 50
         self.profileImageView.clipsToBounds = true
         self.profileImageView.contentMode = UIViewContentMode.ScaleAspectFill
-        self.profileImageView.layer.borderWidth = 1
-        self.profileImageView.layer.borderColor = UIColor(white: 0.9, alpha: 1).CGColor
+//        self.profileImageView.layer.borderWidth = 1
+//        self.profileImageView.layer.borderColor = UIColor(white: 1, alpha: 1).CGColor
         self.profileImageView.backgroundColor = UIColor.whiteColor()
         self.contentView.addSubview(self.profileImageView)
         
@@ -38,7 +38,7 @@ class ProfileBlurbTableViewCell: UITableViewCell {
         self.nameLabel.text = "firstName LastName"
         self.nameLabel.font = UIFont.systemFontOfSize(20, weight: UIFontWeightRegular)
         self.nameLabel.textAlignment = NSTextAlignment.Center
-        self.nameLabel.textColor = UIColor.whiteColor()
+        self.nameLabel.textColor = UIColor.blackColor()
         self.contentView.addSubview(self.nameLabel)
         
         let viewsDictionary = ["profileImageView":self.profileImageView, "nameLabel":self.nameLabel]

@@ -513,7 +513,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.Image.rawValue)
                 // assign options
                 picker.assetsFetchOptions = fetchOptions;
-                picker.view.tintColor = UIColor(red:0.83, green:0.75, blue:0.63, alpha:1)
+                picker.view.tintColor = UIColor(red:0.95, green:0.09, blue:0.25, alpha:1)
                 
                 // to present picker as a form sheet in iPad
                 picker.modalPresentationStyle = UIModalPresentationStyle.FormSheet

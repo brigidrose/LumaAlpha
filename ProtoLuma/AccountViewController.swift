@@ -10,9 +10,7 @@
 
 import UIKit
 
-class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
-
-    var accountTableView:UITableView!
+class AccountViewController: UITableViewController {
     var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var metawearManager:MBLMetaWearManager!
     var charms:[PFObject] = []
@@ -21,31 +19,28 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
+//        self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+//        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
 
+        self.navigationItem.title = "Settings"
+        
         self.metawearManager = MBLMetaWearManager.sharedManager()
         
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneButtonTapped:")
         self.navigationItem.leftBarButtonItem = doneButton
         
-        self.navigationItem.title = "Settings"
-        let tableViewController = UITableViewController()
-        tableViewController.tableView = self.accountTableView
-        self.addChildViewController(tableViewController)
-        self.accountTableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
-        self.accountTableView.estimatedRowHeight = 50
-        self.accountTableView.rowHeight = UITableViewAutomaticDimension
-        self.accountTableView.delegate = self
-        self.accountTableView.dataSource = self
-        self.accountTableView.registerClass(ProfileBlurbTableViewCell.self, forCellReuseIdentifier: "ProfileBlurbTableViewCell")
-        self.accountTableView.registerClass(ButtonWithPromptTableViewCell.self, forCellReuseIdentifier:
+        self.tableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
+        self.tableView.estimatedRowHeight = 50
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.registerClass(ProfileBlurbTableViewCell.self, forCellReuseIdentifier: "ProfileBlurbTableViewCell")
+        self.tableView.registerClass(ButtonWithPromptTableViewCell.self, forCellReuseIdentifier:
             "ButtonWithPromptTableViewCell")
-        self.accountTableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "CharmWithSubtitleTableViewCell")
-        self.accountTableView.backgroundColor = UIColor(white: 0.1, alpha: 1)
-        self.accountTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.view = self.accountTableView
-
+        self.tableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "CharmWithSubtitleTableViewCell")
+        self.tableView.backgroundColor = UIColor(white: 1, alpha: 1)
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
         self.retrieveSavedMetaWear()
         
     }
@@ -57,7 +52,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // MARK: Table View methods
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch indexPath.section{
         case 0:
             // Profile Detail
@@ -99,8 +94,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let addCharmCell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                 addCharmCell.promptLabel.text = "Received a new Charm?"
                 addCharmCell.button.setTitle("Add Charm", forState: UIControlState.Normal)
-                addCharmCell.button.userInteractionEnabled = false
-//                addCharmCell.button.addTarget(self, action: "addCharmButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+//                addCharmCell.button.userInteractionEnabled = false
+                addCharmCell.button.addTarget(self, action: "checkButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
                 return addCharmCell
             }
             else{
@@ -127,16 +122,16 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let logoutCell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                 logoutCell.promptLabel.text = "Need some time off?"
                 logoutCell.button.setTitle("Logout", forState: UIControlState.Normal)
-                logoutCell.button.userInteractionEnabled = false
-//                logoutCell.button.addTarget(self, action: "logoutButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+//                logoutCell.button.userInteractionEnabled = false
+                logoutCell.button.addTarget(self, action: "checkButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
                 return logoutCell
 
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("ButtonWithPromptTableViewCell") as! ButtonWithPromptTableViewCell
                 cell.promptLabel.text = "Want a fresh start? Reset and erase all content."
                 cell.button.setTitle("Reset All Charms", forState: UIControlState.Normal)
-                cell.button.userInteractionEnabled = false
-//                cell.button.addTarget(self, action: "resetButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+//                cell.button.userInteractionEnabled = false
+                cell.button.addTarget(self, action: "checkButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
                 return cell
 
             default:
@@ -147,7 +142,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section{
         case 0:
             return 1
@@ -162,7 +157,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section{
         case 1:
             let headerView = CharmsTableViewHeader()
@@ -181,7 +176,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if (section == 0){
             return 0
         }
@@ -190,7 +185,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section{
         case 1: break
 //            self.bracelets[indexPath.row].led.setLEDOn(false, withOptions: 1)
@@ -216,18 +211,18 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         default:break
         }
         
-        if (indexPath == NSIndexPath(forRow: tableView.numberOfRowsInSection(2) - 1, inSection: 2)){
-            self.performSegueWithIdentifier("showAddCharm", sender: self)
-        }
-        else if (indexPath == NSIndexPath(forRow: 0, inSection: 3)){
-            self.performSegueWithIdentifier("loggedOut", sender: self)
-        }
-        else if (indexPath == NSIndexPath(forRow: 1, inSection: 3)){
-            print("reset charms button tapped")
-        }
+//        if (indexPath == NSIndexPath(forRow: tableView.numberOfRowsInSection(2) - 1, inSection: 2)){
+//            self.performSegueWithIdentifier("showAddCharm", sender: self)
+//        }
+//        else if (indexPath == NSIndexPath(forRow: 0, inSection: 3)){
+//            self.performSegueWithIdentifier("loggedOut", sender: self)
+//        }
+//        else if (indexPath == NSIndexPath(forRow: 1, inSection: 3)){
+//            print("reset charms button tapped")
+//        }
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 4
     }
     
@@ -236,26 +231,48 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func logoutButtonTapped(sender:UIButton){
+    func checkButtonTapped(sender:AnyObject){
+        print("check button tapped")
+        print((sender as! UIButton).center)
+        let buttonPosition:CGPoint = sender.convertPoint(CGPointZero, toView: self.tableView)
+        let indexPath = self.tableView.indexPathForRowAtPoint(buttonPosition)
+        if (indexPath == NSIndexPath(forRow: self.tableView.numberOfRowsInSection(2) - 1, inSection: 2)){
+            // Add Charm
+            self.addCharmButtonTapped()
+        }
+        else if (indexPath == NSIndexPath(forRow: 0, inSection: 3)){
+            // Logout
+            self.logoutButtonTapped()
+        }
+        else if (indexPath == NSIndexPath(forRow: 1, inSection: 3)){
+            // Reset
+            self.resetButtonTapped()
+        }
+    }
+    
+    func logoutButtonTapped(){
         print("Logout button tapped")
         self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!)-> Void in
-            for device in devices{
-                device.forgetDevice()
+            if devices.count > 0{
+                for device in devices{
+                    device.forgetDevice()
+                }
             }
+            FBSDKAccessToken.setCurrentAccessToken(nil)
             PFUser.logOut()
-            PFInstallation.currentInstallation()["currentUser"] = nil
+            PFInstallation.currentInstallation().removeObjectForKey("currentUser")
             PFInstallation.currentInstallation().saveInBackgroundWithBlock({(success, error) -> Void in
                 self.performSegueWithIdentifier("loggedOut", sender: self)
             })
         })
     }
     
-    func addCharmButtonTapped(sender:UIButton){
+    func addCharmButtonTapped(){
         print("add charm button tapped")
         self.performSegueWithIdentifier("showAddCharm", sender: self)
     }
     
-    func resetButtonTapped(sender:UIButton){
+    func resetButtonTapped(){
         print("reset charms button tapped")
     }
     
@@ -265,7 +282,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             self.charms = objects!
             print("charms loaded")
-            self.accountTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
         })
         
     }
@@ -276,7 +293,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         MBLMetaWearManager.sharedManager().retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
                 self.bracelet = devices[0] as! MBLMetaWear
-                self.accountTableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             else{
                 print("no saved bracelet found")
@@ -285,7 +302,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func updateMetaWearTableViewSections(){
-        self.accountTableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(1, 2)), withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(1, 2)), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     
@@ -303,5 +320,4 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             return "discovery"
         }
     }
-
 }

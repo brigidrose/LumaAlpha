@@ -19,7 +19,7 @@ class ImagePreviewCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
+//        self.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
         self.imagePreviewImageView = PFImageView(frame: CGRectZero)
         self.imagePreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         self.imagePreviewImageView.image = UIImage(named: "CharmThumbnail")

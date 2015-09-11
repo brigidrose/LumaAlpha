@@ -302,6 +302,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     
     // MARK: Navigation Methods
     func accountButtonTapped(sender:UIBarButtonItem){
+        print("account button tapped")
         self.performSegueWithIdentifier("showAccount", sender: self)
     }
     

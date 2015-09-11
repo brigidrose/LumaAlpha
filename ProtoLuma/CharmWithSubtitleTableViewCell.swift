@@ -22,7 +22,7 @@ class CharmWithSubtitleTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        self.backgroundColor = UIColor(white: 1, alpha: 1)
         
         self.charmImageView = UIImageView(frame: CGRectZero)
         self.charmImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ class CharmWithSubtitleTableViewCell: UITableViewCell {
         self.charmTitle = UILabel(frame: CGRectZero)
         self.charmTitle.translatesAutoresizingMaskIntoConstraints = false
         self.charmTitle.text = "Charm Title"
-        self.charmTitle.textColor = UIColor.whiteColor()
+        self.charmTitle.textColor = UIColor.blackColor()
         self.charmTitle.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
         self.charmTitle.textAlignment = NSTextAlignment.Left
         self.charmTitle.numberOfLines = 1
@@ -41,7 +41,7 @@ class CharmWithSubtitleTableViewCell: UITableViewCell {
         self.charmSubtitle = UILabel(frame: CGRectZero)
         self.charmSubtitle.translatesAutoresizingMaskIntoConstraints = false
         self.charmSubtitle.text = "Charm Subtitle"
-        self.charmSubtitle.textColor = UIColor(white: 1, alpha: 0.8)
+        self.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
         self.charmSubtitle.font = UIFont.systemFontOfSize(13, weight: UIFontWeightLight)
         self.charmSubtitle.textAlignment = NSTextAlignment.Left
         self.charmSubtitle.numberOfLines = 1

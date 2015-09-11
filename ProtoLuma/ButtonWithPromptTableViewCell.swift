@@ -21,12 +21,12 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.contentView.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        self.contentView.backgroundColor = UIColor(white: 1, alpha: 1)
         
         self.promptLabel = UILabel(frame: CGRectZero)
         self.promptLabel.translatesAutoresizingMaskIntoConstraints = false
         self.promptLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
-        self.promptLabel.textColor = UIColor.whiteColor()
+        self.promptLabel.textColor = UIColor.blackColor()
         self.promptLabel.textAlignment = NSTextAlignment.Center
         self.promptLabel.numberOfLines = 1
         self.contentView.addSubview(self.promptLabel)
@@ -34,12 +34,16 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
         self.button = UIButton(frame: CGRectZero)
         self.button.translatesAutoresizingMaskIntoConstraints = false
         self.button.layer.borderWidth = 1
-        self.button.layer.borderColor = UIColor(red:0.83, green:0.75, blue:0.63, alpha:1).CGColor
+        self.button.layer.borderColor = (UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor.CGColor
         self.button.layer.cornerRadius = 6
         self.button.setTitle("Button", forState: UIControlState.Normal)
-        self.button.setTitleColor(UIColor(red:0.83, green:0.75, blue:0.63, alpha:1), forState: UIControlState.Normal)
+        self.button.setTitleColor((UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor, forState: UIControlState.Normal)
+        self.button.clipsToBounds = true
+        self.button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Highlighted)
         self.button.titleLabel?.textColor = UIColor.whiteColor()
         self.button.titleLabel?.font = UIFont.systemFontOfSize(17, weight: UIFontWeightLight)
+        self.button.setBackgroundImage(self.imageWithColor(((UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor)!), forState: UIControlState.Highlighted)
+        self.button.showsTouchWhenHighlighted = false
         self.contentView.addSubview(self.button)
         
         let viewsDictionary = ["promptLabel":self.promptLabel, "button":self.button]
@@ -66,5 +70,17 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
+    
+    func imageWithColor(color:UIColor) -> UIImage{
+        let rect = CGRectMake(0, 0, 1, 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
 }

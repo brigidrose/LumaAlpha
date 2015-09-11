@@ -16,19 +16,19 @@ class CharmsTableViewHeader: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        self.backgroundColor = UIColor(white: 1, alpha: 1)
         
         self.sectionTitle = UILabel(frame: CGRectZero)
         self.sectionTitle.translatesAutoresizingMaskIntoConstraints = false
         self.sectionTitle.text = "Section Title"
         self.sectionTitle.textAlignment = NSTextAlignment.Center
-        self.sectionTitle.textColor = UIColor.whiteColor()
+        self.sectionTitle.textColor = UIColor.blackColor()
         self.sectionTitle.font = UIFont.systemFontOfSize(16, weight: UIFontWeightRegular)
         self.addSubview(self.sectionTitle)
         
         self.sectionSeparator = UIView(frame: CGRectZero)
         self.sectionSeparator.translatesAutoresizingMaskIntoConstraints = false
-        self.sectionSeparator.backgroundColor = UIColor.whiteColor()
+        self.sectionSeparator.backgroundColor = UIColor.blackColor()
         self.addSubview(self.sectionSeparator)
         
         let viewsDictionary = ["sectionTitle":self.sectionTitle, "sectionSeparator":self.sectionSeparator]
