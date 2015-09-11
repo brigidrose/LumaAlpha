@@ -68,7 +68,6 @@ class PairBraceletViewController: UIViewController {
     }
     
     func pairBraceletButtonTapped(sender:UIButton){
-        
         print("pairBraceletButton tapped")
         print(self.braceletSerialNumber)
         self.connectToBraceletOfSerialNumber(self.braceletSerialNumber)

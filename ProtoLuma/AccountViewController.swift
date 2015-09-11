@@ -263,7 +263,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         let queryForCharms = PFQuery(className: "Charm")
         queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-            self.charms = objects as! [PFObject]
+            self.charms = objects!
             print("charms loaded")
             self.accountTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
         })

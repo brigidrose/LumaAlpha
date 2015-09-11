@@ -24,7 +24,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Facebook-iOS-SDK.xcscheme</key>
+		<key>FBSDKCoreKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FBSDKLoginKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FBSDKShareKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -44,7 +54,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>ParseFacebookUtils.xcscheme</key>
+		<key>ParseFacebookUtilsV4.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -82,7 +92,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>069FC7BDFBF36000F463794CB740C0DD</key>
+		<key>29A16CE4CE9CD8DADAD5CEBC1E3AD0A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4081770DDBBD59A45F3BC830FC2025EB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5152BAB0B874495EF018C19267759089</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,17 +112,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>536FC09FC086DDADB357CBF0D9CB9FB5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>582289CE6AD275B78532ED0515F44444</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>58EC69EDA78A02560F35EB4217FDE13B</key>
+		<key>55DA4C902578152A803665BFA63B437B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -117,17 +127,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7EDD0E1D5F911B51B9532A9E97DF2E95</key>
+		<key>7EAFE6776D09297888C93CE63DD9ED63</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>815CD7242602936AC334598F8EC04501</key>
+		<key>934F55169797E2C80F30267C51F064DA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A6BDB4FF0CAA03828500B7391041576A</key>
+		<key>9B94CED830233970162E887C98BC0072</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,22 +147,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BD20D5803D4C10D78D1B55F74F76B075</key>
+		<key>BC5D2559B990A129697605C17AAA94D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C152D47E7E24867EC74D37EDBD1FB0EF</key>
+		<key>DAE36A58664568F9F9C5EA5982DA110B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C3E78915FAA63C77990B7DC0CD88DF7B</key>
+		<key>E430FCB6CBD1ED630059F0D9F11B63B2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D8AA71C599C76076ED3DC393971BFD7E</key>
+		<key>ECDDBD9CA703842693763818E6E5897D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EEB9B5359E30F908EEFC8B001A1EC83D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FA1FEB82A7C542186D50F70C91C7DAFB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

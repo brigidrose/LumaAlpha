@@ -3,9 +3,12 @@
 
 target 'ProtoLuma' do
 
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+pod 'FBSDKShareKit'
 pod 'Parse'
 pod 'Metawear-iOSAPI'
-pod 'ParseFacebookUtils'
+pod 'ParseFacebookUtilsV4'
 pod 'ParseUI'
 pod 'DateTools'
 pod 'TPKeyboardAvoiding'
@@ -14,6 +17,7 @@ pod 'SDWebImage'
 pod 'CTAssetsPickerController',  '~> 3.0.0'
 pod 'JVFloatLabeledTextField'
 pod 'RACollectionViewReorderableTripletLayout'
+
 end
 
 target 'ProtoLumaTests' do

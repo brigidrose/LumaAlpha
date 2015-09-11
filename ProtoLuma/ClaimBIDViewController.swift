@@ -15,6 +15,7 @@ class ClaimBIDViewController: UIViewController {
     var submitButton:UIButton!
     var bracelet:PFObject!
     var braceletSerialNumber:String!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,7 +53,7 @@ class ClaimBIDViewController: UIViewController {
         self.view.addConstraints(verticalConstraints)
         self.enterBIDTextField.becomeFirstResponder()
 
-        print(PFUser.currentUser()?["bracelet"])
+        print(PFUser.currentUser()!["bracelet"])
         // Do any additional setup after loading the view.
     }
 
@@ -63,12 +64,12 @@ class ClaimBIDViewController: UIViewController {
     
     func submitButtonTapped(sender: UIButton) {
         
-        if (PFUser.currentUser()?["bracelet"] == nil){
+        if (PFUser.currentUser()!["bracelet"] == nil){
             
         }
         else{
             print("helo")
-            PFUser.currentUser()?["bracelet"]?.fetchIfNeededInBackgroundWithBlock({(result, error) -> Void in
+            PFUser.currentUser()!["bracelet"].fetchIfNeededInBackgroundWithBlock({(result, error) -> Void in
                 print(result)
                 self.braceletSerialNumber = result!.objectForKey("serialNumber") as! String
                 self.performSegueWithIdentifier("showPairBracelet", sender: self)
@@ -83,7 +84,7 @@ class ClaimBIDViewController: UIViewController {
         let queryCheckBIDExistsAndOrphaned = PFQuery(className: "Bracelet")
         queryCheckBIDExistsAndOrphaned.whereKey("serialNumber", equalTo: BID!)
         queryCheckBIDExistsAndOrphaned.includeKey("gifter")
-        queryCheckBIDExistsAndOrphaned.findObjectsInBackgroundWithBlock({(objects:[AnyObject]?, error:NSError?) -> Void in
+        queryCheckBIDExistsAndOrphaned.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if (error == nil){
                 if (objects!.count == 0){
                     // BID doesn't exist, display alert and focus on textfield if not found
@@ -96,7 +97,7 @@ class ClaimBIDViewController: UIViewController {
                 }
                 else{
                     // BID Exists
-                    let bracelet = objects![0] as! PFObject
+                    let bracelet = objects![0] as PFObject
                     // BID Claimed
                     if (bracelet["claimed"] as! Bool){
                         // Bracelet is not orphaned, display message
@@ -111,8 +112,8 @@ class ClaimBIDViewController: UIViewController {
                     else{
                         // Register current user as owner of BID
                         self.bracelet = bracelet
-                        PFUser.currentUser()?["bracelet"] = bracelet
-                        PFUser.currentUser()?.saveEventually({(success, error) -> Void in
+                        PFUser.currentUser()!["bracelet"] = bracelet
+                        PFUser.currentUser()!.saveEventually({(success, error) -> Void in
                         if (success){
                             self.bracelet["claimed"] = true
                             print(bracelet)

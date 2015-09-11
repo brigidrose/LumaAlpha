@@ -25,15 +25,15 @@ class LoginViewController: UIViewController {
     @IBAction func signupWithFB(sender: AnyObject) {
         print("signup with facebook tapped")
         (sender as! UIButton).enabled = false
-        PFFacebookUtils.logInWithPermissions(["public_profile", "email"], block: {(user:PFUser?, error:NSError?) -> Void in
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email"], block: {(user:PFUser?, error:NSError?) -> Void in
             print(error)
             if let user = user {
                 if user.isNew {
-                    if (PFFacebookUtils.session() != nil){
+                    if (FBSDKAccessToken.currentAccessToken() != nil){
                         print("session not nil")
                         let parameters:NSMutableDictionary = NSMutableDictionary(dictionary: NSDictionary())
                         parameters.setValue("id,email,location,birthday,first_name,last_name,gender", forKey: "fields")
-                        FBSDKGraphRequest(graphPath: "me", parameters: parameters as [NSObject : AnyObject], tokenString: PFFacebookUtils.session()?.accessTokenData.accessToken, version: "v2.0", HTTPMethod: "GET").startWithCompletionHandler({(connection, result, error) -> Void in
+                        FBSDKGraphRequest(graphPath: "me", parameters: parameters as [NSObject : AnyObject], tokenString: FBSDKAccessToken.currentAccessToken().tokenString, version: "v2.0", HTTPMethod: "GET").startWithCompletionHandler({(connection, result, error) -> Void in
                             print("graph requested")
                             if (error == nil){
                                 let user = result as! NSDictionary
@@ -81,45 +81,49 @@ class LoginViewController: UIViewController {
                         print("current user saved to current installation")
                     })
                     // Check if logged-in user owns a bracelet
+                    print(PFUser.currentUser()?["bracelet"])
                     if (PFUser.currentUser()?["bracelet"] == nil){
                         // User doesn't own a bracelet, show BID registration
+                        
                         self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
                     }
                     else{
                         // User owns a bracelet, show Feed
-                        self.metawearManager.startScanForMetaWearsAllowDuplicates(true, handler: {(devices:[AnyObject]!) -> Void in
-                            for device in devices as! [MBLMetaWear]{
-                                device.connectWithHandler({(error) -> Void in
-
-                                    PFUser.currentUser()?["bracelet"]?.fetchInBackgroundWithBlock({(object, error) -> Void in
-                                        if (error == nil){
-                                            self.bracelet = object! as PFObject
-                                            if ((self.bracelet["serialNumber"] as! String) == device.deviceInfo.serialNumber){
-                                                device.rememberDevice()
-                                                self.performSegueWithIdentifier("loggedIn", sender: self)
-                                            }
-                                            else{
-                                                device.forgetDevice()
-                                                device.disconnectWithHandler({(error) -> Void in
-                                                    print("non-matching metawear disconnected")
-                                                })
-                                            }
-                                        }
-                                        else{
-                                            print(error)
-                                        }
-                                    })
-                                })
-                            }
-                        })
+                        self.performSegueWithIdentifier("loggedIn", sender: self)
+                        // FOLLOWING BLOCK ENABLES CHECK FOR CONNECTION TO REGISTERED METAWEAR DEVICE BEFORE PRESENTING CORE APP INTERFACE
+                        //                        self.metawearManager.startScanForMetaWearsAllowDuplicates(true, handler: {(devices:[AnyObject]!) -> Void in
+                        //                            for device in devices as! [MBLMetaWear]{
+                        //                                device.connectWithHandler({(error) -> Void in
+                        //
+                        //                                    PFUser.currentUser()!["bracelet"]?.fetchInBackgroundWithBlock({(object, error) -> Void in
+                        //                                        if (error == nil){
+                        //                                            print(PFUser.currentUser())
+                        //                                            print(PFUser.currentUser()!["bracelet"])
+                        //                                            self.bracelet = object! as PFObject
+                        //                                            if ((self.bracelet["serialNumber"] as! String) == device.deviceInfo.serialNumber){
+                        //                                                device.rememberDevice()
+                        //                                                self.performSegueWithIdentifier("loggedIn", sender: self)
+                        //                                            }
+                        //                                            else{
+                        //                                                device.forgetDevice()
+                        //                                                device.disconnectWithHandler({(error) -> Void in
+                        //                                                    print("non-matching metawear disconnected")
+                        //                                                })
+                        //                                            }
+                        //                                        }
+                        //                                        else{
+                        //                                            print(error)
+                        //                                        }
+                        //                                    })
+                        //                                })
+                        //                            }
+                        //                        })
                     }
                 }
-
+                
             } else {
                 print("Uh oh. The user cancelled the Facebook login.")
             }
         })
     }
-    
-
 }

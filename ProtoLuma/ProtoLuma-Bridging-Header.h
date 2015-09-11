@@ -15,7 +15,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 #import "PFFacebookUtils.h"
-#import "FacebookSDK.h"
 #import "TPKeyboardAvoidingScrollView.h"
 #import "TPKeyboardAvoidingTableView.h"
 #import "TPKeyboardAvoidingCollectionView.h"

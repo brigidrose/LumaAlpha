@@ -205,15 +205,25 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
                 let charm = self.charms[indexPath.row]
-                let charmGifter = charm["gifter"] as! PFUser
-                let gifterFirstName = charmGifter["firstName"] as! String
-                let gifterLastName = charmGifter["lastName"] as! String
-                cell.charmTitle.text = self.forCharm["name"] as? String
-                cell.charmTitle.textColor = UIColor.blackColor()
-                cell.charmSubtitle.text = "\(gifterFirstName) \(gifterLastName)"
-                cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
-                cell.backgroundColor = UIColor.whiteColor()
-                cell.accessoryType = UITableViewCellAccessoryType.None
+                let charmOwner = charm["owner"] as? PFUser
+                let charmGifter = charm["gifter"] as? PFUser
+                if (charmOwner != nil && charmGifter != nil){
+                    let charmOwnerFirstName = charmOwner?["firstName"] as! String
+                    let charmOwnerLastName = charmOwner?["lastName"] as! String
+                    let charmGifterFirstName = charmGifter?["firstName"] as! String
+                    let charmGifterLastName = charmGifter?["lastName"] as! String
+                    if (charmOwner == PFUser.currentUser()!){
+                        cell.charmSubtitle.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName)."
+                    }
+                    else{
+                        cell.charmSubtitle.text = "Gifted to \(charmOwnerFirstName) \(charmOwnerLastName)."
+                    }
+                    cell.charmTitle.text = charm["name"] as? String
+                    cell.charmTitle.textColor = UIColor.blackColor()
+                    cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
+                    cell.backgroundColor = UIColor.whiteColor()
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                }
                 return cell
             case 1:
                 switch indexPath.row{

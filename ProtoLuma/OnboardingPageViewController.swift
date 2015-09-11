@@ -22,7 +22,7 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        let view = OnboardingContentViewController()
+//        let view = OnboardingContentViewController()
         return UIViewController()
     }
     

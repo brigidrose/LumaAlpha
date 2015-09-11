@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Initialize Parse.
         Parse.setApplicationId("xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d",
             clientKey: "VPxuBA4ASQBaPpusXfocIPKAKNrtJALBYd6LKlSx")
-        PFFacebookUtils.initializeFacebook()
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
         
 //        PFTwitterUtils.initializeWithConsumerKey("lHc76e87Hs94HCNkw3NPV0lwW",  consumerSecret:"aRGu4WrbVfezsca8gpBQ1z24yPF2KvkcZRndDGBHND3BWbpNoy")
         // [Optional] Track statistics around application opens.
@@ -106,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
             }
             else{
-                print("no saved bracelet found")
+                print("no saved bracelet found in appdelegate")
             }
         })
     }
@@ -128,6 +128,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // MARK: Handle notifications when app is in foreground
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        userInfo
+        
     }
     
     // MARK: - Core Data stack

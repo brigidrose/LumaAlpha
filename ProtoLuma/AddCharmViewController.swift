@@ -72,23 +72,23 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
         print("confirm button tapped")
 
         // Get CID from user input
-        let CID = self.enterCIDTextField.text
+        let CID = self.enterCIDTextField.text!
         print(CID)
         // Check if BID submitted is found in purchased inventory
         let queryCheckCIDExistsAndOrphaned = PFQuery(className: "Charm")
-        queryCheckCIDExistsAndOrphaned.whereKey("serialNumber", equalTo: CID!)
+        queryCheckCIDExistsAndOrphaned.whereKey("serialNumber", equalTo: CID)
         queryCheckCIDExistsAndOrphaned.includeKey("gifter")
-        queryCheckCIDExistsAndOrphaned.findObjectsInBackgroundWithBlock({(objects:[AnyObject]?, error:NSError?) -> Void in
+        queryCheckCIDExistsAndOrphaned.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if(error == nil){
                 if (objects?.count != 0){
                     // CID exists
-                    let charm = objects![0] as! PFObject
+                    let charm = objects![0]
                     if (charm["claimed"] as? Bool == true){
                         // CID already claimed
                     }
                     else{
                         // CID available, proceed to add user as owner of charm
-                        charm["owner"] = PFUser.currentUser()
+                        charm["owner"] = PFUser.currentUser()!
                         charm["claimed"] = true
                         charm.saveEventually({(error) -> Void in
                             print("charm claimed and registered on Parse")

@@ -1,137 +1,57 @@
-
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 Parse.Cloud.define("hello", function(request, response) {
-  response.success("Hello world!");
+    response.success("Hello world!");
 });
 
 
 Parse.Cloud.afterSave("Story", function(request) {
-    if (request.object.existed()==false){
-		var senderObject = request.object.get('sender');
-		var forCharmObject = request.object.get('forCharm');
-		var receiverObject = forCharmObject.get('owner');
-		var notificationMessage = senderObject.get('firstName') + " " + senderObject.get('firstName')
-			if (notificationType == "comment" || notificationType == "like"){
-				var activityObject = request.object.get('activity');
-				var query = new Parse.Query("Activity");
-				query.include("challenge");
-				query.get(activityObject.id, {
-					success: function(activityObjectReal) {
-						// The object was retrieved successfully.
-						var challengeObject = activityObjectReal.get("challenge");
-						actionString = challengeObject.get("action");
-						console.log("string is " + actionString);
-						var userQuery = new Parse.Query("_User");
-						userQuery.get(senderObject.id, {
-							success: function(senderObjectReal) {
-								// The object was retrieved successfully.
-								senderAlias = senderObjectReal.get("username");
-								var notificationTypeActionString = "";
-								if (notificationType == "comment") {
-									notificationTypeActionString = " commented on ";
-								} else if (notificationType == "like") {
-									notificationTypeActionString = " liked ";
-								}
-								var notificationText = senderAlias + notificationTypeActionString + "your activity " + "\"" + actionString + ".\"";
-								var receiverPushQuery = new Parse.Query(Parse.Installation);
-								receiverPushQuery.equalTo('deviceType', 'ios');
-								receiverPushQuery.equalTo('currentUser', receiverObject);
-								Parse.Push.send({
-									where: receiverPushQuery, // Set our Installation query
-									data: {
-										alert: notificationText
-									}
-								}, {
-									success: function() {
-										console.log("success!")
-											// Push was successful
-										console.log(receiverPushQuery);
-									},
-									error: function(error) {
-										throw "Got an error " + error.code + " : " + error.message;
-									}
-								});
-							},
-							error: function(object, error) {
-								// The object was not retrieved successfully.
-								// error is a Parse.Error with an error code and message.
-								console.log("failed user query ");
+    if (request.object.existed() == false) {
+        var senderObject = request.object.get('sender');
+        var forCharmObject = request.object.get('forCharm');
+        // Get sender user object
+        var senderQuery = new Parse.Query("_User");
+        senderQuery.get(senderObject.id, {
+            success: function(senderObjectReal) {
+                // The object was retrieved successfully.
+                console.log(senderObjectReal);
+                var senderName = senderObjectReal.get("firstName") + " " + senderObjectReal.get("lastName").charAt(0) + ".";
+                var charmQuery = new Parse.Query("Charm");
+                charmQuery.get(forCharmObject.id, {
+                    success: function(charmObjectReal) {
+                        // The object was retrieved successfully.
+                        var charmName = charmObjectReal.get("name");
 
-							}
-						});
-					},
-					error: function(object, error) {
-						// The object was not retrieved successfully.
-						// error is a Parse.Error with an error code and message.
+                        var receiverNotificationText = senderName + " added a Moment to " + charmName + ".";
+                        var receiverPushQuery = new Parse.Query(Parse.Installation);
+				        var receiverObject = charmObjectReal.get('owner');
 
-					}
-				});
-			}
-			else if (notificationType == "followRequestApproved"){
-				var userQuery = new Parse.Query("_User");
-				userQuery.get(senderObject.id, {
-					success: function(senderObjectReal) {
-						// The object was retrieved successfully.
-						senderAlias = senderObjectReal.get("username");
+                        receiverPushQuery.equalTo('deviceType', 'ios');
+                        receiverPushQuery.equalTo('currentUser', receiverObject);
+                        Parse.Push.send({
+                            where: receiverPushQuery, // Set our Installation query
+                            data: {
+                                alert: receiverNotificationText
+                            }
+                        }, {
+                            success: function() {
+                                console.log("success!");
+                                    // Push was successful
+                                console.log(receiverPushQuery);
+                            },
+                            error: function(error) {
+                                throw "Got an error " + error.code + " : " + error.message;
+                            }
+                        });
+                    },
+                    error: function(error) {
+                    }
+                    });
+                },
+            error: function(object, error) {
+            	console.log(error.code + error.message);
 
-						var receiverNotificationText = senderAlias + " approved your follow request.";
-						var receiverPushQuery = new Parse.Query(Parse.Installation);
-						receiverPushQuery.equalTo('deviceType', 'ios');
-						receiverPushQuery.equalTo('currentUser', receiverObject);
-						Parse.Push.send({
-							where: receiverPushQuery, // Set our Installation query
-							data: {
-								alert: receiverNotificationText
-							}
-						}, {
-							success: function() {
-								console.log("success!")
-									// Push was successful
-								console.log(receiverPushQuery);
-							},
-							error: function(error) {
-								throw "Got an error " + error.code + " : " + error.message;
-							}
-						});
-					},
-					error: function(object, error){
-					
-					}
-				});
-			}
-			else if (notificationType == "followRequestSent"){
-				var userQuery = new Parse.Query("_User");
-				userQuery.get(senderObject.id, {
-					success: function(senderObjectReal) {
-						// The object was retrieved successfully.
-						senderAlias = senderObjectReal.get("username");
-
-						var receiverNotificationText = senderAlias + " sent you a follow request.";
-						var receiverPushQuery = new Parse.Query(Parse.Installation);
-						receiverPushQuery.equalTo('deviceType', 'ios');
-						receiverPushQuery.equalTo('currentUser', receiverObject);
-						Parse.Push.send({
-							where: receiverPushQuery, // Set our Installation query
-							data: {
-								alert: receiverNotificationText
-							}
-						}, {
-							success: function() {
-								console.log("success!")
-									// Push was successful
-								console.log(receiverPushQuery);
-							},
-							error: function(error) {
-								throw "Got an error " + error.code + " : " + error.message;
-							}
-						});
-					},
-					error: function(object, error){
-					
-					}
-				});
-			}
-        }
+            }
+        });//senderquery
     }
 });

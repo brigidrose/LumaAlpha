@@ -45,8 +45,12 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                     self.loadCharms()
                 }
                 else{
-                    if (PFUser.currentUser()!["facebookId"] as! String != "10153237932376775"){
+                    if (PFUser.currentUser()!["facebookId"] as! String != "10205231912339433"){
                         self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
+                    }
+                    else{
+                        self.layoutUIPostBraceletPairingANCS()
+                        self.loadCharms()
                     }
                 }
             })
@@ -319,7 +323,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         queryForCharms.includeKey("owner")
         queryForCharms.includeKey("gifter")
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-            self.charms = objects as! [PFObject]
+            self.charms = objects!
 //            print("charms loaded")
             self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
             if (self.charms.count > 0){
@@ -356,10 +360,10 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
             queryForStoryUnits?.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
 //                print(objects as! [PFObject])
                 if (story["unlocked"] as! Bool){
-                    self.storiesStoryUnits[indexPath.row] = objects as! [PFObject]
+                    self.storiesStoryUnits[indexPath.row] = objects!
                 }
                 else{
-                    self.lockedStoriesStoryUnits[indexPath.row] = objects as! [PFObject]
+                    self.lockedStoriesStoryUnits[indexPath.row] = objects!
                 }
                 tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             })
@@ -373,17 +377,17 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: true)
         queryForStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if (error == nil){
-                self.stories = objects as! [PFObject]
+                self.stories = objects!
                 self.storiesStoryUnits = Array(count: self.stories.count, repeatedValue: [])
                 let queryForLockedStoriesForCharmViewed = PFQuery(className: "Story")
                 queryForLockedStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charms[self.indexOfCharmViewed])
                 queryForLockedStoriesForCharmViewed.whereKey("unlocked", equalTo: false)
                 queryForLockedStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-                    self.lockedStories = objects as! [PFObject]
+                    self.lockedStories = objects!
                     self.lockedStoriesStoryUnits = Array(count: self.lockedStories.count, repeatedValue: [])
                     self.storiesTableViewController.refreshControl?.endRefreshing()
-                    self.storiesTableViewController.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Fade)
-                    self.storiesTableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                    self.storiesTableViewController.tableView.reloadData()
+//                    self.storiesTableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
                     self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 1)))
                     // load lockedStoriesStoryUnits
                     var lockedStoriesStoryUnitsFoundCount = 0
@@ -391,7 +395,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                         let lockedStoryRelation = lockedStory.relationForKey("storyUnits")
                         let queryForLockedStoryStoryUnits:PFQuery = lockedStoryRelation.query()!
                         queryForLockedStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-                            self.lockedStoriesStoryUnits[self.lockedStories.indexOf(lockedStory)!] = objects as! [PFObject]
+                            self.lockedStoriesStoryUnits[self.lockedStories.indexOf(lockedStory)!] = objects!
                             lockedStoriesStoryUnitsFoundCount++
                             if (lockedStoriesStoryUnitsFoundCount == self.lockedStories.count){
                                 // load storiesStoryUnits
@@ -400,14 +404,14 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                                     let storyRelation = story.relationForKey("storyUnits")
                                     let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
                                     queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-                                        self.storiesStoryUnits[self.stories.indexOf(story)!] = objects as! [PFObject]
+                                        self.storiesStoryUnits[self.stories.indexOf(story)!] = objects!
                                         storiesStoryUnitsFoundCount++
                                         if (storiesStoryUnitsFoundCount == self.stories.count){
                                             // load storiesStoryUnits
 //                                            self.storiesTableViewController.refreshControl?.endRefreshing()
-                                            self.storiesTableViewController.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Fade)
+//                                            self.storiesTableViewController.tableView.reloadData()
                                             self.storiesTableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
-                                            self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 1)))
+//                                            self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 1)))
                                         }
                                     })
                                 }
