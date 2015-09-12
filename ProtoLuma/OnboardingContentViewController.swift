@@ -20,7 +20,7 @@ class OnboardingContentViewController: UIViewController {
         
         self.titleLabel = UILabel(frame: CGRectZero)
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.titleLabel.text = "Title"
+        self.titleLabel.text = "Name"
         self.view.addSubview(self.titleLabel)
         
 //        let metricsDictionary = []

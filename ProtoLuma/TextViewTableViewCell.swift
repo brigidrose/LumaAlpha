@@ -10,7 +10,7 @@ import UIKit
 
 class TextViewTableViewCell: UITableViewCell {
 
-    var textView:JVFloatLabeledTextView!
+    var textView:SZTextView!
     let keyboardAccessoryView = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
     var doneButton = UIBarButtonItem()
     
@@ -23,9 +23,12 @@ class TextViewTableViewCell: UITableViewCell {
         
         self.selectionStyle = UITableViewCellSelectionStyle.None
         
-        self.textView = JVFloatLabeledTextView(frame: CGRectZero)
+        self.textView = SZTextView(frame: CGRectZero)
         self.textView.translatesAutoresizingMaskIntoConstraints = false
         self.textView.scrollsToTop = false
+        self.textView.font = UIFont.systemFontOfSize(17)
+        self.textView.contentInset = UIEdgeInsetsMake(-2,-4,0,0)
+        self.textView.backgroundColor = nil
         let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
         
         doneButton.title = "Done"

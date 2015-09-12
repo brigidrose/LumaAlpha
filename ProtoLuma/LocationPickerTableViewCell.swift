@@ -32,7 +32,7 @@ class LocationPickerTableViewCell: UITableViewCell {
         let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[mapView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(horizontalConstraints)
 
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView(300)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView(300)]-12-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(verticalConstraints)
     }
     

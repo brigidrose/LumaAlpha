@@ -17,7 +17,7 @@ pod 'SDWebImage'
 pod 'CTAssetsPickerController',  '~> 3.0.0'
 pod 'JVFloatLabeledTextField'
 pod 'RACollectionViewReorderableTripletLayout'
-
+pod 'SZTextView'
 end
 
 target 'ProtoLumaTests' do

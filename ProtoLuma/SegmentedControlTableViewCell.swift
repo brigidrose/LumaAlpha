@@ -31,7 +31,7 @@ class SegmentedControlTableViewCell: UITableViewCell {
         let centerXConstraint = NSLayoutConstraint(item: self.segmentedControl, attribute: .CenterX, relatedBy: .Equal, toItem: self.contentView, attribute: .CenterX, multiplier: 1, constant: 0)
         self.contentView.addConstraint(centerXConstraint)
         
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-8-[segmentedControl(28)]-8-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-14-[segmentedControl(28)]-12-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(verticalConstraints)
         
         let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[segmentedControl]-8-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary)

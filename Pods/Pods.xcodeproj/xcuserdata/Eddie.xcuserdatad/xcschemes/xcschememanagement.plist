@@ -84,6 +84,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SZTextView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>TPKeyboardAvoiding.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -92,17 +97,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>290F92A2FE67370717D7E47F68C9E78B</key>
+		<key>34C9015A5C831EF0DEE8CD1B28E148FA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3487493EF0BC1A2F3C5D77CFCF7A64CA</key>
+		<key>387E74AA5C8F48E7287B1A2E9B1E748E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>371D91E9C261541F69CCCE326176925E</key>
+		<key>467EDB53DB08E38DD0535FCB0BD4D5F5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>47DCDBD4A13F326479657F2B9B9B6AF7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -112,12 +122,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5BBCB8FC37958BB477A7C5D9CDBD0CC4</key>
+		<key>65B5CC78132EA26B71E16468640013BA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>61D346547693ABEF73D3C16B9B1941B9</key>
+		<key>76B209398201C01B939D227840374899</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -132,47 +142,47 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8621194787749193C5D3A00F58869D7A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AABE0EECC1A07A14F8CBBB866D1049BA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>AF02DE907B5FB497D432BE0E8E56F848</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B7524FE35387186F76B085900C501C86</key>
+		<key>AF6ECCBD00A2A8C19E7B0C742EB4C47A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C9011C887E914168A29F4D25B35C9222</key>
+		<key>C273966B0E34E95A01E554E6F5794DB5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CCE07DC697DDCEDC1FD377DDEABB2B1F</key>
+		<key>C55C366CB381E372EE9D76680369A7E4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CD250689A2A8ED3D73398375E2CBB795</key>
+		<key>C86EA39F126C670FF9D25902732AB904</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DAE36A58664568F9F9C5EA5982DA110B</key>
+		<key>E599A8F4509713C622165C0AD5079815</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E94301CC02AFB6CD07C88D63FB6DDB74</key>
+		<key>E785B5E0F8DEA4AF56224284968E8BCD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EC7701F0F57A8EFED57E48D805B0D2CF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FF7EEDDA9DB60194C73088B17F44BF92</key>
 		<dict>
 			<key>primary</key>
 			<true/>

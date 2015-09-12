@@ -10,7 +10,7 @@ import UIKit
 
 class TextFieldTableViewCell: UITableViewCell {
 
-    var textField:JVFloatLabeledTextField!
+    var textField:UITextField!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -21,7 +21,7 @@ class TextFieldTableViewCell: UITableViewCell {
         
         self.selectionStyle = UITableViewCellSelectionStyle.None
         
-        self.textField = JVFloatLabeledTextField(frame: CGRectZero)
+        self.textField = UITextField(frame: CGRectZero)
         self.textField.translatesAutoresizingMaskIntoConstraints = false
         self.textField.leftView = UIView(frame: CGRectMake(0, 0, 8, self.contentView.frame.height))
         self.textField.leftViewMode = UITextFieldViewMode.Always

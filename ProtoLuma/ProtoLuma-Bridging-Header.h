@@ -25,4 +25,5 @@
 #import <CTAssetsPickerController/CTAssetsPickerController.h>
 #import "RACollectionViewTripletLayout.h"
 #import "ParseUI.h"
+#import "SZTextView.h"
 #endif /* ProtoLuma_Bridging_Header_h */

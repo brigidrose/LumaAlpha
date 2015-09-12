@@ -53,7 +53,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        self.tableView.backgroundColor = UIColor(white: 1, alpha: 1)
     }
 
     override func didReceiveMemoryWarning() {
@@ -175,6 +175,10 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (self.forCharm == nil){
             let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
@@ -229,7 +233,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 switch indexPath.row{
                 case 0:
                     let cell = tableView.dequeueReusableCellWithIdentifier("TextFieldTableViewCell") as! TextFieldTableViewCell
-                    cell.textField.placeholder = "Title"
+                    cell.textField.placeholder = "Name"
                     cell.textField.delegate = self
                     cell.textField.returnKeyType = UIReturnKeyType.Next
                     return cell
@@ -349,7 +353,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
 //                    cell.mediaCaptionTextView.placeholder = "Description (Optional)"
                     cell.mediaCaptionTextView.text = self.mediaDescriptions[indexPath.row]
-                    cell.mediaPreviewImageView.backgroundColor = UIColor(white: 0.85, alpha: 1)
+                    cell.mediaCaptionTextView.delegate = self
+                    cell.mediaPreviewImageView.backgroundColor = nil
                     
                     let manager = PHImageManager.defaultManager()
                     
@@ -382,25 +387,49 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //            return 0
 //        }
 //        else{
-            return 24
+            return 40
 //        }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section{
         case 0:
-            if (self.forCharm != nil){
-                return "Selected Charm"
-            }
-            else{
-                return "Select Charm"
-            }
-        case 1: return "About Moment"
-        case 2: return "Unlock Parameter"
-        case 3: return "Add Media"
-        default: return ""
+            let headerView = CharmsTableViewHeader()
+            headerView.sectionTitle.text = "1. Select Charm"
+            return headerView
+        case 1:
+            let headerView = CharmsTableViewHeader()
+            headerView.sectionTitle.text = "2. About the Moment"
+            return headerView
+        case 2:
+            let headerView = CharmsTableViewHeader()
+            headerView.sectionTitle.text = "3. Set Unlock Parameter"
+            return headerView
+        case 3:
+            let headerView = CharmsTableViewHeader()
+            headerView.sectionTitle.text = "4. Add Media"
+            return headerView
+        default:
+            return nil
         }
     }
+
+    
+//    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        switch section{
+//        case 0:
+//            if (self.forCharm != nil){
+//                return "Selected Charm"
+//            }
+//            else{
+//                return "Select Charm"
+//            }
+//        case 1: return "About Moment"
+//        case 2: return "Unlock Parameter"
+//        case 3: return "Add Media"
+//        default: return ""
+//        }
+//    }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if (self.forCharm == nil){
