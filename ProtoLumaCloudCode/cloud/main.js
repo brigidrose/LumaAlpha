@@ -41,7 +41,8 @@ Parse.Cloud.afterSave("Story", function(request) {
                             data: {
                                 alert: receiverNotificationText,
                                 sound: "",
-                                charmId: charmObjectReal.id
+                                subtitle: charmObjectReal.id,
+                                title: ""
                             }
                         }, {
                             success: function() {

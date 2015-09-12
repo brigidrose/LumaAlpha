@@ -627,7 +627,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = ProtoLuma/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.chunweichen.ProtoLuma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -650,7 +650,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = 1;
 				INFOPLIST_FILE = ProtoLuma/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.chunweichen.ProtoLuma;
 				PRODUCT_NAME = "$(TARGET_NAME)";

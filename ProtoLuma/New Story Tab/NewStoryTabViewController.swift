@@ -204,7 +204,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             switch indexPath.section{
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
-                let charm = self.charms[indexPath.row]
+                let charm = self.forCharm
                 let charmOwner = charm["owner"] as? PFUser
                 let charmGifter = charm["gifter"] as? PFUser
                 if (charmOwner != nil && charmGifter != nil){
@@ -420,6 +420,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         case 0:
             if (self.forCharm == nil){
                 self.forCharm = self.charms[indexPath.row]
+                print("setting to \(self.forCharm)")
                 self.tableView.reloadData()
             }
             else{
