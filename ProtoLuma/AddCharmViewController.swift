@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TPKeyboardAvoiding
 
 class AddCharmViewController: UIViewController, UITextFieldDelegate {
 

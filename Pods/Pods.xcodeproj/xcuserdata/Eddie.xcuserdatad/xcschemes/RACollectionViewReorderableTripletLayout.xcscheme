@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0B19691D3FF1CD06C3060F2B"
-               BuildableName = "libRACollectionViewReorderableTripletLayout.a"
+               BlueprintIdentifier = "66199E970CB84811C70D942A"
+               BuildableName = "RACollectionViewReorderableTripletLayout.framework"
                BlueprintName = "RACollectionViewReorderableTripletLayout"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

@@ -9,7 +9,7 @@
 // TODO: TableView displays registered bracelet and charms from Parse, then checks and displays ble & bus connection
 
 import UIKit
-
+import SDWebImage
 class AccountViewController: UITableViewController {
     var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var metawearManager:MBLMetaWearManager!

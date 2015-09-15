@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SZTextView
+import ParseUI
 
 class MomentMediaTableViewCell: UITableViewCell, UITextViewDelegate {
 

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SZTextView
 class TextViewTableViewCell: UITableViewCell {
 
     var textView:SZTextView!

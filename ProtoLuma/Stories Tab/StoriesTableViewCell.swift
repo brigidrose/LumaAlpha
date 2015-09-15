@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RACollectionViewReorderableTripletLayout
 
 class StoriesTableViewCell: UITableViewCell {
 

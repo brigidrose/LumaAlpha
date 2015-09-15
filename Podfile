@@ -3,6 +3,8 @@
 
 target 'ProtoLuma' do
 
+use_frameworks!
+
 pod 'FBSDKCoreKit'
 pod 'FBSDKLoginKit'
 pod 'FBSDKShareKit'

@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import CTAssetsPickerController
+
 class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, CTAssetsPickerControllerDelegate, MKMapViewDelegate {
 
     var cancelButton:UIBarButtonItem!

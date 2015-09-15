@@ -14,16 +14,16 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
-#import "PFFacebookUtils.h"
-#import "TPKeyboardAvoidingScrollView.h"
-#import "TPKeyboardAvoidingTableView.h"
-#import "TPKeyboardAvoidingCollectionView.h"
-#import "MBProgressHUD.h"
-#import "UIImageView+WebCache.h"
-#import "JVFloatLabeledTextField.h"
-#import "JVFloatLabeledTextView.h"
+#import <ParseFacebookUtilsV4/PFFacebookUtils.h>
+#import <TPKeyboardAvoiding/TPKeyboardAvoidingScrollView.h>
+#import <TPKeyboardAvoiding/TPKeyboardAvoidingTableView.h>
+#import <TPKeyboardAvoiding/TPKeyboardAvoidingCollectionView.h>
+#import <MBProgressHUD/MBProgressHUD.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <JVFloatLabeledTextField/JVFloatLabeledTextField.h>
+#import <JVFloatLabeledTextField/JVFloatLabeledTextView.h>
 #import <CTAssetsPickerController/CTAssetsPickerController.h>
-#import "RACollectionViewTripletLayout.h"
-#import "ParseUI.h"
-#import "SZTextView.h"
+#import <RACollectionViewReorderableTripletLayout/RACollectionViewTripletLayout.h>
+#import <ParseUI/ParseUI.h>
+#import <SZTextView/SZTextView.h>
 #endif /* ProtoLuma_Bridging_Header_h */

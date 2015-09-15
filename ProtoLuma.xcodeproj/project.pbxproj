@@ -32,7 +32,6 @@
 		2C947FAA1B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FA91B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift */; };
 		2C947FAC1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FAB1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift */; };
 		2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947FAD1B88039E00607770 /* CharmsTableViewHeader.swift */; };
-		2C9753B01C596EB0EB7C6543 /* libPods-ProtoLuma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 508AC65FC562FC57023DBCD0 /* libPods-ProtoLuma.a */; };
 		2CAB01211B98C88700652C76 /* ProfileBlurbTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAB01201B98C88700652C76 /* ProfileBlurbTableViewCell.swift */; };
 		2CAC3DFC1B9A1C0C00C41BE9 /* PairBraceletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC3DFB1B9A1C0C00C41BE9 /* PairBraceletViewController.swift */; };
 		2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC3DFD1B9A505900C41BE9 /* AddCharmViewController.swift */; };
@@ -45,6 +44,7 @@
 		2CF2FE291B7EBB6200F4E11D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF2FE271B7EBB6200F4E11D /* LaunchScreen.storyboard */; };
 		2CF2FE341B7EBB6200F4E11D /* ProtoLumaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE331B7EBB6200F4E11D /* ProtoLumaTests.swift */; };
 		2CF2FE3F1B7EBB6200F4E11D /* ProtoLumaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE3E1B7EBB6200F4E11D /* ProtoLumaUITests.swift */; };
+		42E931204FB7FCFA4AACC63E /* Pods_ProtoLuma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E400C48EE278EA290259850A /* Pods_ProtoLuma.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,8 +110,8 @@
 		2CF2FE3A1B7EBB6200F4E11D /* ProtoLumaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtoLumaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF2FE3E1B7EBB6200F4E11D /* ProtoLumaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoLumaUITests.swift; sourceTree = "<group>"; };
 		2CF2FE401B7EBB6200F4E11D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		508AC65FC562FC57023DBCD0 /* libPods-ProtoLuma.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtoLuma.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C46A74428C940DBAA412D414 /* Pods-ProtoLuma.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtoLuma.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtoLuma/Pods-ProtoLuma.debug.xcconfig"; sourceTree = "<group>"; };
+		E400C48EE278EA290259850A /* Pods_ProtoLuma.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtoLuma.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,7 +121,7 @@
 			files = (
 				2C1FA1081B93CBFC00B3C535 /* Social.framework in Frameworks */,
 				2C1FA1061B93CBF500B3C535 /* Accounts.framework in Frameworks */,
-				2C9753B01C596EB0EB7C6543 /* libPods-ProtoLuma.a in Frameworks */,
+				42E931204FB7FCFA4AACC63E /* Pods_ProtoLuma.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +270,7 @@
 			children = (
 				2C1FA1071B93CBFC00B3C535 /* Social.framework */,
 				2C1FA1051B93CBF500B3C535 /* Accounts.framework */,
-				508AC65FC562FC57023DBCD0 /* libPods-ProtoLuma.a */,
+				E400C48EE278EA290259850A /* Pods_ProtoLuma.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -287,6 +287,7 @@
 				2CF2FE151B7EBB6200F4E11D /* Frameworks */,
 				2CF2FE161B7EBB6200F4E11D /* Resources */,
 				8B6421E2EEF6A64D00C8C454 /* Copy Pods Resources */,
+				286C98000DD5A7448436B957 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -408,6 +409,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		286C98000DD5A7448436B957 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtoLuma/Pods-ProtoLuma-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7B8B500C4EF9827305A8E5AA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
