@@ -86,8 +86,10 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                     let charm = objects![0]
                     if (charm["claimed"] as? Bool == true){
                         // CID already claimed
+                        print("CID already claimed");
                     }
                     else{
+                        print("CID available");
                         // CID available, proceed to add user as owner of charm
                         charm["owner"] = PFUser.currentUser()!
                         charm["claimed"] = true
@@ -100,6 +102,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                 }
                 else{
                     // CID doesn't exist
+                    print("CID doesn't exist!");
                 }
             }
             else{

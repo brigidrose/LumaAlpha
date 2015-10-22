@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDisplayName</key>
+	<string>LumaLegacy</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -32,7 +34,7 @@
 	<key>FacebookAppID</key>
 	<string>1685859904976937</string>
 	<key>FacebookDisplayName</key>
-	<string>ProtoLuma</string>
+	<string>LumaLegacy</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -77,7 +79,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>"To unlock location moments, allow Luma access to your location."</string>
+	<string>&quot;To unlock location moments, allow Luma access to your location.&quot;</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

@@ -15,14 +15,14 @@
 		2C26F9B41B86951C0081388C /* CharmsGalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B31B86951C0081388C /* CharmsGalleryCollectionViewCell.swift */; };
 		2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */; };
 		2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */; };
-		2C2AFB6E1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2AFB6D1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		2C2AFB6E1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2AFB6D1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift */; };
 		2C30A1C91B965BDA00B64582 /* ClaimBIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */; };
-		2C35037B1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		2C7E34441B9B73C200EFA603 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		2C7E34461B9B7F0E00EFA603 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		2C7E34481B9B927100EFA603 /* MomentMediaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		2C35037B1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */; };
+		2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */; };
+		2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */; };
+		2C7E34441B9B73C200EFA603 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */; };
+		2C7E34461B9B7F0E00EFA603 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */; };
+		2C7E34481B9B927100EFA603 /* MomentMediaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */; };
 		2C813EF31B992B1200A6EDA7 /* BraceletSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C813EF21B992B1200A6EDA7 /* BraceletSettings.swift */; };
 		2C947F9C1B87A81B00607770 /* StoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */; };
 		2C947FA01B87AB2C00607770 /* ProtoLumaTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */; };
@@ -44,7 +44,7 @@
 		2CF2FE291B7EBB6200F4E11D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF2FE271B7EBB6200F4E11D /* LaunchScreen.storyboard */; };
 		2CF2FE341B7EBB6200F4E11D /* ProtoLumaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE331B7EBB6200F4E11D /* ProtoLumaTests.swift */; };
 		2CF2FE3F1B7EBB6200F4E11D /* ProtoLumaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE3E1B7EBB6200F4E11D /* ProtoLumaUITests.swift */; };
-		42E931204FB7FCFA4AACC63E /* Pods_ProtoLuma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E400C48EE278EA290259850A /* Pods_ProtoLuma.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		42E931204FB7FCFA4AACC63E /* Pods_ProtoLuma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E400C48EE278EA290259850A /* Pods_ProtoLuma.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -345,6 +345,7 @@
 				TargetAttributes = {
 					2CF2FE171B7EBB6200F4E11D = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = U45MJ5LU33;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -562,8 +563,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: CHUN-WEI CHEN (4LV8F2Q7NB)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -608,8 +609,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: CHUN-WEI CHEN (4LV8F2Q7NB)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -635,7 +636,8 @@
 			baseConfigurationReference = C46A74428C940DBAA412D414 /* Pods-ProtoLuma.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: CHUN-WEI CHEN (4LV8F2Q7NB)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -645,8 +647,9 @@
 				INFOPLIST_FILE = ProtoLuma/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chunweichen.ProtoLuma;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "d5e9d925-70f7-4a51-b2f2-96166ee3e3bf";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";
@@ -658,7 +661,8 @@
 			baseConfigurationReference = 265B19E26B3DCC62B1A214DE /* Pods-ProtoLuma.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: CHUN-WEI CHEN (4LV8F2Q7NB)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -668,8 +672,9 @@
 				INFOPLIST_FILE = ProtoLuma/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chunweichen.ProtoLuma;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "d5e9d925-70f7-4a51-b2f2-96166ee3e3bf";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";

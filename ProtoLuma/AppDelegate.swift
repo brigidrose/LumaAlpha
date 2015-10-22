@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var beans:NSMutableDictionary!
     var metawearManager:MBLMetaWearManager!
     var locationManager:CLLocationManager!
+    var deviceId:String!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -91,12 +92,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             PFInstallation.currentInstallation().saveEventually(nil)
         }
         FBSDKAppEvents.activateApp()
+        
+        
+        
+        
         self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
                 let bracelet = devices[0] as! MBLMetaWear
                 if (bracelet.state != MBLConnectionState.Connected){
                     bracelet.connectWithHandler({(error) -> Void in
-                        print("reconnected with \(bracelet)")
+                        print("reconnected with \(bracelet.deviceInfo.serialNumber)")
                     })
                 }
                 else{
@@ -119,6 +124,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Store the deviceToken in the current Installation and save it to Parse
         let installation = PFInstallation.currentInstallation()
         installation.setDeviceTokenFromData(deviceToken)
+//        print("Device token: ")
+//        print(installation.deviceToken)
         installation.saveInBackgroundWithBlock(nil)
     }
     
@@ -127,6 +134,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         print(userInfo)
+        let message = String(userInfo["aps"]!["alert"])
+        print("Push notification message is: "+message)
+        
+        //turn the LED on
+        print("Flashing the LED")
+        self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
+            if (devices.count > 0){
+                
+                let bracelet = devices[0] as! MBLMetaWear;
+                print("Device found with serial number \(bracelet.deviceInfo.serialNumber)")
+                if (bracelet.state != MBLConnectionState.Connected){
+                    print("Connecting to device...")
+                    bracelet.connectWithHandler({(error) -> Void in
+                        print("reconnected with \(bracelet)")
+                        bracelet.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
+                    })
+                }else{
+                    print("Device already connected.  Flashing.")
+                    bracelet.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
+                }
+                
+            }
+            else{
+                print("no saved bracelet found in push notification handler")
+            }
+        })
+        
     }
     
     // MARK: - Core Data stack

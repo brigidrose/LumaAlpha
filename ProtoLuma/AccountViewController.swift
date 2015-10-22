@@ -41,6 +41,21 @@ class AccountViewController: UITableViewController {
         self.tableView.backgroundColor = UIColor(white: 1, alpha: 1)
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
+        let queryForBracelets = PFQuery(className: "Bracelet")
+        let braceletId:String! = PFUser.currentUser()!["bracelet"].objectId
+        print("Looking for bracelet id "+braceletId)
+        queryForBracelets.whereKey("objectId", equalTo: braceletId)
+        do{
+            let bracelets:[PFObject] = try queryForBracelets.findObjects()
+            print("bracelets found.  count: \(bracelets.count)")
+            for bracelet in bracelets{
+                print("Bracelet serialNumber for user is: "+String(bracelet["serialNumber"]))
+            }
+            
+        }catch{
+            print("Querying for bracelets failed")
+        }
+        
         self.retrieveSavedMetaWear()
         
     }
@@ -297,6 +312,40 @@ class AccountViewController: UITableViewController {
             }
             else{
                 print("no saved bracelet found")
+                self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
+                    print("scanned for metawear")
+                    for device in devices as! [MBLMetaWear]{
+                        // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
+                        print(device)
+                        if (device.state == MBLConnectionState.Connected){
+                            print("already connected to new bracelet")
+                        }
+                        else{
+                            self.bracelet = device
+                            //pair and remember
+                            print(self.bracelet.state.rawValue)
+                            
+                            self.bracelet.connectWithHandler({(error) -> Void in
+                                if (error == nil){
+                                    print("bracelet name: ")
+                                    print(self.bracelet.deviceInfo.serialNumber)
+                                    self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
+                                        print("bracelet configured")
+                                        self.bracelet.rememberDevice()
+                                        //self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
+                                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                                    })
+                                }
+                                else{
+                                    print(error)
+                                }
+                            })
+
+                     
+                        }
+                    }
+                })
+
             }
         })
     }
