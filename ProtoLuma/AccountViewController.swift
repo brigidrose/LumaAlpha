@@ -41,20 +41,20 @@ class AccountViewController: UITableViewController {
         self.tableView.backgroundColor = UIColor(white: 1, alpha: 1)
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        let queryForBracelets = PFQuery(className: "Bracelet")
-        let braceletId:String! = PFUser.currentUser()!["bracelet"].objectId
-        print("Looking for bracelet id "+braceletId)
-        queryForBracelets.whereKey("objectId", equalTo: braceletId)
-        do{
-            let bracelets:[PFObject] = try queryForBracelets.findObjects()
-            print("bracelets found.  count: \(bracelets.count)")
-            for bracelet in bracelets{
-                print("Bracelet serialNumber for user is: "+String(bracelet["serialNumber"]))
-            }
-            
-        }catch{
-            print("Querying for bracelets failed")
-        }
+//        let queryForBracelets = PFQuery(className: "Bracelet")
+//        let braceletId:String! = PFUser.currentUser()!["bracelet"].objectId
+//        print("Looking for bracelet id "+braceletId)
+//        queryForBracelets.whereKey("objectId", equalTo: braceletId)
+//        do{
+//            let bracelets:[PFObject] = try queryForBracelets.findObjects()
+//            print("bracelets found.  count: \(bracelets.count)")
+//            for bracelet in bracelets{
+//                print("Bracelet serialNumber for user is: "+String(bracelet["serialNumber"]))
+//            }
+//            
+//        }catch{
+//            print("Querying for bracelets failed")
+//        }
         
         self.retrieveSavedMetaWear()
         
@@ -65,6 +65,13 @@ class AccountViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "showAddCharm") {
+            let svc = segue.destinationViewController.childViewControllers[0] as! AddCharmViewController
+            svc.numCharms = self.charms.count
+        }
+    }
+    
     // MARK: Table View methods
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -72,22 +79,28 @@ class AccountViewController: UITableViewController {
         case 0:
             // Profile Detail
             let cell = tableView.dequeueReusableCellWithIdentifier("ProfileBlurbTableViewCell") as! ProfileBlurbTableViewCell
-            let fullName = (PFUser.currentUser()!["firstName"] as! String) + " " + (PFUser.currentUser()!["lastName"] as! String)
+            var fullName:String = "No Name"
+            if (PFUser.currentUser()!["firstName"] != nil && PFUser.currentUser()!["lastName"] != nil){
+                fullName = (PFUser.currentUser()!["firstName"] as! String) + " " + (PFUser.currentUser()!["lastName"] as! String)
+            }
             cell.nameLabel.text = fullName
             let block: SDWebImageCompletionBlock! = {(image: UIImage!, error: NSError!, cacheType: SDImageCacheType, imageURL: NSURL!) -> Void in
 
             }
+            if (PFUser.currentUser()!["facebookId"] != nil){
+                let id = PFUser.currentUser()!["facebookId"] as! String
+                let url = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")
+                cell.profileImageView.sd_setImageWithURL(url, completed: block)
+            }
             
-            let id = PFUser.currentUser()!["facebookId"] as! String
-            let url = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")
-            
-            cell.profileImageView.sd_setImageWithURL(url, completed: block)
-
             return cell
         case 1:
             // Bracelet
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
-            let userFirstName = PFUser.currentUser()!["firstName"] as! String
+            var userFirstName = "No Name"
+            if (PFUser.currentUser()!["firstName"] != nil){
+                userFirstName = PFUser.currentUser()!["firstName"] as! String
+            }
             cell.charmTitle.text = "\(userFirstName)'s Luma Bracelet"
             if (self.bracelet != nil){
                 cell.charmSubtitle.text = "\(self.getMBLConnectionStateString(self.bracelet.state))"

@@ -48,6 +48,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.locationManager.delegate = self
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.startUpdatingLocation()
+        
+//        let delay = 10000.0;
+//        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay));
+//        dispatch_after(time, dispatch_get_main_queue(), {
+//            NSThread.detachNewThreadSelector(Selector("pushReceived"), toTarget:self, withObject: nil);
+//        })
 
         return true
     }
@@ -130,36 +136,88 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
 
+    
+    
+    func notifyBracelet(device: MBLMetaWear, charmSlot: UInt8){
+        device.hapticBuzzer.startHapticWithDutyCycle(255, pulseWidth: 500, completion: nil)
+        device.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
+        let length:UInt8 = 7; // Specific to your NeoPixel stand
+        let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
+        let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand
+        
+        let strand:MBLNeopixelStrand = device.neopixel.strandWithColor(color, speed: speed, pin: 0, length: length);
+        
+        strand.setPixel(charmSlot, color: UIColor.redColor())
+        
+        let timeBetweenFlashes = 800 * NSEC_PER_MSEC
+        
+        var delay = timeBetweenFlashes
+        var time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            strand.setPixel(charmSlot, color: UIColor.greenColor())
+        })
+        
+        delay += timeBetweenFlashes
+        time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            strand.setPixel(charmSlot, color: UIColor.blueColor())
+            
+        })
+        
+        delay += timeBetweenFlashes
+        time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            strand.turnStrandOff()
+            
+        })
+        
+        
+        
+//        for (var i:UInt8 = 0; i < length; i++) {
+//            strand.setPixel(i, color: UIColor.redColor());
+//        }
+        
+    }
+    
+    func pushReceivedWithCharmSlot(charmSlot: UInt8){
+        
+        self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
+            if (devices.count > 0){
+                let device = devices[0] as! MBLMetaWear
+                if (device.state == MBLConnectionState.Connected){
+                    print("already connected to bracelet")
+                    self.notifyBracelet(device, charmSlot: charmSlot)
+                }else{
+                    print("not connected to bracelet.  connecting.")
+                    device.connectWithHandler({(error) -> Void in
+                        if (error == nil){
+                            self.notifyBracelet(device, charmSlot: charmSlot)
+                        }else{
+                            print(error)
+                        }
+                    })
+                }
+            }else{
+                print("no saved metawears found in push notification handler.  fuck.")
+            }
+        })
+
+    }
+    
     // MARK: Handle notifications when app is in foreground
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         print(userInfo)
         let message = String(userInfo["aps"]!["alert"])
         print("Push notification message is: "+message)
+        var charmSlot = UInt8(0)
+        if (userInfo["charmSlot"] != nil){
+            charmSlot = UInt8(userInfo["charmSlot"] as! Int)
+        }
+        print("CharmSlot: \(charmSlot)")
         
-        //turn the LED on
-        print("Flashing the LED")
-        self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
-            if (devices.count > 0){
-                
-                let bracelet = devices[0] as! MBLMetaWear;
-                print("Device found with serial number \(bracelet.deviceInfo.serialNumber)")
-                if (bracelet.state != MBLConnectionState.Connected){
-                    print("Connecting to device...")
-                    bracelet.connectWithHandler({(error) -> Void in
-                        print("reconnected with \(bracelet)")
-                        bracelet.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
-                    })
-                }else{
-                    print("Device already connected.  Flashing.")
-                    bracelet.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
-                }
-                
-            }
-            else{
-                print("no saved bracelet found in push notification handler")
-            }
-        })
+        
+        pushReceivedWithCharmSlot(charmSlot)
         
     }
     

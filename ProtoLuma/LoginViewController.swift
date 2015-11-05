@@ -69,28 +69,41 @@ class LoginViewController: UIViewController {
                             if (error == nil){
                                 let user = result as! NSDictionary
                                 PFUser.currentUser()!.email = user.objectForKey("email") as? String
-                                let birthdayString:String = user.objectForKey("birthday") as! String
+                                
+                                //only load birthday if it exists in the profile.
                                 let dateFormatter = NSDateFormatter()
-                                if (birthdayString.characters.count == 10){
-                                    dateFormatter.dateFormat = "MM/dd/yyyy"
+                                dateFormatter.dateFormat = "MM/dd/yyyy"
+                                var birthday:NSDate = dateFormatter.dateFromString("01/01/1900")!
+                                if let _ = user["birthday"] {
+                                    let birthdayString:String = user.objectForKey("birthday") as! String
+                                    let dateFormatter = NSDateFormatter()
+                                    if (birthdayString.characters.count == 10){
+                                        dateFormatter.dateFormat = "MM/dd/yyyy"
+                                    }
+                                    else if birthdayString.characters.count == 4{
+                                        dateFormatter.dateFormat = "yyyy"
+                                    }
+                                    else if birthdayString.characters.count == 5{
+                                        dateFormatter.dateFormat = "MM/dd"
+                                    }
+                                    birthday = dateFormatter.dateFromString(birthdayString)!
                                 }
-                                else if birthdayString.characters.count == 4{
-                                    dateFormatter.dateFormat = "yyyy"
-                                }
-                                else if birthdayString.characters.count == 5{
-                                    dateFormatter.dateFormat = "MM/dd"
-                                }
-                                let birthday:NSDate = dateFormatter.dateFromString(birthdayString)!
+                                
                                 PFUser.currentUser()?["facebookId"] = user.objectForKey("id")
                                 PFUser.currentUser()?["birthday"] = birthday
                                 PFUser.currentUser()?["firstName"] = user.objectForKey("first_name")
                                 PFUser.currentUser()?["lastName"] = user.objectForKey("last_name")
                                 PFUser.currentUser()?["gender"] = user.objectForKey("gender")
-                                let locationDictionary = user.objectForKey("location") as! NSDictionary
-                                PFUser.currentUser()?["location"] = locationDictionary["name"]
+                                if let _ = user["location"] {
+                                    let locationDictionary = user.objectForKey("location") as! NSDictionary
+                                    PFUser.currentUser()?["location"] = locationDictionary["name"]
+                                }
                                 PFUser.currentUser()?.saveInBackgroundWithBlock({(success, error) -> Void in
                                     if (success){
-                                        self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
+                                        PFInstallation.currentInstallation()["currentUser"] = PFUser.currentUser()
+                                        PFInstallation.currentInstallation().saveInBackgroundWithBlock({(success, error) -> Void in
+                                            self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
+                                        })
                                     }
                                     else{
                                         print(error)

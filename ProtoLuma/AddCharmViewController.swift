@@ -13,6 +13,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
 
     var instructionLabel:UILabel!
     var enterCIDTextField:UITextField!
+    var numCharms:Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,13 +87,14 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                     let charm = objects![0]
                     if (charm["claimed"] as? Bool == true){
                         // CID already claimed
-                        print("CID already claimed");
+                        print("CID already claimed")
                     }
                     else{
-                        print("CID available");
+                        print("CID available")
                         // CID available, proceed to add user as owner of charm
                         charm["owner"] = PFUser.currentUser()!
                         charm["claimed"] = true
+                        charm["slotNumber"] = self.numCharms
                         charm.saveEventually({(error) -> Void in
                             print("charm claimed and registered on Parse")
                             (self.parentViewController?.presentingViewController?.childViewControllers[0] as! AccountViewController).loadCharms()

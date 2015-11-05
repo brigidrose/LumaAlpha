@@ -111,18 +111,12 @@ class PairBraceletViewController: UIViewController {
     
 
     func pairAndSetupANCS(){
-        print(self.bracelet.state.rawValue)
-        self.bracelet.connectWithHandler({(error) -> Void in
-            if (error == nil){
-                self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
-                    print("bracelet configured")
-                    self.bracelet.rememberDevice()
-                    self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
-                })
-            }
-            else{
-                print(error)
-            }
+        print("Pairing now!")
+
+        self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
+            print("bracelet configured")
+            self.bracelet.rememberDevice()
+            self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
         })
     }
     
@@ -138,27 +132,23 @@ class PairBraceletViewController: UIViewController {
                     print("scanned for metawear")
                     for device in devices as! [MBLMetaWear]{
                         // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
-                        print(device)
                         if (device.state == MBLConnectionState.Connected){
                             print("already connected to new bracelet")
                         }
                         else{
-                            self.bracelet = device
-                            self.pairAndSetupANCS()
-                            //                    device.connectWithHandler({(error) -> Void in
-                            //                        print("Connected")
-                            //                        if (error == nil){
-                            //                            print("connected to \(device)")
-                            //                            if (device.deviceInfo.serialNumber == self.braceletSerialNumber){
-                            //                                self.bracelet = device
-                            //                                self.pairAndSetupANCS()
-                            //                                self.bracelet.rememberDevice()
-                            //                            }
-                            //                        }
-                            //                        else{
-                            //                            print(error)
-                            //                        }
-                            //                    })
+                            device.connectWithHandler({(error) -> Void in
+                                print("Connected")
+                                if (error == nil){
+                                    print("connected to \(device.deviceInfo.serialNumber)")
+                                    if (device.deviceInfo.serialNumber == self.braceletSerialNumber){
+                                        self.bracelet = device
+                                        self.pairAndSetupANCS()
+                                    }
+                                }
+                                else{
+                                    print(error)
+                                }
+                            })
                         }
                     }
                 })

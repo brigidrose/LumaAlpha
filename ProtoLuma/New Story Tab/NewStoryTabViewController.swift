@@ -82,6 +82,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         story["sender"] = PFUser.currentUser()
         story["forCharm"] = self.forCharm
         if (self.unlockParameterType != nil){
+            print("unlock parameter type is not nil")
             story["unlockType"] = self.unlockParameterType
             if (self.unlockParameterType == "time"){
                 story["unlockTime"] = self.unlockTime
@@ -95,47 +96,70 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             story["unlocked"] = true
         }
         story["readStatus"] = false
+        print("Creating image manager")
         let manager = PHImageManager.defaultManager()
         let storyUnitsRelation:PFRelation = story.relationForKey("storyUnits")
         var savedCount = 0
-        for mediaAsset in self.mediaAssets{
-            print(mediaAsset)
-            let options = PHImageRequestOptions()
-            options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
-            options.synchronous = false
-            options.networkAccessAllowed = true
-            options.progressHandler = {(progress, error, stop, info) -> Void in
-                print(progress)
-            }
-            manager.requestImageForAsset(mediaAsset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
-                let storyUnit = PFObject(className: "Story_Unit")
-                let sizedImage = self.RBResizeImage(image!, targetSize: CGSizeMake(1200, 1200))
-                storyUnit["file"] = PFFile(data: UIImagePNGRepresentation(sizedImage)!)
-                storyUnit["description"] = self.mediaDescriptions[self.mediaAssets.indexOf(mediaAsset)!]
-                storyUnit.saveInBackgroundWithBlock({(success, error) -> Void in
-                    if (error == nil){
-                        print("\(storyUnit) saved!")
-                        savedCount++
-                        storyUnitsRelation.addObject(storyUnit)
-                        if (savedCount == self.mediaAssets.count){
-                            story.saveInBackgroundWithBlock({(success, error) -> Void in
-                                if (error == nil){
-                                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
-                                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
-                                    self.dismissViewControllerAnimated(true, completion: nil)
-                                }
-                                else{
-                                    print(error)
-                                }
-                                
-                            })
+        if (self.mediaAssets.count > 0){
+            for mediaAsset in self.mediaAssets{
+                print("Finding media asset")
+                print(mediaAsset)
+                let options = PHImageRequestOptions()
+                options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+                options.synchronous = false
+                options.networkAccessAllowed = true
+                options.progressHandler = {(progress, error, stop, info) -> Void in
+                    print(progress)
+                }
+                manager.requestImageForAsset(mediaAsset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
+                    let storyUnit = PFObject(className: "Story_Unit")
+                    let sizedImage = self.RBResizeImage(image!, targetSize: CGSizeMake(1200, 1200))
+                    storyUnit["file"] = PFFile(data: UIImagePNGRepresentation(sizedImage)!)
+                    storyUnit["description"] = self.mediaDescriptions[self.mediaAssets.indexOf(mediaAsset)!]
+                    storyUnit.saveInBackgroundWithBlock({(success, error) -> Void in
+                        if (error == nil){
+                            print("\(storyUnit) saved!")
+                            savedCount++
+                            storyUnitsRelation.addObject(storyUnit)
+                            if (savedCount == self.mediaAssets.count){
+                                story.saveInBackgroundWithBlock({(success, error) -> Void in
+                                    if (error == nil){
+                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
+                                        self.dismissViewControllerAnimated(true, completion: nil)
+                                    }
+                                    else{
+                                        print(error)
+                                        self.navigationItem.leftBarButtonItem?.enabled = true
+                                        self.navigationItem.rightBarButtonItem?.enabled = true
+                                    }
+                                    
+                                })
+                            }
                         }
-                    }
-                    else{
-                        print(error)
-                    }
+                        else{
+                            print(error)
+                            self.navigationItem.leftBarButtonItem?.enabled = true
+                            self.navigationItem.rightBarButtonItem?.enabled = true
+                        }
+                    })
                 })
+            }
+        }else{
+            story.saveInBackgroundWithBlock({(success, error) -> Void in
+                if (error == nil){
+                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+                else{
+                    print(error)
+                    self.navigationItem.leftBarButtonItem?.enabled = true
+                    self.navigationItem.rightBarButtonItem?.enabled = true
+                }
+                
             })
+
         }
     }
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
