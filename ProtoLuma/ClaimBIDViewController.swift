@@ -72,7 +72,7 @@ class ClaimBIDViewController: UIViewController {
     
     func submitButtonTapped(sender: UIButton) {
         
-        if (PFUser.currentUser()!["bracelet"] == nil){
+//        if (PFUser.currentUser()!["bracelet"] == nil){
             // Get BID from user input
             let BID = self.enterBIDTextField.text
             
@@ -142,15 +142,16 @@ class ClaimBIDViewController: UIViewController {
                     print(error)
                 }
             })
-        }
-        else{
-            print("helo")
-            PFUser.currentUser()!["bracelet"].fetchIfNeededInBackgroundWithBlock({(result, error) -> Void in
-                print(result)
-                self.braceletSerialNumber = result!.objectForKey("serialNumber") as! String
-                self.performSegueWithIdentifier("showPairBracelet", sender: self)
-            })
-        }
+//        }
+//        else{
+//            print("helo")
+//            PFUser.currentUser()!["bracelet"].fetchIfNeededInBackgroundWithBlock({(result, error) -> Void in
+//                print(result)
+//                self.bracelet = result
+//                self.braceletSerialNumber = result!.objectForKey("serialNumber") as! String
+//                self.performSegueWithIdentifier("showPairBracelet", sender: self)
+//            })
+//        }
 
         
 

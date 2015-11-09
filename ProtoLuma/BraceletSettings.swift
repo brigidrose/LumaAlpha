@@ -28,40 +28,22 @@ class BraceletSettings: NSObject, MBLRestorable {
     
     func runOnDeviceBoot(device: MBLMetaWear!) {
 
-//        let event:MBLEvent = device.ancs.eventWithCategoryIds(MBLANCSCategoryID.Any)
-//        print(device.ancs)
-//        event.programCommandsToRunOnEvent({
-//            device.led.flashLEDColor(UIColor.redColor(), withIntensity: 1.0, numberOfFlashes: 5)
 
-//            let length = 3 // Specific to your NeoPixel stand
-//            let color:MBLColorOrdering = MBLColorOrdering.RGB; // Specific to your NeoPixel stand
-//            let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand
-//            
-//            let strand:MBLNeopixelStrand = device.neopixel.strandWithColor(color, speed: speed, pin: 0, length: UInt8(length))
-//            for (var i = 0; i < length; i++){
-//                strand.setPixel(UInt8(i), color: UIColor.greenColor())
-//            }
-//            print("neopixelset")
-//            strand.turnStrandOff()
-
-//        })
-        
-//        let event3:MBLEvent = device.ancs.eventWithCategoryIds(MBLANCSCategoryID.Any, eventIds: MBLANCSEventID.NotificationAdded, eventFlags: MBLANCSEventFlag.Any, attributeId: MBLANCSNotificationAttributeID.AppIdentifier, attributeData: "com.chunweichen.ProtoLuma")
-//        event3.programCommandsToRunOnEvent({
-//            device.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 20)
-//
-//        })
-        
         let event5:MBLEvent = device.ancs.eventWithCategoryIds(MBLANCSCategoryID.Any, eventIds: MBLANCSEventID.NotificationAdded, eventFlags: MBLANCSEventFlag.Any, attributeId: MBLANCSNotificationAttributeID.AppIdentifier, attributeData: "com.lumalegacy.Luma")
         event5.programCommandsToRunOnEvent({
             device.led.flashLEDColor(UIColor.blueColor(), withIntensity: 1.0, numberOfFlashes: 3)
+//            let length:UInt8 = 7; // Specific to your NeoPixel stand
+//            let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
+//            let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand
+//            
+//            let strand:MBLNeopixelStrand = device.neopixel.strandWithColor(color, speed: speed, pin: 0, length: length);
+//            
+//            
+//            for(var i:UInt8 = 0; i < 100; i++){
+//                strand.setPixel(i % length, color: UIColor.redColor())
+//                strand.turnStrandOff()
+//            }
         })
-
-        
-//        let event4:MBLEvent = device.ancs.eventWithCategoryIds(MBLANCSCategoryID.Any, eventIds: MBLANCSEventID.NotificationAdded, eventFlags: MBLANCSEventFlag.Any, attributeId: MBLANCSNotificationAttributeID.Subtitle, attributeData: "subtitle")
-//        event4.programCommandsToRunOnEvent({
-//            device.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 20)
-//        })
 
         
         let event2:MBLEvent = device.mechanicalSwitch.switchUpdateEvent

@@ -67,8 +67,18 @@ class AccountViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showAddCharm") {
-            let svc = segue.destinationViewController.childViewControllers[0] as! AddCharmViewController
-            svc.numCharms = self.charms.count
+//            let svc = segue.destinationViewController.childViewControllers[0] as! AddCharmViewController
+//            var numCharms = 0;
+//            let userId = PFUser.currentUser()!.objectId
+//            for(var i = 0; i < self.charms.count; i++){
+//                let owner = self.charms[i]["owner"].objectId
+//                print("Charm owner: "+String(owner))
+//                print("Current user id: "+String(userId))
+//                if(owner == userId){
+//                    numCharms++;
+//                }
+//            }
+//            svc.numCharms = numCharms;
         }
     }
     
@@ -130,17 +140,23 @@ class AccountViewController: UITableViewController {
                 let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
                 let charm = self.charms[indexPath.row]
                 cell.charmTitle.text = charm["name"] as? String
-                let charmOwner = charm["owner"] as? PFUser
-                if (charmOwner != nil){
-                    let charmOwnerFirstName = charmOwner?["firstName"] as? String
-                    let charmOwnerLastName = charmOwner?["lastName"] as? String
-                    if (charmOwner != PFUser.currentUser()!){
-                        cell.charmSubtitle.text = "Gifted to \(charmOwnerFirstName!) \(charmOwnerLastName!)"
-                    }
-                    else{
-                        cell.charmSubtitle.text = "connection state"
-                    }
+//                let charmOwner = charm["owner"] as? PFUser
+//                if (charmOwner != nil){
+//                    let charmOwnerFirstName = charmOwner?["firstName"] as? String
+//                    let charmOwnerLastName = charmOwner?["lastName"] as? String
+//                    if (charmOwner != PFUser.currentUser()!){
+//                        cell.charmSubtitle.text = "Gifted to \(charmOwnerFirstName!) \(charmOwnerLastName!)"
+//                    }
+//                    else{
+//                        cell.charmSubtitle.text = "connection state"
+//                    }
+//                }
+                if(charm["gifter"] as? PFUser == PFUser.currentUser()!){
+                    cell.charmSubtitle.text = "Gifted"
+                }else{
+                    cell.charmSubtitle.text = "Owned"
                 }
+                
                 return cell
             }
         case 3:
@@ -215,13 +231,14 @@ class AccountViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section{
-        case 1: break
+        case 1:
 //            self.bracelets[indexPath.row].led.setLEDOn(false, withOptions: 1)
 //            self.bracelets[indexPath.row].disconnectWithHandler({(error) -> Void in
 //                print(self.bracelets[indexPath.row])
 //                self.bracelets[indexPath.row].forgetDevice()
 //                self.retrieveSavedMetaWear()
 //            })
+            self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
         case 2:
             if (indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1){
                 // Add a New Charm selected
@@ -325,39 +342,39 @@ class AccountViewController: UITableViewController {
             }
             else{
                 print("no saved bracelet found")
-                self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
-                    print("scanned for metawear")
-                    for device in devices as! [MBLMetaWear]{
-                        // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
-                        print(device)
-                        if (device.state == MBLConnectionState.Connected){
-                            print("already connected to new bracelet")
-                        }
-                        else{
-                            self.bracelet = device
-                            //pair and remember
-                            print(self.bracelet.state.rawValue)
-                            
-                            self.bracelet.connectWithHandler({(error) -> Void in
-                                if (error == nil){
-                                    print("bracelet name: ")
-                                    print(self.bracelet.deviceInfo.serialNumber)
-                                    self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
-                                        print("bracelet configured")
-                                        self.bracelet.rememberDevice()
-                                        //self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
-                                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Automatic)
-                                    })
-                                }
-                                else{
-                                    print(error)
-                                }
-                            })
-
-                     
-                        }
-                    }
-                })
+//                self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
+//                    print("scanned for metawear")
+//                    for device in devices as! [MBLMetaWear]{
+//                        // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
+//                        print(device)
+//                        if (device.state == MBLConnectionState.Connected){
+//                            print("already connected to new bracelet")
+//                        }
+//                        else{
+//                            self.bracelet = device
+//                            //pair and remember
+//                            print(self.bracelet.state.rawValue)
+//                            
+//                            self.bracelet.connectWithHandler({(error) -> Void in
+//                                if (error == nil){
+//                                    print("bracelet name: ")
+//                                    print(self.bracelet.deviceInfo.serialNumber)
+//                                    self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
+//                                        print("bracelet configured")
+//                                        self.bracelet.rememberDevice()
+//                                        //self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
+//                                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Automatic)
+//                                    })
+//                                }
+//                                else{
+//                                    print(error)
+//                                }
+//                            })
+//
+//                     
+//                        }
+//                    }
+//                })
 
             }
         })

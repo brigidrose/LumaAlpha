@@ -114,14 +114,20 @@ class PairBraceletViewController: UIViewController {
         print("Pairing now!")
 
         self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
-            print("bracelet configured")
-            self.bracelet.rememberDevice()
-            self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
+            if(error != nil){
+                print("pairing error")
+                print(error)
+            }else{
+                print("bracelet configured")
+                self.bracelet.rememberDevice()
+                self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
+            }
         })
     }
     
     // MARK: MetaWearManager Methods
     func connectToBraceletOfSerialNumber(serialNumber:String){
+        print("connect to bracelet of serialnumber \(serialNumber)")
         self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
                 self.bracelet = devices[0] as! MBLMetaWear
@@ -144,16 +150,18 @@ class PairBraceletViewController: UIViewController {
                                         self.bracelet = device
                                         self.pairAndSetupANCS()
                                     }
+                                    self.pairBraceletButton.enabled = true
                                 }
                                 else{
                                     print(error)
+                                    self.pairBraceletButton.enabled = true
                                 }
                             })
                         }
                     }
                 })
-                print("no metawear available for pairing")
-                self.pairBraceletButton.enabled = true
+//                print("no metawear available for pairing")
+//                self.pairBraceletButton.enabled = true
             }
         })
     }

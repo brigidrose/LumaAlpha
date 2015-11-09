@@ -249,22 +249,23 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("CharmTitleBlurbHeaderTableViewCell") as! CharmTitleBlurbHeaderTableViewCell
             let charm = self.charms[self.indexOfCharmViewed]
-            let charmOwner = charm["owner"] as? PFUser
-            if (charmOwner != nil){
-                let charmOwnerFirstName = charmOwner?["firstName"] as! String
-                let charmOwnerLastName = charmOwner?["lastName"] as! String
-                let charmGifter = charm["gifter"] as! PFUser
-                let charmGifterFirstName = charmGifter["firstName"] as! String
-                let charmGifterLastName = charmGifter["lastName"] as! String
+//            let charmOwner = charm["owner"] as? PFUser
+            let charmGifter = charm["gifter"] as? PFUser
+            if (charmGifter != nil){
+//                let charmOwnerFirstName = charmOwner?["firstName"] as! String
+//                let charmOwnerLastName = charmOwner?["lastName"] as! String
+                let charmGifterFirstName = charmGifter?["firstName"] as! String
+                let charmGifterLastName = charmGifter?["lastName"] as! String
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "MM/dd/yyyy"
                 let updatedString = "\(dateFormatter.stringFromDate(charm.updatedAt!))"
                 cell.charmTitleLabel.text = charm["name"] as? String
-                if (charmOwner == PFUser.currentUser()!){
-                    cell.charmBlurbLabel.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName.characters.first!). on \(updatedString)"
+                if (charmGifter == PFUser.currentUser()!){
+                    cell.charmBlurbLabel.text = "Gifted charm"
                 }
                 else{
-                    cell.charmBlurbLabel.text = "Gifted to \(charmOwnerFirstName) \(charmOwnerLastName.characters.first!). on \(updatedString)"
+                    cell.charmBlurbLabel.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName.characters.first!). on \(updatedString)"
+
                 }
             }
             return cell
@@ -333,11 +334,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         
     func loadCharms(){
         let queryForCharmsOwned = PFQuery(className: "Charm")
-        queryForCharmsOwned.whereKey("owner", equalTo: PFUser.currentUser()!)
+        queryForCharmsOwned.whereKey("owners", equalTo: PFUser.currentUser()!)
         let queryForCharmsGifted = PFQuery(className: "Charm")
         queryForCharmsGifted.whereKey("gifter", equalTo: PFUser.currentUser()!)
         let queryForCharms = PFQuery.orQueryWithSubqueries([queryForCharmsOwned, queryForCharmsGifted])
-        queryForCharms.includeKey("owner")
+//        queryForCharms.includeKey("owners")
         queryForCharms.includeKey("gifter")
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             self.charms = objects!
@@ -377,7 +378,9 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
             queryForStoryUnits?.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
 //                print(objects as! [PFObject])
                 if (story["unlocked"] as! Bool){
-                    self.storiesStoryUnits[indexPath.row] = objects!
+                    if(indexPath.row < self.storiesStoryUnits.count){
+                        self.storiesStoryUnits[indexPath.row] = objects!
+                    }
                 }
                 else{
                     self.lockedStoriesStoryUnits[indexPath.row] = objects!

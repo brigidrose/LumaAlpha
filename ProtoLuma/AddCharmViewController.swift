@@ -85,22 +85,34 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                 if (objects?.count != 0){
                     // CID exists
                     let charm = objects![0]
-                    if (charm["claimed"] as? Bool == true){
-                        // CID already claimed
-                        print("CID already claimed")
-                    }
-                    else{
+//                    if (charm["claimed"] as? Bool == true){
+//                        // CID already claimed
+//                        print("CID already claimed")
+//                    }
+//                    else{
                         print("CID available")
-                        // CID available, proceed to add user as owner of charm
-                        charm["owner"] = PFUser.currentUser()!
-                        charm["claimed"] = true
-                        charm["slotNumber"] = self.numCharms
-                        charm.saveEventually({(error) -> Void in
-                            print("charm claimed and registered on Parse")
+//                         CID available, proceed to add user as owner of charm
+//                        charm["owner"] = PFUser.currentUser()!
+                    
+                        //add user to many to many relationship
+                        let relation = charm.relationForKey("owners")
+                        relation.addObject(PFUser.currentUser()!)
+//                        charm["claimed"] = true
+//                        charm["slotNumber"] = self.numCharms
+                        print("user added to relation")
+                    
+                        charm.saveInBackgroundWithBlock({ (success, error) -> Void in
+                            print(error)
+                            print("charm registered on Parse")
                             (self.parentViewController?.presentingViewController?.childViewControllers[0] as! AccountViewController).loadCharms()
                             self.dismissViewControllerAnimated(true, completion: nil)
                         })
-                    }
+                        print("after save block")
+//                        charm.saveEventually({(error) -> Void in
+//                           
+//                            
+//                        })
+//                    }
                 }
                 else{
                     // CID doesn't exist
