@@ -35,6 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         
+        BITHockeyManager.sharedHockeyManager().configureWithIdentifier("61a46dddbdd74ab28c333a61976dc4d2")
+        // Do some additional configuration if needed here
+        BITHockeyManager.sharedHockeyManager().startManager()
+        BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation()
+
+        
         let userNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(userNotificationSettings)
         application.registerForRemoteNotifications()
@@ -183,6 +189,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
+                
                 let device = devices[0] as! MBLMetaWear
                 if (device.state == MBLConnectionState.Connected){
                     print("already connected to bracelet")
@@ -204,9 +211,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     }
     
-    // MARK: Handle notifications when app is in foreground
-    
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+    // MARK: Handle notifications
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         print(userInfo)
         let message = String(userInfo["aps"]!["alert"])
         print("Push notification message is: "+message)
@@ -218,6 +224,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         
         pushReceivedWithCharmSlot(charmSlot)
+        
+        completionHandler(UIBackgroundFetchResult.NewData)
         
     }
     

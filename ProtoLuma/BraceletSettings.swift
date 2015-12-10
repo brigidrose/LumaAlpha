@@ -32,6 +32,7 @@ class BraceletSettings: NSObject, MBLRestorable {
         let event5:MBLEvent = device.ancs.eventWithCategoryIds(MBLANCSCategoryID.Any, eventIds: MBLANCSEventID.NotificationAdded, eventFlags: MBLANCSEventFlag.Any, attributeId: MBLANCSNotificationAttributeID.AppIdentifier, attributeData: "com.lumalegacy.Luma")
         event5.programCommandsToRunOnEvent({
             device.led.flashLEDColor(UIColor.blueColor(), withIntensity: 1.0, numberOfFlashes: 3)
+            device.hapticBuzzer.startHapticWithDutyCycle(255, pulseWidth: 500, completion: nil)
 //            let length:UInt8 = 7; // Specific to your NeoPixel stand
 //            let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
 //            let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand

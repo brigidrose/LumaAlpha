@@ -26,4 +26,6 @@
 #import <RACollectionViewReorderableTripletLayout/RACollectionViewTripletLayout.h>
 #import <ParseUI/ParseUI.h>
 #import <SZTextView/SZTextView.h>
+#import <HockeySDK/HockeySDK.h>
+
 #endif /* ProtoLuma_Bridging_Header_h */

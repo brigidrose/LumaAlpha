@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>9</string>
+	<string>5</string>
 	<key>FacebookAppID</key>
 	<string>1685859904976937</string>
 	<key>FacebookDisplayName</key>
@@ -82,7 +82,9 @@
 	<string>&quot;To unlock location moments, allow Luma access to your location.&quot;</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>remote-notification</string>
 		<string>location</string>
+		<string>bluetooth-central</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

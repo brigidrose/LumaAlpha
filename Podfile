@@ -20,6 +20,7 @@ pod 'CTAssetsPickerController',  '~> 3.0.0'
 pod 'JVFloatLabeledTextField'
 pod 'RACollectionViewReorderableTripletLayout'
 pod 'SZTextView'
+pod 'HockeySDK', '~> 3.8.5'
 end
 
 target 'ProtoLumaTests' do

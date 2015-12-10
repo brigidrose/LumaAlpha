@@ -127,45 +127,49 @@ class PairBraceletViewController: UIViewController {
     
     // MARK: MetaWearManager Methods
     func connectToBraceletOfSerialNumber(serialNumber:String){
+        self.bracelet = nil;
         print("connect to bracelet of serialnumber \(serialNumber)")
         self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
-                self.bracelet = devices[0] as! MBLMetaWear
+                print("devices.count is greater than 0")
+                for device in devices as! [MBLMetaWear]{
+                    device.forgetDevice();
+                }
             }
-            else{
-                print("no saved metawears found in pairBraceletViewController")
-                self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
-                    print("scanned for metawear")
-                    for device in devices as! [MBLMetaWear]{
-                        // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
-                        if (device.state == MBLConnectionState.Connected){
-                            print("already connected to new bracelet")
-                        }
-                        else{
-                            device.connectWithHandler({(error) -> Void in
-                                print("Connected")
-                                if (error == nil){
-                                    print("connected to \(device.deviceInfo.serialNumber)")
-                                    if (device.deviceInfo.serialNumber == self.braceletSerialNumber){
-                                        self.bracelet = device
-                                        self.pairAndSetupANCS()
-                                    }
-                                    self.pairBraceletButton.enabled = true
-                                }
-                                else{
-                                    print(error)
-                                    self.pairBraceletButton.enabled = true
-                                }
-                            })
-                        }
+            print("forgot all.  scanning for new now.")
+            self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
+                print("scanned for metawear")
+                for device in devices as! [MBLMetaWear]{
+                    // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
+                    if (device.state == MBLConnectionState.Connected){
+                        print("already connected to new bracelet")
+                        self.bracelet = device
+                        self.pairAndSetupANCS()
                     }
-                })
-//                print("no metawear available for pairing")
-//                self.pairBraceletButton.enabled = true
-            }
-        })
-    }
-    
+                    else{
+                        device.connectWithHandler({(error) -> Void in
+                            print("Connected")
+                            if (error == nil){
+                                print("connected to \(device.deviceInfo.serialNumber)")
+                                if (device.deviceInfo.serialNumber == self.braceletSerialNumber){
+                                    self.bracelet = device
+                                    self.pairAndSetupANCS()
+                                }
+                                self.pairBraceletButton.enabled = true
+                            }
+                            else{
+                                print(error)
+                                self.pairBraceletButton.enabled = true
+                            }
+                        })
+                    }
+                }
+            })
 
+            
+        })
+        
+    
+    }
 
 }
