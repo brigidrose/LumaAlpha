@@ -280,6 +280,45 @@ class AccountViewController: UITableViewController {
 //            print("reset charms button tapped")
 //        }
     }
+    
+    override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+        switch indexPath.section{
+        case 1:
+            
+            self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
+                if (devices.count > 0){
+                    let bracelet = devices[0] as! MBLMetaWear
+                    if (bracelet.state != MBLConnectionState.Connected){
+                        bracelet.connectWithHandler({(error) -> Void in
+                            print("reconnected with \(bracelet.deviceInfo.serialNumber)")
+                            //get battery life and upload
+                            self.showBraceletInfoAlert(bracelet)
+                        })
+                    }
+                    else{
+                        print("\(bracelet) already connected")
+                        self.showBraceletInfoAlert(bracelet)
+                    }
+                }
+                else{
+                    print("no saved bracelet found in appdelegate")
+                }
+            })
+        default: break
+        }
+    }
+    
+    func showBraceletInfoAlert(device: MBLMetaWear){
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        device.readBatteryLifeWithHandler({ (num, err) -> Void in
+            let batteryLife:Int! = Int(num)
+            appDelegate.latestBatteryLife = batteryLife
+            let alert = UIAlertController(title: "Bracelet Info", message: "Battery Life: \(batteryLife)%\nBracelet ID: \(device.deviceInfo.serialNumber)", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        } as MBLNumberHandler)
+        
+    }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 4
