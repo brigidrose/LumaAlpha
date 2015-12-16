@@ -42,7 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
         
         let userNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(userNotificationSettings)
+//        UIApplication.sharedApplication().registerUserNotificationSettings(userNotificationSettings)
+        application.registerUserNotificationSettings(userNotificationSettings)
         application.registerForRemoteNotifications()
         
         UIStyleController.applyStyle()
@@ -186,7 +187,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func pushReceivedWithCharmSlot(charmSlot: UInt8){
-        
+//        self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
+//            print("scanned for metawear")
+//            for device in devices as! [MBLMetaWear]{
+//                // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
+//                if (device.state == MBLConnectionState.Connected){
+//                    print("already connected to bracelet")
+//                    self.notifyBracelet(device, charmSlot: charmSlot)
+//                }
+//                else{
+//                    device.connectWithHandler({(error) -> Void in
+//                        print("Connected")
+//                        if (error == nil){
+//                            print("connected to \(device.deviceInfo.serialNumber)")
+//                            if (device.deviceInfo.serialNumber == currentuser.bracelet.serialNumber){
+//                                self.notifyBracelet(device, charmSlot: charmSlot)
+//                            }
+//                        }
+//                        else{
+//                            print(error)
+//                        }
+//                    })
+//                }
+//            }
+//        })
+//        
+//        
         self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
                 

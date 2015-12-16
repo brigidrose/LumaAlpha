@@ -22,12 +22,12 @@ class AccountViewController: UITableViewController {
 //        self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
 //        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
 
-        self.navigationItem.title = "Settings"
+        
         
         self.metawearManager = MBLMetaWearManager.sharedManager()
         
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneButtonTapped:")
-        self.navigationItem.leftBarButtonItem = doneButton
+//        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneButtonTapped:")
+//        self.navigationItem.leftBarButtonItem = doneButton
         
         self.tableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
         self.tableView.estimatedRowHeight = 50
@@ -58,6 +58,14 @@ class AccountViewController: UITableViewController {
         
         self.retrieveSavedMetaWear()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.navigationItem.rightBarButtonItem = nil
+        self.tabBarController?.navigationItem.leftBarButtonItem = nil
+        self.tabBarController?.navigationItem.title = "Settings"
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -271,10 +279,10 @@ class AccountViewController: UITableViewController {
         return 4
     }
     
-    func doneButtonTapped(sender:UIBarButtonItem){
-        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadCharms()
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+//    func doneButtonTapped(sender:UIBarButtonItem){
+//        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadCharms()
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     func checkButtonTapped(sender:AnyObject){
         print("check button tapped")

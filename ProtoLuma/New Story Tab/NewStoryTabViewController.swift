@@ -12,7 +12,7 @@ import CTAssetsPickerController
 
 class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, CTAssetsPickerControllerDelegate, MKMapViewDelegate {
 
-    var cancelButton:UIBarButtonItem!
+//    var cancelButton:UIBarButtonItem!
     var sendButton:UIBarButtonItem!
     
     var charms:[PFObject]!
@@ -20,26 +20,27 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     var storyUnits:[PFObject] = []
     var mediaAssets:[PHAsset] = []
     var mediaDescriptions:[String] = []
-    var momentTitle = ""
-    var momentDescription = ""
     var unlockParameterType:String!
     var unlockTime:NSDate!
     var unlockLocation:PFGeoPoint!
     var unlockLocationPlacemark:CLPlacemark!
     var showUnlockParameterPicker = false
     var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    var shouldResetSelectedCharm = true
+    var momentTitle:TextFieldTableViewCell? = nil
+    var momentDesc:TextViewTableViewCell? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped:")
-        self.navigationItem.leftBarButtonItem = self.cancelButton
+//        self.cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped:")
+//        self.tabBarController?.navigationItem.leftBarButtonItem = self.cancelButton
         
         self.sendButton = UIBarButtonItem(title: "Send", style: UIBarButtonItemStyle.Done, target: self, action: "sendButtonTapped:")
         self.sendButton.enabled = false
-        self.navigationItem.rightBarButtonItem = self.sendButton
+//        self.tabBarController?.navigationItem.rightBarButtonItem = self.sendButton
         
-        self.navigationItem.title = "New Moment"
+        self.tabBarController?.navigationItem.title = "New Moment"
         
         self.tableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
         self.tableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "charmCell")
@@ -63,22 +64,40 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if(shouldResetSelectedCharm){
+            print("resetting selected charm")
+            self.forCharm = nil
+            self.momentTitle?.textField.text = ""
+            self.momentDesc?.textView.text = ""
+            self.mediaAssets = []
+            self.mediaDescriptions = []
+            self.tableView.reloadData()
+        }
+        //default to true unless explicitly set for the next time
+        self.shouldResetSelectedCharm = true
+        self.tabBarController?.navigationItem.rightBarButtonItem = self.sendButton
+    }
+    
+    
 
 
     // MARK: - Navigation
 
-    func cancelButtonTapped(sender:UIBarButtonItem){
-        self.view.endEditing(true)
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+//    func cancelButtonTapped(sender:UIBarButtonItem){
+//        self.view.endEditing(true)
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     func sendButtonTapped(sender:UIBarButtonItem){
         print("Send button tapped")
-        self.navigationItem.leftBarButtonItem?.enabled = false
-        self.navigationItem.rightBarButtonItem?.enabled = false
+//        self.navigationItem.leftBarButtonItem?.enabled = false
+//        self.navigationItem.rightBarButtonItem?.enabled = false
+        self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = false
         let story = PFObject(className: "Story")
-        story["title"] = self.momentTitle
-        story["description"] = self.momentDescription
+        story["title"] = self.momentTitle?.textField.text
+        story["description"] = self.momentDesc?.textView.text
         story["sender"] = PFUser.currentUser()
         story["forCharm"] = self.forCharm
         if (self.unlockParameterType != nil){
@@ -124,14 +143,21 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                             if (savedCount == self.mediaAssets.count){
                                 story.saveInBackgroundWithBlock({(success, error) -> Void in
                                     if (error == nil){
-                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
-                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
-                                        self.dismissViewControllerAnimated(true, completion: nil)
+                                        //load charms into the new story controller
+                                        let barViewControllers = self.tabBarController?.viewControllers
+                                        let stvc = barViewControllers![0] as! StoriesTabViewController
+                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                                        stvc.loadStoriesForCharmViewed()
+                                        self.tabBarController?.selectedIndex = 0
+//                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+//                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
+//                                        self.dismissViewControllerAnimated(true, completion: nil)
                                     }
                                     else{
                                         print(error)
-                                        self.navigationItem.leftBarButtonItem?.enabled = true
-                                        self.navigationItem.rightBarButtonItem?.enabled = true
+//                                        self.navigationItem.leftBarButtonItem?.enabled = true
+//                                        self.navigationItem.rightBarButtonItem?.enabled = true
+                                        self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
                                     }
                                     
                                 })
@@ -139,8 +165,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                         }
                         else{
                             print(error)
-                            self.navigationItem.leftBarButtonItem?.enabled = true
-                            self.navigationItem.rightBarButtonItem?.enabled = true
+//                            self.navigationItem.leftBarButtonItem?.enabled = true
+//                            self.navigationItem.rightBarButtonItem?.enabled = true
+                            self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
                         }
                     })
                 })
@@ -148,14 +175,20 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         }else{
             story.saveInBackgroundWithBlock({(success, error) -> Void in
                 if (error == nil){
-                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
-                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
-                    self.dismissViewControllerAnimated(true, completion: nil)
+//                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+//                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
+//                    self.dismissViewControllerAnimated(true, completion: nil)
+                    let barViewControllers = self.tabBarController?.viewControllers
+                    let stvc = barViewControllers![0] as! StoriesTabViewController
+                    stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                    stvc.loadStoriesForCharmViewed()
+                    self.tabBarController?.selectedIndex = 0
                 }
                 else{
                     print(error)
-                    self.navigationItem.leftBarButtonItem?.enabled = true
-                    self.navigationItem.rightBarButtonItem?.enabled = true
+//                    self.navigationItem.leftBarButtonItem?.enabled = true
+//                    self.navigationItem.rightBarButtonItem?.enabled = true
+                    self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
                 }
                 
             })
@@ -200,10 +233,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             
         }
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-    }
+
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (self.forCharm == nil){
@@ -262,6 +292,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     cell.textField.placeholder = "Name"
                     cell.textField.delegate = self
                     cell.textField.returnKeyType = UIReturnKeyType.Next
+                    self.momentTitle = cell
                     return cell
                 case 1:
                     let cell = tableView.dequeueReusableCellWithIdentifier("TextViewTableViewCell") as! TextViewTableViewCell
@@ -270,6 +301,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     cell.textView.delegate = self
                     (((cell.textView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
                     (((cell.textView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
+                    self.momentDesc = cell
                     return cell
                 default: return UITableViewCell()
                 }
@@ -523,7 +555,6 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     func textFieldDidEndEditing(textField: UITextField) {
         if (textField.text != ""){
             self.sendButton.enabled = true
-            self.momentTitle = textField.text!
         }
         else{
             self.sendButton.enabled = false
@@ -542,7 +573,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         }
         else{
             // == 1
-            self.momentDescription = textView.text
+            // This would be the moment desc
         }
     }
     
@@ -620,10 +651,11 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     
     func assetsPickerController(picker: CTAssetsPickerController!, didFinishPickingAssets assets: [AnyObject]!) {
         print(assets)
-        let presentingVC = (picker.presentingViewController?.childViewControllers[0] as! NewStoryTabViewController)
+        let presentingVC = self //(picker.presentingViewController?.childViewControllers[0] as! NewStoryTabViewController)
         presentingVC.mediaAssets.appendContentsOf(assets as! [PHAsset])
         presentingVC.mediaDescriptions.appendContentsOf(Array(count: assets.count, repeatedValue: ""))
         presentingVC.tableView.reloadData()
+        self.shouldResetSelectedCharm = false
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
     

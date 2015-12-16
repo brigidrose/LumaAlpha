@@ -30,12 +30,15 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewDidLoad()
 
         self.accountButton = UIBarButtonItem(image: UIImage(named: "AccountBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "accountButtonTapped:")
-        self.newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
-        self.newStoryButton.enabled = false
+//        self.newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
+//        self.newStoryButton.enabled = false
+        self.tabBarController?.tabBar.items![1].enabled = false
         
-        self.navigationItem.rightBarButtonItem = newStoryButton
-        self.navigationItem.leftBarButtonItem = accountButton
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
+//        self.navigationItem.rightBarButtonItem = newStoryButton
+//        self.navigationItem.leftBarButtonItem = accountButton
+        self.tabBarController?.navigationItem.rightBarButtonItem = nil
+        self.tabBarController?.navigationItem.leftBarButtonItem = nil
+//        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
 
         // currentUser exists
         if (PFUser.currentUser() != nil){
@@ -62,7 +65,9 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     override func viewWillAppear(animated: Bool) {
-        // Check self.bracelet state to display disconnected alert if so
+        self.tabBarController?.navigationItem.rightBarButtonItem = nil
+        self.tabBarController?.navigationItem.leftBarButtonItem = nil
+        self.tabBarController?.navigationItem.title = "Feed"
     }
     
     override func didReceiveMemoryWarning() {
@@ -295,15 +300,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "showAccount"){
-            let destinationVC = segue.destinationViewController.childViewControllers[0] as! AccountViewController
-            destinationVC.charms = self.charms
-        }
-        else if (segue.identifier == "showNewMoment"){
-            let destinationVC = segue.destinationViewController.childViewControllers[0] as! NewStoryTabViewController
-            destinationVC.charms = self.charms
-        }
-        else if (segue.identifier == "showStoryDetail"){
+        if (segue.identifier == "showStoryDetail"){
             let destinationVC = segue.destinationViewController as! StoryDetailViewController
             if (self.indexPathOfStoryViewed.section == 0){
                 destinationVC.story = self.lockedStories[indexPathOfStoryViewed.row]
@@ -345,11 +342,21 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 //            print("charms loaded")
             self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
             if (self.charms.count > 0){
-                self.newStoryButton.enabled = true
+//                self.newStoryButton.enabled = true
+                self.tabBarController?.tabBar.items![1].enabled = true
                 if (self.indexOfCharmViewed == nil){
                     self.indexOfCharmViewed = 0
                 }
                 self.loadStoriesForCharmViewed()
+                
+                //load charms into the new story controller
+                let barViewControllers = self.tabBarController?.viewControllers
+                let nstvc = barViewControllers![1].childViewControllers[0] as! NewStoryTabViewController
+                nstvc.charms = self.charms  //shared model
+                
+                //load charms into the account view
+                let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+                avc.charms = self.charms  //shared model
             }
         })
         

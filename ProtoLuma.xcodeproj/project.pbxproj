@@ -351,6 +351,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.Push = {
+								enabled = 1;
+							};
 						};
 					};
 					2CF2FE2E1B7EBB6200F4E11D = {
@@ -653,7 +656,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 11;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -665,7 +668,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d5e9d925-70f7-4a51-b2f2-96166ee3e3bf";
+				PROVISIONING_PROFILE = "4ecc111a-55e6-4cfc-bfbd-f8a76f355dc1";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";
@@ -678,9 +681,9 @@
 			baseConfigurationReference = 265B19E26B3DCC62B1A214DE /* Pods-ProtoLuma.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
-				CURRENT_PROJECT_VERSION = 5;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
+				CURRENT_PROJECT_VERSION = 11;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -692,7 +695,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a0126227-88b2-4da7-93fa-fae69f07ca2a";
+				PROVISIONING_PROFILE = "a63c0e28-26bc-463b-9646-51d6b9030416";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";

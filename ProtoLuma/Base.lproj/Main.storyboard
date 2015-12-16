@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1017" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Kti-Ah-weI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Kti-Ah-weI">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--Claim Bracelet-->
@@ -15,7 +15,6 @@
                     <view key="view" contentMode="scaleToFill" id="mbq-Xv-ulk">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
@@ -37,7 +36,6 @@
                     <view key="view" contentMode="scaleToFill" id="lRC-bi-zAX">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="mly-gm-LPa"/>
@@ -57,10 +55,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dUd-6b-bdH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                     </navigationBar>
                     <connections>
-                        <segue destination="rf6-Oy-7bt" kind="relationship" relationship="rootViewController" id="lIJ-9f-Fcm"/>
+                        <segue destination="iCB-qo-rBj" kind="relationship" relationship="rootViewController" id="lIJ-9f-Fcm"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3xo-tF-ey1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -78,7 +75,6 @@
                     <view key="view" contentMode="scaleToFill" id="go4-bt-NuI">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
@@ -100,9 +96,9 @@
                     <view key="view" contentMode="scaleToFill" id="Pbb-Vh-NzP">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Collection" image="CharmsBarButtonIcon" id="30n-L2-xp1"/>
                     <navigationItem key="navigationItem" title="Luma Legacy" id="eEy-rX-ytS"/>
                     <connections>
                         <segue destination="syx-Qf-0WI" kind="show" identifier="showStoryDetail" id="YaX-F2-hyf"/>
@@ -114,7 +110,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T5H-pC-m46" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-190" y="1191"/>
+            <point key="canvasLocation" x="596" y="1221"/>
         </scene>
         <!--Moment Detail-->
         <scene sceneID="seK-4d-1sP">
@@ -127,7 +123,6 @@
                     <view key="view" contentMode="scaleToFill" id="1rt-ex-Dfm">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
@@ -135,14 +130,14 @@
             </objects>
             <point key="canvasLocation" x="-190" y="1983"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--New-->
         <scene sceneID="NHn-7b-uSS">
             <objects>
                 <navigationController id="Zuw-ZQ-xEi" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="New" image="NewStoryBarButtonIcon" id="0MB-mj-tOj"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jnB-5X-3AL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="ope-10-rHZ" kind="relationship" relationship="rootViewController" id="jAm-FI-ZVU"/>
@@ -152,14 +147,13 @@
             </objects>
             <point key="canvasLocation" x="635" y="339"/>
         </scene>
-        <!--New Story Tab View Controller-->
+        <!--Item-->
         <scene sceneID="WXX-qH-IWv">
             <objects>
                 <tableViewController id="ope-10-rHZ" customClass="NewStoryTabViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="FUi-88-HDM">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fgi-sn-Vvr">
@@ -168,9 +162,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fgi-sn-Vvr" id="HcH-Xh-N2q">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
                                 </tableViewCellContentView>
-                                <animations/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -178,20 +170,21 @@
                             <outlet property="delegate" destination="ope-10-rHZ" id="lw0-lj-hmc"/>
                         </connections>
                     </tableView>
+                    <tabBarItem key="tabBarItem" title="Item" id="qex-f5-VgA"/>
                     <navigationItem key="navigationItem" id="KOc-mO-16m"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aWF-Gx-xBd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="635" y="1191"/>
+            <point key="canvasLocation" x="1447" y="1191"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Account-->
         <scene sceneID="37F-Oh-ulr">
             <objects>
                 <navigationController id="3rt-jV-9id" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Account" image="AccountBarButtonIcon" id="K7A-ft-Yoq"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="B1u-dI-9gb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="x7Q-3d-Ci6" kind="relationship" relationship="rootViewController" id="Xpb-n4-Cny"/>
@@ -208,7 +201,6 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WOm-IQ-9KJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="EfU-EN-g2o" kind="relationship" relationship="rootViewController" id="kac-1d-Zgf"/>
@@ -229,7 +221,6 @@
                     <view key="view" contentMode="scaleToFill" id="9Ws-tQ-i1N">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="0Mv-J0-Pbq"/>
@@ -245,7 +236,6 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="0Va-ZO-iHb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BEN-nS-rcF">
@@ -254,9 +244,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BEN-nS-rcF" id="kBZ-sM-6k6">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
                                 </tableViewCellContentView>
-                                <animations/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -275,11 +263,38 @@
             </objects>
             <point key="canvasLocation" x="635" y="2815"/>
         </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="HeH-PG-UsR">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="iCB-qo-rBj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Nlz-zg-2iO"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="6rj-3i-YQD">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="rf6-Oy-7bt" kind="relationship" relationship="viewControllers" id="QyD-26-hqL"/>
+                        <segue destination="Zuw-ZQ-xEi" kind="relationship" relationship="viewControllers" id="TUt-ey-gcz"/>
+                        <segue destination="3rt-jV-9id" kind="relationship" relationship="viewControllers" id="8om-JF-9ub"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CGV-TC-xKj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-190" y="1191"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="AccountBarButtonIcon" width="22" height="22"/>
+        <image name="CharmsBarButtonIcon" width="22" height="22"/>
+        <image name="NewStoryBarButtonIcon" width="22" height="22"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vWd-DU-Abb"/>
-        <segue reference="deY-Gc-PN2"/>
+        <segue reference="8om-JF-9ub"/>
+        <segue reference="6eT-gI-a6Y"/>
         <segue reference="J2m-Nf-nZC"/>
+        <segue reference="NXJ-9h-4kM"/>
+        <segue reference="TUt-ey-gcz"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
 </document>
