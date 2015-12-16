@@ -33,6 +33,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 //        self.newStoryButton = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "newStoryButtonTapped:")
 //        self.newStoryButton.enabled = false
         self.tabBarController?.tabBar.items![1].enabled = false
+        self.tabBarController?.tabBar.items![2].enabled = false
         
 //        self.navigationItem.rightBarButtonItem = newStoryButton
 //        self.navigationItem.leftBarButtonItem = accountButton
@@ -342,8 +343,6 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 //            print("charms loaded")
             self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
             if (self.charms.count > 0){
-//                self.newStoryButton.enabled = true
-                self.tabBarController?.tabBar.items![1].enabled = true
                 if (self.indexOfCharmViewed == nil){
                     self.indexOfCharmViewed = 0
                 }
@@ -357,6 +356,9 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                 //load charms into the account view
                 let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
                 avc.charms = self.charms  //shared model
+                
+                self.tabBarController?.tabBar.items![1].enabled = true
+                self.tabBarController?.tabBar.items![2].enabled = true
             }
         })
         

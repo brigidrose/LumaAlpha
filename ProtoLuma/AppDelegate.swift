@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var metawearManager:MBLMetaWearManager!
     var locationManager:CLLocationManager!
     var deviceId:String!
+    var latestBatteryLife:Int?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -115,16 +116,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 if (bracelet.state != MBLConnectionState.Connected){
                     bracelet.connectWithHandler({(error) -> Void in
                         print("reconnected with \(bracelet.deviceInfo.serialNumber)")
+                        //get battery life and upload
+                        self.setBatteryLife(bracelet)
                     })
                 }
                 else{
                     print("\(bracelet) already connected")
+                    self.setBatteryLife(bracelet)
                 }
             }
             else{
                 print("no saved bracelet found in appdelegate")
             }
         })
+    }
+    
+    func setBatteryLife(device: MBLMetaWear){
+        device.readBatteryLifeWithHandler({ (num, err) -> Void in
+            self.latestBatteryLife = Int(num)
+        } as MBLNumberHandler)
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -175,15 +185,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue(), {
             strand.turnStrandOff()
-            
+            self.setBatteryLife(device)
         })
-        
-        
-        
-//        for (var i:UInt8 = 0; i < length; i++) {
-//            strand.setPixel(i, color: UIColor.redColor());
-//        }
-        
     }
     
     func pushReceivedWithCharmSlot(charmSlot: UInt8){

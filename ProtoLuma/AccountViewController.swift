@@ -121,10 +121,16 @@ class AccountViewController: UITableViewController {
             }
             cell.charmTitle.text = "\(userFirstName)'s Luma Bracelet"
             if (self.bracelet != nil){
-                cell.charmSubtitle.text = "\(self.getMBLConnectionStateString(self.bracelet.state))"
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                if(appDelegate.latestBatteryLife != nil){
+                    let batteryLife:Int! = appDelegate.latestBatteryLife
+                    cell.charmSubtitle.text = "\(self.getMBLConnectionStateString(self.bracelet.state)) - \(batteryLife)%"
+                }else{
+                    cell.charmSubtitle.text = "\(self.getMBLConnectionStateString(self.bracelet.state))"
+                }
             }
             else{
-                cell.charmSubtitle.text = "getting connection state..."
+                cell.charmSubtitle.text = "not connected"
             }
             return cell
         case 2:
