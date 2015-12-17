@@ -98,7 +98,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Collection" image="CharmsBarButtonIcon" id="30n-L2-xp1"/>
+                    <tabBarItem key="tabBarItem" title="OldFeed" image="CharmsBarButtonIcon" id="30n-L2-xp1"/>
                     <navigationItem key="navigationItem" title="Luma Legacy" id="eEy-rX-ytS"/>
                     <connections>
                         <segue destination="syx-Qf-0WI" kind="show" identifier="showStoryDetail" id="YaX-F2-hyf"/>
@@ -111,6 +111,68 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T5H-pC-m46" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="596" y="1221"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="7L3-vw-IHq">
+            <objects>
+                <tableViewController id="s1Z-b3-jwf" customClass="CharmCollectionTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ehk-ri-93N">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CharmTableViewCell" textLabel="olp-cw-g1p" detailTextLabel="tmi-Cv-KEB" style="IBUITableViewCellStyleSubtitle" id="UnR-gD-zJL">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UnR-gD-zJL" id="c4X-fc-5Eg">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="olp-cw-g1p">
+                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tmi-Cv-KEB">
+                                            <rect key="frame" x="15" y="25" width="41" height="14"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="s1Z-b3-jwf" id="Ji7-UB-k6y"/>
+                            <outlet property="delegate" destination="s1Z-b3-jwf" id="V5E-j7-hlp"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="5bN-yJ-sPq"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dnn-EI-Ljd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-935" y="1914"/>
+        </scene>
+        <!--Collection-->
+        <scene sceneID="zJP-bn-kkX">
+            <objects>
+                <navigationController id="aOX-uY-06v" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Collection" image="CharmsBarButtonIcon" id="hC7-bj-3a8"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DHe-5f-nru">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="s1Z-b3-jwf" kind="relationship" relationship="rootViewController" id="kOv-da-P3D"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MKY-8W-FGE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1755" y="1914"/>
         </scene>
         <!--Moment Detail-->
         <scene sceneID="seK-4d-1sP">
@@ -274,14 +336,14 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="rf6-Oy-7bt" kind="relationship" relationship="viewControllers" id="QyD-26-hqL"/>
+                        <segue destination="aOX-uY-06v" kind="relationship" relationship="viewControllers" id="wl9-vu-BCA"/>
                         <segue destination="Zuw-ZQ-xEi" kind="relationship" relationship="viewControllers" id="TUt-ey-gcz"/>
                         <segue destination="3rt-jV-9id" kind="relationship" relationship="viewControllers" id="8om-JF-9ub"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CGV-TC-xKj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-190" y="1191"/>
+            <point key="canvasLocation" x="-302" y="1185"/>
         </scene>
     </scenes>
     <resources>
@@ -291,9 +353,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="8om-JF-9ub"/>
-        <segue reference="6eT-gI-a6Y"/>
-        <segue reference="J2m-Nf-nZC"/>
+        <segue reference="vWd-DU-Abb"/>
         <segue reference="NXJ-9h-4kM"/>
+        <segue reference="J2m-Nf-nZC"/>
         <segue reference="TUt-ey-gcz"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
