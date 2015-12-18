@@ -22,6 +22,11 @@ class StoryTableViewCell : UITableViewCell {
         
         self.creatorPhoto.image = creatorPhoto
         
+        for sv in self.HImageStack.arrangedSubviews{
+            self.HImageStack.removeArrangedSubview(sv)
+            sv.removeFromSuperview()
+        }
+        
         for unit in storyUnits{
             let imageView = PFImageView(frame: CGRectZero)
             imageView.contentMode = .ScaleAspectFit
