@@ -92,7 +92,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T5H-pC-m46" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="720" y="757"/>
+            <point key="canvasLocation" x="852" y="535"/>
         </scene>
         <!--Collection-->
         <scene sceneID="7L3-vw-IHq">
@@ -133,6 +133,9 @@
                             </fragment>
                         </attributedString>
                     </refreshControl>
+                    <connections>
+                        <segue destination="mkt-53-6MV" kind="presentation" identifier="showLogin" id="Ol1-iy-aYo"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dnn-EI-Ljd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -311,7 +314,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CGV-TC-xKj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-128" y="609"/>
+            <point key="canvasLocation" x="-118" y="485"/>
         </scene>
         <!--Collection-->
         <scene sceneID="4SN-4K-isW">
@@ -378,8 +381,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lfn-Ox-up4"/>
-        <segue reference="deY-Gc-PN2"/>
-        <segue reference="O42-oJ-8jX"/>
+        <segue reference="NXJ-9h-4kM"/>
+        <segue reference="Ol1-iy-aYo"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
 </document>
