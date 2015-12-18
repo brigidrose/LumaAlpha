@@ -62,9 +62,9 @@ class AccountViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.navigationItem.rightBarButtonItem = nil
-        self.tabBarController?.navigationItem.leftBarButtonItem = nil
-        self.tabBarController?.navigationItem.title = "Settings"
+        self.navigationItem.rightBarButtonItem = nil
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.title = "Settings"
         self.tableView.reloadData()
     }
 
@@ -290,9 +290,13 @@ class AccountViewController: UITableViewController {
                     let bracelet = devices[0] as! MBLMetaWear
                     if (bracelet.state != MBLConnectionState.Connected){
                         bracelet.connectWithHandler({(error) -> Void in
-                            print("reconnected with \(bracelet.deviceInfo.serialNumber)")
-                            //get battery life and upload
-                            self.showBraceletInfoAlert(bracelet)
+                            if error == nil{
+                                print("reconnected with \(bracelet.deviceInfo.serialNumber)")
+                                //get battery life and upload
+                                self.showBraceletInfoAlert(bracelet)
+                            }else{
+                                print(error)
+                            }
                         })
                     }
                     else{

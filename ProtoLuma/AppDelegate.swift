@@ -11,6 +11,32 @@ import CoreData
 import MapKit
 import ParseFacebookUtilsV4
 
+extension UIImage {
+    var rounded: UIImage {
+        let imageView = UIImageView(image: self)
+        imageView.layer.cornerRadius = size.height < size.width ? size.height/2 : size.width/2
+        imageView.layer.masksToBounds = true
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        imageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return result
+    }
+    var circle: UIImage {
+        let square = CGSize(width: 100, height: 100)//size.width < size.height ? CGSize(width: size.width, height: size.width) : CGSize(width: size.height, height: size.height)
+        let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: square))
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.image = self
+        imageView.layer.cornerRadius = square.width/2
+        imageView.layer.masksToBounds = true
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        imageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return result
+    }
+}
+
 @UIApplicationMain
 
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -115,9 +141,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 let bracelet = devices[0] as! MBLMetaWear
                 if (bracelet.state != MBLConnectionState.Connected){
                     bracelet.connectWithHandler({(error) -> Void in
-                        print("reconnected with \(bracelet.deviceInfo.serialNumber)")
-                        //get battery life and upload
-                        self.setBatteryLife(bracelet)
+                        if error == nil{
+                            print("reconnected with \(bracelet.deviceInfo.serialNumber)")
+                            //get battery life and upload
+                            self.setBatteryLife(bracelet)
+                        }else{
+                            print(error)
+                        }
                     })
                 }
                 else{
@@ -226,7 +256,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }else{
                     print("not connected to bracelet.  connecting.")
                     device.connectWithHandler({(error) -> Void in
+                        print("connected")
                         if (error == nil){
+                            print("error is nil")
                             self.notifyBracelet(device, charmSlot: charmSlot)
                         }else{
                             print(error)

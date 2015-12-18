@@ -40,8 +40,6 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         self.sendButton.enabled = false
 //        self.tabBarController?.navigationItem.rightBarButtonItem = self.sendButton
         
-        self.tabBarController?.navigationItem.title = "New Moment"
-        
         self.tableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
         self.tableView.registerClass(CharmWithSubtitleTableViewCell.self, forCellReuseIdentifier: "charmCell")
         self.tableView.registerClass(TextFieldTableViewCell.self, forCellReuseIdentifier: "TextFieldTableViewCell")
@@ -77,7 +75,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         }
         //default to true unless explicitly set for the next time
         self.shouldResetSelectedCharm = true
-        self.tabBarController?.navigationItem.rightBarButtonItem = self.sendButton
+        self.navigationItem.rightBarButtonItem = self.sendButton
+        self.navigationItem.title = "New Moment"
     }
     
     
@@ -94,7 +93,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         print("Send button tapped")
 //        self.navigationItem.leftBarButtonItem?.enabled = false
 //        self.navigationItem.rightBarButtonItem?.enabled = false
-        self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = false
+        self.navigationItem.rightBarButtonItem?.enabled = false
         let story = PFObject(className: "Story")
         story["title"] = self.momentTitle?.textField.text
         story["description"] = self.momentDesc?.textView.text
@@ -144,10 +143,11 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                                 story.saveInBackgroundWithBlock({(success, error) -> Void in
                                     if (error == nil){
                                         //load charms into the new story controller
-                                        let barViewControllers = self.tabBarController?.viewControllers
-                                        let stvc = barViewControllers![0] as! StoriesTabViewController
-                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
-                                        stvc.loadStoriesForCharmViewed()
+//                                        let barViewControllers = self.tabBarController?.viewControllers
+//                                        let stvc = barViewControllers![0].childViewControllers[0] as! StoriesTabViewController
+//                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+//                                        stvc.loadStoriesForCharmViewed()
+                                        
                                         self.tabBarController?.selectedIndex = 0
 //                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
 //                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
@@ -157,7 +157,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                                         print(error)
 //                                        self.navigationItem.leftBarButtonItem?.enabled = true
 //                                        self.navigationItem.rightBarButtonItem?.enabled = true
-                                        self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
+                                        self.navigationItem.rightBarButtonItem?.enabled = true
                                     }
                                     
                                 })
@@ -178,10 +178,10 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
 //                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
 //                    self.dismissViewControllerAnimated(true, completion: nil)
-                    let barViewControllers = self.tabBarController?.viewControllers
-                    let stvc = barViewControllers![0] as! StoriesTabViewController
-                    stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
-                    stvc.loadStoriesForCharmViewed()
+//                    let barViewControllers = self.tabBarController?.viewControllers
+//                    let stvc = barViewControllers![0] as! StoriesTabViewController
+//                    stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+//                    stvc.loadStoriesForCharmViewed()
                     self.tabBarController?.selectedIndex = 0
                 }
                 else{

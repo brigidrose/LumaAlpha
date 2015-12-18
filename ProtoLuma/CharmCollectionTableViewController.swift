@@ -8,31 +8,7 @@
 
 import UIKit
 
-extension UIImage {
-    var rounded: UIImage {
-        let imageView = UIImageView(image: self)
-        imageView.layer.cornerRadius = size.height < size.width ? size.height/2 : size.width/2
-        imageView.layer.masksToBounds = true
-        UIGraphicsBeginImageContext(imageView.bounds.size)
-        imageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        let result = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return result
-    }
-    var circle: UIImage {
-        let square = CGSize(width: 39, height: 39)//size.width < size.height ? CGSize(width: size.width, height: size.width) : CGSize(width: size.height, height: size.height)
-        let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: square))
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
-        imageView.image = self
-        imageView.layer.cornerRadius = square.width/2
-        imageView.layer.masksToBounds = true
-        UIGraphicsBeginImageContext(imageView.bounds.size)
-        imageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        let result = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return result
-    }
-}
+
 
 class CharmTableViewCell : UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
@@ -68,6 +44,7 @@ class CharmCollectionTableViewController: UITableViewController{
     var charms:[PFObject] = []
     var relatedUsersOfCharms = [String: Set<String>]()
     var profileImages = [String: UIImage]()
+    var indexPathOfCharmViewed:NSIndexPath!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +54,8 @@ class CharmCollectionTableViewController: UITableViewController{
         
         self.tabBarController?.tabBar.items![1].enabled = false
         self.tabBarController?.tabBar.items![2].enabled = false
+        
+        self.refreshControl?.beginRefreshing()
      
         // currentUser exists
         if (PFUser.currentUser() != nil){
@@ -102,9 +81,9 @@ class CharmCollectionTableViewController: UITableViewController{
 
     
     override func viewWillAppear(animated: Bool) {
-        self.tabBarController?.navigationItem.rightBarButtonItem = nil
-        self.tabBarController?.navigationItem.leftBarButtonItem = nil
-        self.tabBarController?.navigationItem.title = "Collection"
+        self.navigationItem.rightBarButtonItem = nil
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.title = "Collection"
     }
     
     // MARK: Table View delegate methods
@@ -139,7 +118,8 @@ class CharmCollectionTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        self.indexPathOfCharmViewed = indexPath
+        self.performSegueWithIdentifier("showStoryTable", sender: self)
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -147,7 +127,20 @@ class CharmCollectionTableViewController: UITableViewController{
     }
     
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "showStoryTable"){
+            let destinationVC = segue.destinationViewController as! StoriesTableViewController
+            destinationVC.charm = self.charms[self.indexPathOfCharmViewed.row]
+            destinationVC.profileImages = self.profileImages
+        }
+    }
+    
+    
+    
+    
+    
     func loadCharms(){
+        print("loading charms")
         let queryForCharmsOwned = PFQuery(className: "Charm")
         queryForCharmsOwned.whereKey("owners", equalTo: PFUser.currentUser()!)
         let queryForCharmsGifted = PFQuery(className: "Charm")
@@ -156,23 +149,34 @@ class CharmCollectionTableViewController: UITableViewController{
         queryForCharms.includeKey("gifter")
         
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-            self.charms = objects!
-            self.tableView.reloadData()
-            if (self.charms.count > 0){
-                //load charms into the new story controller
-                let barViewControllers = self.tabBarController?.viewControllers
-                let nstvc = barViewControllers![1].childViewControllers[0] as! NewStoryTabViewController
-                nstvc.charms = self.charms  //shared model
-                
-                //load charms into the account view
-                let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
-                avc.charms = self.charms  //shared model
-                
-                self.tabBarController?.tabBar.items![1].enabled = true
-                self.tabBarController?.tabBar.items![2].enabled = true
-                
-                //load all profile photos in the background
-                self.loadProfilePhotos()
+            if error == nil{
+                self.charms = objects!
+                print("\(self.charms.count) charms retrieved")
+    //            self.tableView.reloadData()
+                if (self.charms.count > 0){
+                    print("loading charms into new page")
+                    //load charms into the new story controller
+                    let barViewControllers = self.tabBarController?.viewControllers
+                    let nstvc = barViewControllers![1].childViewControllers[0] as! NewStoryTabViewController
+                    nstvc.charms = self.charms  //shared model
+                    
+                    print("loading charms into account page")
+                    //load charms into the account view
+                    let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+                    avc.charms = self.charms  //shared model
+                    
+                    print("enabling tab buttons")
+                    
+                    self.tabBarController?.tabBar.items![1].enabled = true
+                    self.tabBarController?.tabBar.items![2].enabled = true
+                    
+                    print("loading profile photos...")
+                    
+                    //load all profile photos in the background
+                    self.loadProfilePhotos()
+                }
+            }else{
+                print(error)
             }
         })
         
@@ -223,7 +227,9 @@ class CharmCollectionTableViewController: UITableViewController{
                     if error == nil {
                         self.profileImages[id] = self.RBSquareImage(UIImage(data: data!)!).circle
                         photosDownloaded++
+                        print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
                         if(photosDownloaded == fbIds.count){
+                            self.refreshControl?.endRefreshing()
                             self.tableView.reloadData()
                         }
                     }else{
@@ -234,6 +240,7 @@ class CharmCollectionTableViewController: UITableViewController{
     }
     
     func loadProfilePhotos(){
+        print("loading profile photos")
         var uniqueFacebookIds = Set<String>()
         var retrievedCount = 0
         for charm in self.charms{
