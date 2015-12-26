@@ -236,8 +236,26 @@ class CharmCollectionTableViewController: UITableViewController{
                             self.refreshControl?.endRefreshing()
                             self.tableView.reloadData()
                             
-                            // New UI design mandates that if a user has any stories, they are put into the newest one
-                            
+                            // New UI design mandates that if a user has any stories, they are pushed into the newest one
+//                            var mostRecent:PFObject?
+                            var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)
+                            var indexOfMostRecentCharm:Int?
+                            for (index, charm) in self.charms.enumerate(){
+                                if(charm["latestStory"] != nil){
+                                    let charmDate = charm["latestStory"] as! NSDate
+                                    
+                                    if charmDate.compare(mostRecentLatestStory) == NSComparisonResult.OrderedDescending {
+//                                        mostRecent = charm
+                                        indexOfMostRecentCharm = index
+                                        mostRecentLatestStory = charm["latestStory"] as! NSDate
+                                    }
+                                }
+                            }
+                            if indexOfMostRecentCharm != nil{
+                                print("Most recent charm is \(indexOfMostRecentCharm!)")
+                                self.indexPathOfCharmViewed = NSIndexPath(forRow: indexOfMostRecentCharm!, inSection: 0)
+                                self.performSegueWithIdentifier("showStoryTable", sender: self)
+                            }
                         }
                     }else{
                         print(error)
