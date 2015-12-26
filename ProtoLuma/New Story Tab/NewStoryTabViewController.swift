@@ -142,31 +142,22 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                             if (savedCount == self.mediaAssets.count){
                                 story.saveInBackgroundWithBlock({(success, error) -> Void in
                                     if (error == nil){
-                                        //load charms into the new story controller
+                                        // load charms into the new story controller
 //                                        let barViewControllers = self.tabBarController?.viewControllers
 //                                        let stvc = barViewControllers![0].childViewControllers[0] as! StoriesTabViewController
 //                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
 //                                        stvc.loadStoriesForCharmViewed()
-                                        
                                         self.tabBarController?.selectedIndex = 0
-//                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
-//                                        (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
-//                                        self.dismissViewControllerAnimated(true, completion: nil)
                                     }
                                     else{
                                         print(error)
-//                                        self.navigationItem.leftBarButtonItem?.enabled = true
-//                                        self.navigationItem.rightBarButtonItem?.enabled = true
                                         self.navigationItem.rightBarButtonItem?.enabled = true
                                     }
-                                    
                                 })
                             }
                         }
                         else{
                             print(error)
-//                            self.navigationItem.leftBarButtonItem?.enabled = true
-//                            self.navigationItem.rightBarButtonItem?.enabled = true
                             self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
                         }
                     })
@@ -186,8 +177,6 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 }
                 else{
                     print(error)
-//                    self.navigationItem.leftBarButtonItem?.enabled = true
-//                    self.navigationItem.rightBarButtonItem?.enabled = true
                     self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
                 }
                 

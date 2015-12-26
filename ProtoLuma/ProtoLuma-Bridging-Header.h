@@ -27,5 +27,7 @@
 #import <ParseUI/ParseUI.h>
 #import <SZTextView/SZTextView.h>
 #import <HockeySDK/HockeySDK.h>
+#import <Instabug/Instabug.h>
+
 
 #endif /* ProtoLuma_Bridging_Header_h */

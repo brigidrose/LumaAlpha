@@ -21,6 +21,8 @@ pod 'JVFloatLabeledTextField'
 pod 'RACollectionViewReorderableTripletLayout'
 pod 'SZTextView'
 pod 'HockeySDK', '~> 3.8.5'
+pod 'Instabug'
+
 end
 
 target 'ProtoLumaTests' do

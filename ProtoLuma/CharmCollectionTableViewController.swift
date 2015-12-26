@@ -177,6 +177,10 @@ class CharmCollectionTableViewController: UITableViewController{
                 }
             }else{
                 print(error)
+                let alert = UIAlertController(title: "Error", message: "You don't appear to be connected to the internet.  You need internet to use this app.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+
             }
         })
         
@@ -231,6 +235,9 @@ class CharmCollectionTableViewController: UITableViewController{
                         if(photosDownloaded == fbIds.count){
                             self.refreshControl?.endRefreshing()
                             self.tableView.reloadData()
+                            
+                            // New UI design mandates that if a user has any stories, they are put into the newest one
+                            
                         }
                     }else{
                         print(error)
