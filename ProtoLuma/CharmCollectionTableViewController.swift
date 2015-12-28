@@ -15,8 +15,10 @@ class CharmTableViewCell : UITableViewCell {
     @IBOutlet var charmIconImage: UIImageView!
     var addedProfileImages = Set<String>()
     @IBOutlet var profileImages: UIStackView!
+    @IBOutlet var scheduledMomentsIcon: UIImageView!
     
-    func loadItem(title title: String, charmIconImage: UIImage, profilePhotos: Dictionary<String, UIImage>) {
+    
+    func loadItem(title title: String, charmIconImage: UIImage, profilePhotos: Dictionary<String, UIImage>, hasScheduledMoments: Bool) {
         self.charmIconImage.image = charmIconImage
         titleLabel.text = title
         
@@ -33,6 +35,8 @@ class CharmTableViewCell : UITableViewCell {
         UIView.animateWithDuration(0.25) { () -> Void in
             self.profileImages.layoutIfNeeded()
         }
+        
+        scheduledMomentsIcon.hidden = !hasScheduledMoments
         
     }
 }
@@ -56,6 +60,8 @@ class CharmCollectionTableViewController: UITableViewController{
         self.tabBarController?.tabBar.items![2].enabled = false
         
         self.refreshControl?.beginRefreshing()
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+
      
         // currentUser exists
         if (PFUser.currentUser() != nil){
@@ -86,6 +92,14 @@ class CharmCollectionTableViewController: UITableViewController{
         self.navigationItem.title = "Collection"
     }
     
+    func handleRefresh(refreshControl: UIRefreshControl) {
+        // Do some reloading of data and update the table view's data source
+        // Fetch more objects from a web service, for example...
+        
+        // Simply adding an object to the data source for this example
+        loadCharms()
+    }
+    
     // MARK: Table View delegate methods
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,6 +109,10 @@ class CharmCollectionTableViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CharmCell") as! CharmTableViewCell
         let charmName = self.charms[indexPath.row]["name"] as! String
+        var hasScheduledMoments = false
+        if(self.charms[indexPath.row]["hasScheduledMoments"] != nil){
+            hasScheduledMoments = self.charms[indexPath.row]["hasScheduledMoments"] as! Bool
+        }
         
         //load profile photos
         var profilePhotos = Dictionary<String, UIImage>()
@@ -105,10 +123,9 @@ class CharmCollectionTableViewController: UITableViewController{
                     profilePhotos[user] = self.profileImages[user]!
                 }
             }
-            
         }
         
-        cell.loadItem(title: charmName, charmIconImage: UIImage(named: "CharmsBarButtonIcon")!, profilePhotos: profilePhotos)
+        cell.loadItem(title: charmName, charmIconImage: UIImage(named: "CharmsBarButtonIcon")!, profilePhotos: profilePhotos, hasScheduledMoments: hasScheduledMoments)
         
         return cell
     }
@@ -177,10 +194,7 @@ class CharmCollectionTableViewController: UITableViewController{
                 }
             }else{
                 print(error)
-                let alert = UIAlertController(title: "Error", message: "You don't appear to be connected to the internet.  You need internet to use this app.", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-
+                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
             }
         })
         
@@ -259,6 +273,7 @@ class CharmCollectionTableViewController: UITableViewController{
                         }
                     }else{
                         print(error)
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
                     }
             })
         }

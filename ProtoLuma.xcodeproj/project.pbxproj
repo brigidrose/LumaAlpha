@@ -45,6 +45,8 @@
 		2CF2FE341B7EBB6200F4E11D /* ProtoLumaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE331B7EBB6200F4E11D /* ProtoLumaTests.swift */; };
 		2CF2FE3F1B7EBB6200F4E11D /* ProtoLumaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE3E1B7EBB6200F4E11D /* ProtoLumaUITests.swift */; };
 		42E931204FB7FCFA4AACC63E /* Pods_ProtoLuma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E400C48EE278EA290259850A /* Pods_ProtoLuma.framework */; };
+		839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */; };
+		839D4AD61C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */; };
 		83ED30F01C228B5D0047E5D9 /* CharmCollectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED30EF1C228B5D0047E5D9 /* CharmCollectionTableViewController.swift */; };
 		83ED30F21C23527B0047E5D9 /* CharmTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83ED30F11C23527B0047E5D9 /* CharmTableViewCell.xib */; };
 		83ED30F61C249E680047E5D9 /* StoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED30F51C249E680047E5D9 /* StoriesTableViewController.swift */; };
@@ -114,6 +116,8 @@
 		2CF2FE3A1B7EBB6200F4E11D /* ProtoLumaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtoLumaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF2FE3E1B7EBB6200F4E11D /* ProtoLumaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoLumaUITests.swift; sourceTree = "<group>"; };
 		2CF2FE401B7EBB6200F4E11D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledMomentsTableViewController.swift; sourceTree = "<group>"; };
+		839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduledMomentsHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		83ED30EF1C228B5D0047E5D9 /* CharmCollectionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmCollectionTableViewController.swift; sourceTree = "<group>"; };
 		83ED30F11C23527B0047E5D9 /* CharmTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharmTableViewCell.xib; sourceTree = "<group>"; };
 		83ED30F51C249E680047E5D9 /* StoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoriesTableViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +274,8 @@
 			children = (
 				83ED30F11C23527B0047E5D9 /* CharmTableViewCell.xib */,
 				83ED30EF1C228B5D0047E5D9 /* CharmCollectionTableViewController.swift */,
+				839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */,
+				839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */,
 				83ED30F51C249E680047E5D9 /* StoriesTableViewController.swift */,
 				83ED30F71C24A2930047E5D9 /* StoryTableViewCell.xib */,
 			);
@@ -413,6 +419,7 @@
 			files = (
 				2CF2FE291B7EBB6200F4E11D /* LaunchScreen.storyboard in Resources */,
 				83ED30F21C23527B0047E5D9 /* CharmTableViewCell.xib in Resources */,
+				839D4AD61C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib in Resources */,
 				2CF2FE261B7EBB6200F4E11D /* Assets.xcassets in Resources */,
 				83ED30F81C24A2930047E5D9 /* StoryTableViewCell.xib in Resources */,
 				2CF2FE211B7EBB6200F4E11D /* Main.storyboard in Resources */,
@@ -525,6 +532,7 @@
 				2C813EF31B992B1200A6EDA7 /* BraceletSettings.swift in Sources */,
 				2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */,
 				83ED30F61C249E680047E5D9 /* StoriesTableViewController.swift in Sources */,
+				839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */,
 				2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */,
 				2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,

@@ -47,6 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locationManager:CLLocationManager!
     var deviceId:String!
     var latestBatteryLife:Int?
+    
+    //degrees only go from -180 to 180 so set to 500 which means No Location Yet
+    var latestLocation:[Double] = [500, 500]
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -56,9 +59,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Initialize Parse.
         Parse.setApplicationId("xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d",
             clientKey: "VPxuBA4ASQBaPpusXfocIPKAKNrtJALBYd6LKlSx")
+        
+        checkForUnlockedItems()
+        
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
         
 //        PFTwitterUtils.initializeWithConsumerKey("lHc76e87Hs94HCNkw3NPV0lwW",  consumerSecret:"aRGu4WrbVfezsca8gpBQ1z24yPF2KvkcZRndDGBHND3BWbpNoy")
+        
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         
@@ -83,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.locationManager = CLLocationManager()
         self.locationManager.delegate = self
         self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.startUpdatingLocation()
+        self.locationManager.startMonitoringSignificantLocationChanges()
         
 //        let delay = 10000.0;
 //        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay));
@@ -123,6 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         
         print("application will enter foreground")
+        checkForUnlockedItems()
         
     }
 
@@ -134,9 +142,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             PFInstallation.currentInstallation().saveEventually(nil)
         }
         FBSDKAppEvents.activateApp()
-        
-        
-        
         
         self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
@@ -163,10 +168,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         })
     }
     
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation:CLLocation = locations[0]
+        latestLocation[0] = userLocation.coordinate.latitude
+        latestLocation[1] = userLocation.coordinate.longitude
+        checkForUnlockedItems()
+    }
+    
+    func checkForUnlockedItems(){
+        let date = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Hour, .Minute, .Month, .Year, .Day], fromDate: date)
+        let params:[String:NSObject] = [
+            "hour": components.hour,
+            "minutes": components.minute,
+            "month": components.month,
+            "year": components.year,
+            "day": components.day,
+            "locationX": latestLocation[0],
+            "locationY": latestLocation[1]
+        ]
+        PFCloud.callFunctionInBackground("unlockMoments", withParameters: params) { (response, error) -> Void in
+            if error == nil{
+                print("Unlocked moments response: \(response)")
+                if response!["unlockedMoments"] as! Int == 1{
+                    //refresh the charms because one is unlocked!
+                    (self.window?.rootViewController?.childViewControllers[0] as! CharmCollectionTableViewController).loadCharms()
+                }
+            }else{
+                print(error)
+                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+            }
+            
+        }
+    }
+    
     func setBatteryLife(device: MBLMetaWear){
         device.readBatteryLifeWithHandler({ (num, err) -> Void in
             self.latestBatteryLife = Int(num)
         } as MBLNumberHandler)
+    }
+    
+    func displayNoInternetErrorMessage(){
+        let alert = UIAlertController(title: "Error", message: "You don't appear to be connected to the internet.  You need internet to use this app.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+        self.window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
     }
 
     func applicationWillTerminate(application: UIApplication) {

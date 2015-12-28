@@ -10,7 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Ik-cY-R8Y" id="Ka0-yM-CZV">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="64"/>
+                <rect key="frame" x="0.0" y="0.0" width="287" height="64.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q7S-So-9im">
@@ -29,14 +29,21 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yEW-yk-sqp">
                         <rect key="frame" x="8" y="12" width="35" height="40"/>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="CharmsBarButtonIcon" translatesAutoresizingMaskIntoConstraints="NO" id="oMn-OI-g24">
+                        <rect key="frame" x="51" y="32" width="24" height="24"/>
+                    </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="charmIconImage" destination="yEW-yk-sqp" id="UTU-Im-ivZ"/>
                 <outlet property="profileImages" destination="ZVY-ln-fIX" id="OeC-bv-ZSs"/>
+                <outlet property="scheduledMomentsIcon" destination="oMn-OI-g24" id="QJi-CL-h99"/>
                 <outlet property="titleLabel" destination="Q7S-So-9im" id="e6Z-fl-tsz"/>
             </connections>
             <point key="canvasLocation" x="318" y="238.5"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="CharmsBarButtonIcon" width="22" height="22"/>
+    </resources>
 </document>

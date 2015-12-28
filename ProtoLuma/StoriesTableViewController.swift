@@ -46,12 +46,15 @@ class StoriesTableViewController: UITableViewController {
     var stories:[PFObject] = []
     var storiesStoryUnits:[[PFObject]] = []
     var profileImages = [String: UIImage]()
+    var lockedStoriesCount:Int32 = 0
+    var scheduledMomentsButton:UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let nib = UINib(nibName: "StoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "StoryCell")
+        scheduledMomentsButton = UIBarButtonItem(image: UIImage(named: "CharmsBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "scheduledMomentsTapped:")
         
         loadStoriesForCharmViewed()
 
@@ -61,10 +64,18 @@ class StoriesTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func scheduledMomentsTapped(sender:UIBarButtonItem){
+        self.performSegueWithIdentifier("showScheduledMoments", sender: self)
     }
 
     // MARK: - Table view data source
@@ -132,23 +143,42 @@ class StoriesTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if (segue.identifier == "showScheduledMoments"){
+            let destinationVC = segue.destinationViewController as! ScheduledMomentsTableViewController
+            destinationVC.lockedStoriesCount = self.lockedStoriesCount
+        }
     }
-    */
+
 
     
     func loadStoriesForCharmViewed(){
         self.refreshControl?.beginRefreshing()
-        let queryForStoriesForCharmViewed = PFQuery(className: "Story")
+        
+        var queryForStoriesForCharmViewed = PFQuery(className: "Story")
+        queryForStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charm)
+        queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: false)
+        queryForStoriesForCharmViewed.countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+            if(error == nil){
+                self.lockedStoriesCount = count
+                if self.lockedStoriesCount > 0{
+                    self.navigationItem.rightBarButtonItem = self.scheduledMomentsButton
+                }else{
+                    self.navigationItem.rightBarButtonItem = nil
+                }
+            }else{
+                print(error)
+                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+            }
+        })
+        
+        queryForStoriesForCharmViewed = PFQuery(className: "Story")
         queryForStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charm)
         queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: true)
-//        queryForStoriesForCharmViewed.includeKey("sender")
         queryForStoriesForCharmViewed.orderByDescending("createdAt")
         queryForStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if (error == nil){
@@ -172,9 +202,9 @@ class StoriesTableViewController: UITableViewController {
             }
             else{
                 print(error)
+                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
             }
         })
-        
     }
 
 }

@@ -382,9 +382,14 @@ class AccountViewController: UITableViewController {
         let queryForCharms = PFQuery(className: "Charm")
         queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-            self.charms = objects!
-            print("charms loaded")
-            self.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
+            if error == nil{
+                self.charms = objects!
+                print("charms loaded")
+                self.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
+            }else{
+                print(error)
+                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+            }
         })
         
     }

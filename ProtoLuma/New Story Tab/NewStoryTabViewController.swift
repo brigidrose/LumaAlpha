@@ -152,6 +152,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                                     else{
                                         print(error)
                                         self.navigationItem.rightBarButtonItem?.enabled = true
+                                        (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
                                     }
                                 })
                             }
@@ -159,6 +160,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                         else{
                             print(error)
                             self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
+                            (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
                         }
                     })
                 })
@@ -178,6 +180,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 else{
                     print(error)
                     self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
                 }
                 
             })
