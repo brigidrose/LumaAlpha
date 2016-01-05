@@ -14,6 +14,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
     var instructionLabel:UILabel!
     var enterCIDTextField:UITextField!
     var numCharms:Int!
+    var charm:PFObject!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,12 +80,11 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
         // Check if BID submitted is found in purchased inventory
         let queryCheckCIDExistsAndOrphaned = PFQuery(className: "Charm")
         queryCheckCIDExistsAndOrphaned.whereKey("serialNumber", equalTo: CID)
-        queryCheckCIDExistsAndOrphaned.includeKey("gifter")
         queryCheckCIDExistsAndOrphaned.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-            if(error == nil){
-                if (objects?.count != 0){
+            if error == nil {
+                if objects?.count != 0 {
                     // CID exists
-                    let charm = objects![0]
+                    self.charm = objects![0]
 //                    if (charm["claimed"] as? Bool == true){
 //                        // CID already claimed
 //                        print("CID already claimed")
@@ -92,26 +92,17 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
 //                    else{
                         print("CID available")
 //                         CID available, proceed to add user as owner of charm
-//                        charm["owner"] = PFUser.currentUser()!
+                        self.charm["owner"] = PFUser.currentUser()!
+                        self.charm["claimed"] = true
                     
-                        //add user to many to many relationship
-                        let relation = charm.relationForKey("owners")
-                        relation.addObject(PFUser.currentUser()!)
-//                        charm["claimed"] = true
-//                        charm["slotNumber"] = self.numCharms
-                        print("user added to relation")
-                    
-                        charm.saveInBackgroundWithBlock({ (success, error) -> Void in
-                            print(error)
-                            print("charm registered on Parse")
-                            (self.parentViewController?.presentingViewController?.childViewControllers[0] as! AccountViewController).loadCharms()
-                            self.dismissViewControllerAnimated(true, completion: nil)
+                        self.charm.saveInBackgroundWithBlock({ (success, error) -> Void in
+                            if error == nil {
+                                print("charm registered on Parse")
+                                self.performSegueWithIdentifier("showSetCharmGroup", sender: self)
+                            }else{
+                                print(error)
+                            }
                         })
-                        print("after save block")
-//                        charm.saveEventually({(error) -> Void in
-//                           
-//                            
-//                        })
 //                    }
                 }
                 else{
@@ -130,5 +121,14 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
         print("return button tapped")
         self.confirmButtonTapped()
         return true
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showSetCharmGroup" {
+            let dvc = segue.destinationViewController as! SetCharmGroupViewController
+            dvc.charm = self.charm
+        }
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
     }
 }

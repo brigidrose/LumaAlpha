@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locationManager:CLLocationManager!
     var deviceId:String!
     var latestBatteryLife:Int?
+    var collectionController:CharmCollectionTableViewController!
     
     //degrees only go from -180 to 180 so set to 500 which means No Location Yet
     var latestLocation:[Double] = [500, 500]

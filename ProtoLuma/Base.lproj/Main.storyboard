@@ -107,7 +107,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a28-ku-A4r" id="ewB-4d-TDU">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
@@ -154,7 +154,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tR2-6V-QRS" id="2CR-pH-dR4">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -196,7 +196,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="taG-Pt-IkN" id="fMD-BB-kXk">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -242,7 +242,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fgi-sn-Vvr" id="HcH-Xh-N2q">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -288,10 +288,75 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="0Mv-J0-Pbq"/>
+                    <connections>
+                        <segue destination="wkt-EH-y7a" kind="show" identifier="showSetCharmGroup" id="NSz-5c-Uv9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Loa-Rn-wFv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2201" y="2815"/>
+        </scene>
+        <!--Set Charm Group View Controller-->
+        <scene sceneID="nbX-a4-Gzh">
+            <objects>
+                <viewController id="wkt-EH-y7a" customClass="SetCharmGroupViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fP0-fh-fhC"/>
+                        <viewControllerLayoutGuide type="bottom" id="hJ9-Y7-IxN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zUo-Oq-0f9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Create a new Charm Group" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg0-FW-BNQ">
+                                <rect key="frame" x="56" y="86" width="208" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zw-LV-fbO">
+                                <rect key="frame" x="138" y="136" width="45" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q19-SV-wA9">
+                                <rect key="frame" x="111" y="171" width="98" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaO-cb-Li6">
+                                <rect key="frame" x="137" y="209" width="46" height="30"/>
+                                <state key="normal" title="Create"/>
+                                <connections>
+                                    <action selector="createCharmGroupPressed:" destination="wkt-EH-y7a" eventType="touchUpInside" id="sDa-w6-5Xw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h82-uQ-eut">
+                                <rect key="frame" x="6" y="280" width="308" height="30"/>
+                                <state key="normal" title="Or choose one of your friends Charm Groups"/>
+                                <connections>
+                                    <action selector="chooseFriendCharmGroupPressed:" destination="wkt-EH-y7a" eventType="touchUpInside" id="ZSd-uG-vzd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Xg0-FW-BNQ" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="AO6-ad-7og"/>
+                            <constraint firstItem="8Zw-LV-fbO" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="Etu-81-Gsd"/>
+                            <constraint firstItem="h82-uQ-eut" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="Go6-Wh-Ctg"/>
+                            <constraint firstItem="Q19-SV-wA9" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="ewt-rT-mGd"/>
+                            <constraint firstItem="qaO-cb-Li6" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="gsg-AW-GWI"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="charmGroupName" destination="Q19-SV-wA9" id="RJi-G1-DRY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2I1-xy-BhD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2212" y="3607"/>
         </scene>
         <!--Account View Controller-->
         <scene sceneID="T5h-Da-cBf">
@@ -306,7 +371,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BEN-nS-rcF" id="kBZ-sM-6k6">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -351,7 +416,7 @@
         <scene sceneID="4SN-4K-isW">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="J8n-qy-qZg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collection" image="CharmsBarButtonIcon" id="9pA-53-HVM"/>
+                    <tabBarItem key="tabBarItem" title="Collection" image="Collection" id="9pA-53-HVM"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ozb-6p-WEX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -406,14 +471,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AccountBarButtonIcon" width="22" height="22"/>
+        <image name="AccountBarButtonIcon" width="25" height="26"/>
         <image name="CharmsBarButtonIcon" width="22" height="22"/>
+        <image name="Collection" width="25" height="25"/>
         <image name="NewStoryBarButtonIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lfn-Ox-up4"/>
-        <segue reference="NXJ-9h-4kM"/>
-        <segue reference="Ol1-iy-aYo"/>
+        <segue reference="deY-Gc-PN2"/>
+        <segue reference="O42-oJ-8jX"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
 </document>

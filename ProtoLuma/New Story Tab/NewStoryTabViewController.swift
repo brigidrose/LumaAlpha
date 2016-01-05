@@ -98,7 +98,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         story["title"] = self.momentTitle?.textField.text
         story["description"] = self.momentDesc?.textView.text
         story["sender"] = PFUser.currentUser()
-        story["forCharm"] = self.forCharm
+        story["charmGroup"] = self.forCharm["charmGroup"]
         if (self.unlockParameterType != nil){
             print("unlock parameter type is not nil")
             story["unlockType"] = self.unlockParameterType
@@ -231,25 +231,12 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         if (self.forCharm == nil){
             let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
             let charm = self.charms[indexPath.row]
-//            let charmOwner = charm["owner"] as? PFUser
-            let charmGifter = charm["gifter"] as? PFUser
-            if (charmGifter != nil){
-//                let charmOwnerFirstName = charmOwner?["firstName"] as! String
-//                let charmOwnerLastName = charmOwner?["lastName"] as! String
-                let charmGifterFirstName = charmGifter?["firstName"] as! String
-                let charmGifterLastName = charmGifter?["lastName"] as! String
-                if (charmGifter == PFUser.currentUser()!){
-                    cell.charmSubtitle.text = "Gifted charm"
-                }
-                else{
-                    cell.charmSubtitle.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName)."
-                }
-                cell.charmTitle.text = charm["name"] as? String
-                cell.charmTitle.textColor = UIColor.blackColor()
-                cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
-                cell.backgroundColor = UIColor.whiteColor()
-                cell.accessoryType = UITableViewCellAccessoryType.None
-            }
+            cell.charmTitle.text = charm["name"] as? String
+            cell.charmTitle.textColor = UIColor.blackColor()
+            cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
+            cell.backgroundColor = UIColor.whiteColor()
+            cell.accessoryType = UITableViewCellAccessoryType.None
+            
             return cell
         }
         else{

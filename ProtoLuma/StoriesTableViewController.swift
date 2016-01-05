@@ -160,7 +160,7 @@ class StoriesTableViewController: UITableViewController {
         self.refreshControl?.beginRefreshing()
         
         var queryForStoriesForCharmViewed = PFQuery(className: "Story")
-        queryForStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charm)
+        queryForStoriesForCharmViewed.whereKey("charmGroup", equalTo: self.charm["charmGroup"])
         queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: false)
         queryForStoriesForCharmViewed.countObjectsInBackgroundWithBlock({ (count, error) -> Void in
             if(error == nil){
@@ -177,7 +177,7 @@ class StoriesTableViewController: UITableViewController {
         })
         
         queryForStoriesForCharmViewed = PFQuery(className: "Story")
-        queryForStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charm)
+        queryForStoriesForCharmViewed.whereKey("charmGroup", equalTo: self.charm["charmGroup"])
         queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: true)
         queryForStoriesForCharmViewed.orderByDescending("createdAt")
         queryForStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
@@ -186,18 +186,23 @@ class StoriesTableViewController: UITableViewController {
                 self.storiesStoryUnits = Array(count: self.stories.count, repeatedValue: [])
                 // load storiesStoryUnits
                 var storiesStoryUnitsFoundCount = 0
-                for story in self.stories{
-                    let storyRelation = story.relationForKey("storyUnits")
-                    let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
-                    queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-                        self.storiesStoryUnits[self.stories.indexOf(story)!] = objects!
-                        storiesStoryUnitsFoundCount++
-                        if (storiesStoryUnitsFoundCount == self.stories.count){
-                            //done loading story units
-                            self.refreshControl?.endRefreshing()
-                            self.tableView.reloadData()
-                        }
-                    })
+                if self.stories.count > 0{
+                    for story in self.stories{
+                        let storyRelation = story.relationForKey("storyUnits")
+                        let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
+                        queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+                            self.storiesStoryUnits[self.stories.indexOf(story)!] = objects!
+                            storiesStoryUnitsFoundCount++
+                            if (storiesStoryUnitsFoundCount == self.stories.count){
+                                //done loading story units
+                                self.refreshControl?.endRefreshing()
+                                self.tableView.reloadData()
+                            }
+                        })
+                    }
+                }else{
+                    self.refreshControl?.endRefreshing()
+                    self.tableView.reloadData()
                 }
             }
             else{

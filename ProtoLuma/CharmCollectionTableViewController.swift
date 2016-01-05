@@ -83,6 +83,9 @@ class CharmCollectionTableViewController: UITableViewController{
             self.performSegueWithIdentifier("showLogin", sender: self)
         }
         
+        //store a reference in the app delegate
+        (UIApplication.sharedApplication().delegate as! AppDelegate).collectionController = self
+        
     }
 
     
@@ -158,12 +161,9 @@ class CharmCollectionTableViewController: UITableViewController{
     
     func loadCharms(){
         print("loading charms")
-        let queryForCharmsOwned = PFQuery(className: "Charm")
-        queryForCharmsOwned.whereKey("owners", equalTo: PFUser.currentUser()!)
-        let queryForCharmsGifted = PFQuery(className: "Charm")
-        queryForCharmsGifted.whereKey("gifter", equalTo: PFUser.currentUser()!)
-        let queryForCharms = PFQuery.orQueryWithSubqueries([queryForCharmsOwned, queryForCharmsGifted])
-        queryForCharms.includeKey("gifter")
+        let queryForCharms = PFQuery(className: "Charm")
+        queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
+        queryForCharms.includeKey("charmGroup")
         
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if error == nil{
@@ -236,46 +236,50 @@ class CharmCollectionTableViewController: UITableViewController{
     func downloadAndSetProfilePhotos(fbIds: Set<String>){
         print(fbIds)
         var photosDownloaded = 0
-        for id in fbIds{
-            let imgURL: NSURL = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")!
-            let request: NSURLRequest = NSURLRequest(URL: imgURL)
-            NSURLConnection.sendAsynchronousRequest(
-                request, queue: NSOperationQueue.mainQueue(),
-                completionHandler: {(response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
-                    if error == nil {
-                        self.profileImages[id] = self.RBSquareImage(UIImage(data: data!)!).circle
-                        photosDownloaded++
-                        print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
-                        if(photosDownloaded == fbIds.count){
-                            self.refreshControl?.endRefreshing()
-                            self.tableView.reloadData()
-                            
-                            // New UI design mandates that if a user has any stories, they are pushed into the newest one
-//                            var mostRecent:PFObject?
-                            var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)
-                            var indexOfMostRecentCharm:Int?
-                            for (index, charm) in self.charms.enumerate(){
-                                if(charm["latestStory"] != nil){
-                                    let charmDate = charm["latestStory"] as! NSDate
-                                    
-                                    if charmDate.compare(mostRecentLatestStory) == NSComparisonResult.OrderedDescending {
-//                                        mostRecent = charm
-                                        indexOfMostRecentCharm = index
-                                        mostRecentLatestStory = charm["latestStory"] as! NSDate
+        if fbIds.count > 0 {
+            for id in fbIds{
+                let imgURL: NSURL = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")!
+                let request: NSURLRequest = NSURLRequest(URL: imgURL)
+                NSURLConnection.sendAsynchronousRequest(
+                    request, queue: NSOperationQueue.mainQueue(),
+                    completionHandler: {(response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
+                        if error == nil {
+                            self.profileImages[id] = self.RBSquareImage(UIImage(data: data!)!).circle
+                            photosDownloaded++
+                            print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
+                            if(photosDownloaded == fbIds.count){
+                                self.refreshControl?.endRefreshing()
+                                self.tableView.reloadData()
+                                
+                                // New UI design mandates that if a user has any stories, they are pushed into the newest one
+    //                            var mostRecent:PFObject?
+                                var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)
+                                var indexOfMostRecentCharm:Int?
+                                for (index, charm) in self.charms.enumerate(){
+                                    if(charm["latestStory"] != nil){
+                                        let charmDate = charm["latestStory"] as! NSDate
+                                        
+                                        if charmDate.compare(mostRecentLatestStory) == NSComparisonResult.OrderedDescending {
+    //                                        mostRecent = charm
+                                            indexOfMostRecentCharm = index
+                                            mostRecentLatestStory = charm["latestStory"] as! NSDate
+                                        }
                                     }
                                 }
+                                if indexOfMostRecentCharm != nil{
+                                    print("Most recent charm is \(indexOfMostRecentCharm!)")
+                                    self.indexPathOfCharmViewed = NSIndexPath(forRow: indexOfMostRecentCharm!, inSection: 0)
+                                    self.performSegueWithIdentifier("showStoryTable", sender: self)
+                                }
                             }
-                            if indexOfMostRecentCharm != nil{
-                                print("Most recent charm is \(indexOfMostRecentCharm!)")
-                                self.indexPathOfCharmViewed = NSIndexPath(forRow: indexOfMostRecentCharm!, inSection: 0)
-                                self.performSegueWithIdentifier("showStoryTable", sender: self)
-                            }
+                        }else{
+                            print(error)
+                            (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
                         }
-                    }else{
-                        print(error)
-                        (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
-                    }
-            })
+                })
+            }
+        }else{
+            self.tableView.reloadData()
         }
     }
     
@@ -284,21 +288,35 @@ class CharmCollectionTableViewController: UITableViewController{
         var uniqueFacebookIds = Set<String>()
         var retrievedCount = 0
         for charm in self.charms{
-            var idsForCharm = Set<String>()
-            uniqueFacebookIds.insert(charm["gifter"]["facebookId"] as! String)
-            idsForCharm.insert(charm["gifter"]["facebookId"] as! String)
-            let ownersQuery = charm.relationForKey("owners").query()!
-            ownersQuery.findObjectsInBackgroundWithBlock({ (owners, error) -> Void in
-                for user in owners!{
-                    uniqueFacebookIds.insert(user["facebookId"] as! String)
-                    idsForCharm.insert(user["facebookId"] as! String)
-                }
-                self.relatedUsersOfCharms[charm.objectId!] = idsForCharm
-                retrievedCount++
-                if(retrievedCount == self.charms.count){
-                    self.downloadAndSetProfilePhotos(uniqueFacebookIds)
-                }
-            })
+            let otherCharmGroupUsersQuery = PFQuery(className: "Charm")
+            if charm["charmGroup"] != nil {
+                otherCharmGroupUsersQuery.whereKey("charmGroup", equalTo: charm["charmGroup"])
+                otherCharmGroupUsersQuery.includeKey("owner")
+                otherCharmGroupUsersQuery.findObjectsInBackgroundWithBlock({ (charms, error) -> Void in
+                    if error == nil {
+                        print("got \((charms ?? []).count) related users");
+                        var idsForCharm = Set<String>()
+                        for charm in charms ?? []{
+                            let fbId = charm["owner"]["facebookId"] as! String
+                            //don't download a pic if we already have it from earlier.
+                            if !self.profileImages.keys.contains(fbId){
+                                uniqueFacebookIds.insert(fbId)
+                            }
+                            idsForCharm.insert(fbId)
+                        }
+                        self.relatedUsersOfCharms[charm.objectId!] = idsForCharm
+                        retrievedCount++
+                        if(retrievedCount == self.charms.count){
+                            self.downloadAndSetProfilePhotos(uniqueFacebookIds)
+                        }
+                    }else{
+                        print(error)
+                    }
+                })
+            }else{
+                //this charm has no charm group.  
+                print("charm with id \(charm["id"]) has no group")
+            }
         }
         
     }
