@@ -45,7 +45,7 @@ class CharmCollectionTableViewController: UITableViewController{
     
     var userInfo:AnyObject!
     var bracelet:MBLMetaWear!
-    var charms:[PFObject] = []
+    var charms:[PFObject]! = []
     var relatedUsersOfCharms = [String: Set<String>]()
     var profileImages = [String: UIImage]()
     var indexPathOfCharmViewed:NSIndexPath!
@@ -157,7 +157,22 @@ class CharmCollectionTableViewController: UITableViewController{
     
     
     
-    
+    func populateCharmsAndEnableBarItems(){
+        //load charms into the new story controller
+        let barViewControllers = self.tabBarController?.viewControllers
+        let nstvc = barViewControllers![1].childViewControllers[0] as! NewStoryTabViewController
+        nstvc.charms = self.charms  //shared model
+        
+        print("loading charms into account page")
+        //load charms into the account view
+        let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+        avc.charms = self.charms  //shared model
+        
+        print("enabling tab buttons")
+        
+        self.tabBarController?.tabBar.items![1].enabled = true
+        self.tabBarController?.tabBar.items![2].enabled = true
+    }
     
     func loadCharms(){
         print("loading charms")
@@ -172,25 +187,15 @@ class CharmCollectionTableViewController: UITableViewController{
     //            self.tableView.reloadData()
                 if (self.charms.count > 0){
                     print("loading charms into new page")
-                    //load charms into the new story controller
-                    let barViewControllers = self.tabBarController?.viewControllers
-                    let nstvc = barViewControllers![1].childViewControllers[0] as! NewStoryTabViewController
-                    nstvc.charms = self.charms  //shared model
                     
-                    print("loading charms into account page")
-                    //load charms into the account view
-                    let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
-                    avc.charms = self.charms  //shared model
-                    
-                    print("enabling tab buttons")
-                    
-                    self.tabBarController?.tabBar.items![1].enabled = true
-                    self.tabBarController?.tabBar.items![2].enabled = true
                     
                     print("loading profile photos...")
-                    
+                    self.populateCharmsAndEnableBarItems();
                     //load all profile photos in the background
                     self.loadProfilePhotos()
+                }else{
+                    self.populateCharmsAndEnableBarItems();
+                    self.refreshControl?.endRefreshing()
                 }
             }else{
                 print(error)
@@ -279,6 +284,7 @@ class CharmCollectionTableViewController: UITableViewController{
                 })
             }
         }else{
+            self.refreshControl?.endRefreshing()
             self.tableView.reloadData()
         }
     }

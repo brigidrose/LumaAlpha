@@ -15,7 +15,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //    var cancelButton:UIBarButtonItem!
     var sendButton:UIBarButtonItem!
     
-    var charms:[PFObject]!
+    var charms:[PFObject]! = []
     var forCharm:PFObject!
     var storyUnits:[PFObject] = []
     var mediaAssets:[PHAsset] = []

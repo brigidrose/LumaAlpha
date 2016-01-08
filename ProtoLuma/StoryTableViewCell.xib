@@ -25,7 +25,6 @@
                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="XIf-ie-MWG">
                         <rect key="frame" x="52" y="89" width="260" height="77"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="260" id="Qey-MY-MNr"/>
                             <constraint firstAttribute="height" constant="77" id="rZT-gA-Gs2"/>
                         </constraints>
                     </stackView>
@@ -36,6 +35,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="XIf-ie-MWG" secondAttribute="trailing" constant="8" id="xaf-2u-6L8"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="HImageStack" destination="XIf-ie-MWG" id="Ncj-L3-mCp"/>
