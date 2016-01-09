@@ -47,7 +47,7 @@ class CharmWithSubtitleTableViewCell: UITableViewCell {
         self.charmSubtitle.numberOfLines = 1
         self.contentView.addSubview(self.charmSubtitle)
         
-        self.accessoryType = UITableViewCellAccessoryType.DetailButton
+        self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         let viewsDicitonary = ["charmImageView":self.charmImageView, "charmTitle":self.charmTitle, "charmSubtitle":self.charmSubtitle]
         let horizontalConstraintsCharmTitle = NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[charmImageView(50)]-10-[charmTitle]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDicitonary)

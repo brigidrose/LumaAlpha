@@ -42,12 +42,13 @@ class StoryTableViewCell : UITableViewCell {
 
 class StoriesTableViewController: UITableViewController {
 
-    var charm:PFObject!
+    var charm:Charm!
     var stories:[PFObject] = []
     var storiesStoryUnits:[[PFObject]] = []
     var profileImages = [String: UIImage]()
     var lockedStoriesCount:Int32 = 0
     var scheduledMomentsButton:UIBarButtonItem!
+    let titleButtonLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +56,14 @@ class StoriesTableViewController: UITableViewController {
         let nib = UINib(nibName: "StoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "StoryCell")
         scheduledMomentsButton = UIBarButtonItem(image: UIImage(named: "CharmsBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "scheduledMomentsTapped:")
+        
+        
+        
+        titleButtonLabel.frame = CGRectMake(0, 0, 70, 44);
+        titleButtonLabel.userInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: "titleTapped:")
+        titleButtonLabel.addGestureRecognizer(tap)
+        self.navigationItem.titleView = titleButtonLabel
         
         loadStoriesForCharmViewed()
 
@@ -66,12 +75,19 @@ class StoriesTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+//        self.navigationItem.title = "\(charm.charmGroup.name) >"
+        titleButtonLabel.text = "\(charm.charmGroup.name) >"
+        
         
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func titleTapped(sender: AnyObject){
+        print("charm title tapped. go to charm settings")
     }
     
     func scheduledMomentsTapped(sender:UIBarButtonItem){

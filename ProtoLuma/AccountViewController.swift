@@ -15,6 +15,8 @@ class AccountViewController: UITableViewController {
     var metawearManager:MBLMetaWearManager!
     var charms:[Charm] = []
     var bracelet:MBLMetaWear!
+    var selectedCharmIndex:Int!
+    var profileImages = [String: UIImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +76,7 @@ class AccountViewController: UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "showAddCharm") {
+        if segue.identifier == "showAddCharm" {
             let svc = segue.destinationViewController as! AddCharmViewController
             svc.charms = charms
 //            var numCharms = 0;
@@ -88,6 +90,10 @@ class AccountViewController: UITableViewController {
 //                }
 //            }
 //            svc.numCharms = numCharms;
+        }else if segue.identifier == "charmSettings" {
+            let svc = segue.destinationViewController as! CharmSettingsTableViewController
+            svc.charm = charms[selectedCharmIndex]
+            svc.profileImages = profileImages
         }
     }
     
@@ -133,6 +139,7 @@ class AccountViewController: UITableViewController {
             else{
                 cell.charmSubtitle.text = "not connected"
             }
+            cell.accessoryType = .DetailButton
             return cell
         case 2:
             // Charms
@@ -154,7 +161,7 @@ class AccountViewController: UITableViewController {
             else{
                 let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
                 let charm = self.charms[indexPath.row]
-                cell.charmTitle.text = charm["name"] as? String
+                cell.charmTitle.text = charm.charmGroup.name
 //                let charmOwner = charm["owner"] as? PFUser
 //                if (charmOwner != nil){
 //                    let charmOwnerFirstName = charmOwner?["firstName"] as? String
@@ -261,6 +268,8 @@ class AccountViewController: UITableViewController {
             }
             else{
                 // Existing Charm selected
+                selectedCharmIndex = indexPath.row
+                self.performSegueWithIdentifier("charmSettings", sender: self)
             }
 //            self.charms[indexPath.row].connectWithHandler({(error) -> Void in
 //                self.charms[indexPath.row].led.flashLEDColor(UIColor.blueColor(), withIntensity: 1.0)

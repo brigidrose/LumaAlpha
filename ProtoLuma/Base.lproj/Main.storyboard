@@ -281,6 +281,34 @@
             </objects>
             <point key="canvasLocation" x="2201" y="2815"/>
         </scene>
+        <!--Charm Settings Table View Controller-->
+        <scene sceneID="uqG-Li-EwS">
+            <objects>
+                <tableViewController id="aDK-cy-Ov2" customClass="CharmSettingsTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="NWx-5M-UvJ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BdA-rL-qE1">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BdA-rL-qE1" id="mSK-vd-zv2">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="aDK-cy-Ov2" id="itq-gV-GXj"/>
+                            <outlet property="delegate" destination="aDK-cy-Ov2" id="HgD-HA-e5X"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XVy-yE-MhI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1617" y="3692"/>
+        </scene>
         <!--Set Charm Group View Controller-->
         <scene sceneID="nbX-a4-Gzh">
             <objects>
@@ -388,6 +416,7 @@
                         <segue destination="Qns-7h-Ftg" kind="presentation" identifier="loggedInWithoutBracelet" id="deY-Gc-PN2"/>
                         <segue destination="EfU-EN-g2o" kind="show" identifier="showAddCharm" id="uWY-5Q-Gsh"/>
                         <segue destination="Qns-7h-Ftg" kind="show" identifier="changeBracelet" id="xlU-Wr-tIa"/>
+                        <segue destination="aDK-cy-Ov2" kind="show" identifier="charmSettings" id="dZk-rd-CQd"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dAJ-8N-7cp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -479,10 +508,10 @@
         <image name="NewStoryBarButtonIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="O42-oJ-8jX"/>
         <segue reference="Lfn-Ox-up4"/>
         <segue reference="xlU-Wr-tIa"/>
-        <segue reference="O42-oJ-8jX"/>
-        <segue reference="NSz-5c-Uv9"/>
+        <segue reference="jWJ-NW-k6x"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
 </document>

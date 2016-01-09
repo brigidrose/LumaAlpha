@@ -259,6 +259,10 @@ class CharmCollectionTableViewController: UITableViewController{
                                 self.refreshControl?.endRefreshing()
                                 self.tableView.reloadData()
                                 
+                                let barViewControllers = self.tabBarController?.viewControllers
+                                let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+                                avc.profileImages = self.profileImages  //shared model
+                                
                                 // New UI design mandates that if a user has any stories, they are pushed into the newest one
     //                            var mostRecent:PFObject?
                                 var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)

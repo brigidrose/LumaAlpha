@@ -13,6 +13,7 @@ class User: PFUser {
     
     @NSManaged var firstName: String
     @NSManaged var lastName: String
+    @NSManaged var facebookId: String
     
     class func isLoggedIn() -> Bool {
         return User.currentUser() != nil
