@@ -13,16 +13,18 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
 
     var instructionLabel:UILabel!
     var enterCIDTextField:UITextField!
-    var numCharms:Int!
-    var charm:PFObject!
+    var charm:Charm!
+    var charmGroups:[Charm_Group]! = []
+    var charms:[Charm]! = []
+    var unusedCharmGroups:[Charm_Group]! = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "Add Charm"
         
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped:")
-        self.navigationItem.leftBarButtonItem = cancelButton
+//        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped:")
+//        self.navigationItem.leftBarButtonItem = cancelButton
         
         let addButton = UIBarButtonItem(title: "Confirm", style: UIBarButtonItemStyle.Done, target: self, action: "confirmButtonTapped")
         self.navigationItem.rightBarButtonItem = addButton
@@ -32,7 +34,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
         
         self.instructionLabel = UILabel(frame: CGRectZero)
         self.instructionLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.instructionLabel.text = "Enter Charm ID"
+        self.instructionLabel.text = "Enter your charm's unique pin"
         self.instructionLabel.textAlignment = NSTextAlignment.Center
         self.view.addSubview(self.instructionLabel)
         
@@ -55,6 +57,19 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
         self.view.addConstraints(textFieldHConstraints)
         
         self.enterCIDTextField.becomeFirstResponder()
+        
+        let charmGroupQuery = PFQuery(className: "User_Charm_Group")
+        charmGroupQuery.whereKey("user", equalTo: PFUser.currentUser()!)
+        charmGroupQuery.includeKey("charmGroup")
+        charmGroupQuery.findObjectsInBackgroundWithBlock { (userCharmGroups, error) -> Void in
+            if error == nil{
+                for userCharmGroup in userCharmGroups! {
+                    self.charmGroups.append(userCharmGroup["charmGroup"] as! Charm_Group)
+                }
+            }else{
+                print(error)
+            }
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -84,7 +99,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
             if error == nil {
                 if objects?.count != 0 {
                     // CID exists
-                    self.charm = objects![0]
+                    self.charm = objects![0] as! Charm
 //                    if (charm["claimed"] as? Bool == true){
 //                        // CID already claimed
 //                        print("CID already claimed")
@@ -92,13 +107,46 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
 //                    else{
                         print("CID available")
 //                         CID available, proceed to add user as owner of charm
-                        self.charm["owner"] = PFUser.currentUser()!
-                        self.charm["claimed"] = true
+                        self.charm.owner = PFUser.currentUser() as! User
+                        self.charm.claimed = true
                     
                         self.charm.saveInBackgroundWithBlock({ (success, error) -> Void in
                             if error == nil {
                                 print("charm registered on Parse")
-                                self.performSegueWithIdentifier("showSetCharmGroup", sender: self)
+                                //filter unused charmgroup invitations
+                                self.unusedCharmGroups = self.charmGroups.filter({ (charmGroup) -> Bool in
+                                    for charm in self.charms {
+                                        if charm.objectId == charmGroup.objectId {
+                                            return false
+                                        }
+                                    }
+                                    return true
+                                })
+                                if self.unusedCharmGroups.count == 0 {
+                                    self.performSegueWithIdentifier("showNewCharmGroupName", sender: self)
+                                }else{
+                                    //collect the names of members and add to charm group
+                                    let charmGroupMembersQuery = PFQuery(className: "Charm")
+                                    charmGroupMembersQuery.whereKey("charmGroup", containedIn: self.unusedCharmGroups)
+                                    charmGroupMembersQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
+                                    charmGroupMembersQuery.includeKey("owner")
+                                    charmGroupMembersQuery.includeKey("charmGroup")
+                                    charmGroupMembersQuery.findObjectsInBackgroundWithBlock({ (results, error) -> Void in
+                                        if error == nil{
+                                            for charm in results as! [Charm] {
+                                                for charmGroup in self.unusedCharmGroups {
+                                                    if charm.charmGroup == charmGroup {
+                                                        charmGroup.members.append(charm.owner)
+                                                    }
+                                                }
+                                            }
+                                            self.performSegueWithIdentifier("showCharmGroupSetting", sender: self)
+                                        }else{
+                                            print(error)
+                                        }
+                                    })
+                                    
+                                }
                             }else{
                                 print(error)
                             }
@@ -126,6 +174,10 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSetCharmGroup" {
             let dvc = segue.destinationViewController as! SetCharmGroupViewController
+            dvc.charm = self.charm
+        }else if segue.identifier == "showCharmGroupSetting"{
+            let dvc = segue.destinationViewController as! CharmGroupSettingTableViewController
+            dvc.charmGroups = self.unusedCharmGroups
             dvc.charm = self.charm
         }
         // Get the new view controller using segue.destinationViewController.

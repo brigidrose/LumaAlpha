@@ -45,6 +45,14 @@
 		2CF2FE341B7EBB6200F4E11D /* ProtoLumaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE331B7EBB6200F4E11D /* ProtoLumaTests.swift */; };
 		2CF2FE3F1B7EBB6200F4E11D /* ProtoLumaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE3E1B7EBB6200F4E11D /* ProtoLumaUITests.swift */; };
 		42E931204FB7FCFA4AACC63E /* Pods_ProtoLuma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E400C48EE278EA290259850A /* Pods_ProtoLuma.framework */; };
+		833C95251C3FBA4F00D13E63 /* CharmGroupSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C95241C3FBA4F00D13E63 /* CharmGroupSettingTableViewController.swift */; };
+		833C95291C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C95271C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.swift */; };
+		833C952A1C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833C95281C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.xib */; };
+		833C952D1C404EA200D13E63 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C952C1C404EA200D13E63 /* User.swift */; };
+		833C952F1C404ED900D13E63 /* Charm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C952E1C404ED900D13E63 /* Charm.swift */; };
+		833C95311C404F6B00D13E63 /* Charm_Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C95301C404F6B00D13E63 /* Charm_Group.swift */; };
+		833C95331C4054E700D13E63 /* User_Charm_Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C95321C4054E700D13E63 /* User_Charm_Group.swift */; };
+		833C95351C4055F400D13E63 /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C95341C4055F400D13E63 /* Story.swift */; };
 		836DAD8D1C3BB79500DEA8DF /* SetCharmGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836DAD8C1C3BB79500DEA8DF /* SetCharmGroupViewController.swift */; };
 		839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */; };
 		839D4AD61C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */; };
@@ -117,6 +125,14 @@
 		2CF2FE3A1B7EBB6200F4E11D /* ProtoLumaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtoLumaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF2FE3E1B7EBB6200F4E11D /* ProtoLumaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoLumaUITests.swift; sourceTree = "<group>"; };
 		2CF2FE401B7EBB6200F4E11D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		833C95241C3FBA4F00D13E63 /* CharmGroupSettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmGroupSettingTableViewController.swift; sourceTree = "<group>"; };
+		833C95271C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmGroupSettingTableViewCell.swift; sourceTree = "<group>"; };
+		833C95281C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharmGroupSettingTableViewCell.xib; sourceTree = "<group>"; };
+		833C952C1C404EA200D13E63 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		833C952E1C404ED900D13E63 /* Charm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Charm.swift; sourceTree = "<group>"; };
+		833C95301C404F6B00D13E63 /* Charm_Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Charm_Group.swift; sourceTree = "<group>"; };
+		833C95321C4054E700D13E63 /* User_Charm_Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User_Charm_Group.swift; sourceTree = "<group>"; };
+		833C95341C4055F400D13E63 /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		836DAD8C1C3BB79500DEA8DF /* SetCharmGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCharmGroupViewController.swift; sourceTree = "<group>"; };
 		839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledMomentsTableViewController.swift; sourceTree = "<group>"; };
 		839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduledMomentsHeaderTableViewCell.xib; sourceTree = "<group>"; };
@@ -172,11 +188,13 @@
 		2C7E34401B9B72F700EFA603 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				833C95261C3FBCFA00D13E63 /* Cells */,
 				2C947FA71B87E6D900607770 /* AccountViewController.swift */,
 				2CAB01201B98C88700652C76 /* ProfileBlurbTableViewCell.swift */,
 				2CAC3DFD1B9A505900C41BE9 /* AddCharmViewController.swift */,
 				836DAD8C1C3BB79500DEA8DF /* SetCharmGroupViewController.swift */,
 				2C947FAD1B88039E00607770 /* CharmsTableViewHeader.swift */,
+				833C95241C3FBA4F00D13E63 /* CharmGroupSettingTableViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -234,6 +252,7 @@
 		2CF2FE1A1B7EBB6200F4E11D /* ProtoLuma */ = {
 			isa = PBXGroup;
 			children = (
+				833C952B1C404E2500D13E63 /* Models */,
 				2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */,
 				2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */,
 				2C947FA51B87E2A500607770 /* UIStyleController.swift */,
@@ -270,6 +289,27 @@
 				2CF2FE401B7EBB6200F4E11D /* Info.plist */,
 			);
 			path = ProtoLumaUITests;
+			sourceTree = "<group>";
+		};
+		833C95261C3FBCFA00D13E63 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				833C95271C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.swift */,
+				833C95281C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.xib */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		833C952B1C404E2500D13E63 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				833C952C1C404EA200D13E63 /* User.swift */,
+				833C952E1C404ED900D13E63 /* Charm.swift */,
+				833C95341C4055F400D13E63 /* Story.swift */,
+				833C95321C4054E700D13E63 /* User_Charm_Group.swift */,
+				833C95301C404F6B00D13E63 /* Charm_Group.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		83ED30EE1C228A920047E5D9 /* Collection */ = {
@@ -424,6 +464,7 @@
 				83ED30F21C23527B0047E5D9 /* CharmTableViewCell.xib in Resources */,
 				839D4AD61C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib in Resources */,
 				2CF2FE261B7EBB6200F4E11D /* Assets.xcassets in Resources */,
+				833C952A1C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.xib in Resources */,
 				83ED30F81C24A2930047E5D9 /* StoryTableViewCell.xib in Resources */,
 				2CF2FE211B7EBB6200F4E11D /* Main.storyboard in Resources */,
 			);
@@ -513,9 +554,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				83ED30F01C228B5D0047E5D9 /* CharmCollectionTableViewController.swift in Sources */,
+				833C95251C3FBA4F00D13E63 /* CharmGroupSettingTableViewController.swift in Sources */,
 				2C947FA21B87AC8500607770 /* NewStoryTabViewController.swift in Sources */,
+				833C952F1C404ED900D13E63 /* Charm.swift in Sources */,
 				2C947FAA1B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift in Sources */,
 				2C947FA01B87AB2C00607770 /* ProtoLumaTabBarViewController.swift in Sources */,
+				833C95331C4054E700D13E63 /* User_Charm_Group.swift in Sources */,
 				2C2AFB6E1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift in Sources */,
 				2C7E34441B9B73C200EFA603 /* TextFieldTableViewCell.swift in Sources */,
 				2C7E34461B9B7F0E00EFA603 /* TextViewTableViewCell.swift in Sources */,
@@ -523,9 +567,11 @@
 				2C947FA81B87E6D900607770 /* AccountViewController.swift in Sources */,
 				2CAC3E011B9B550E00C41BE9 /* CharmPickerTableViewCell.swift in Sources */,
 				2C1FA10E1B93DD9D00B3C535 /* LoginViewController.swift in Sources */,
+				833C95291C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.swift in Sources */,
 				2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */,
 				2C35037B1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift in Sources */,
 				2C7E34481B9B927100EFA603 /* MomentMediaTableViewCell.swift in Sources */,
+				833C95351C4055F400D13E63 /* Story.swift in Sources */,
 				2C947FAC1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift in Sources */,
 				2C947F9C1B87A81B00607770 /* StoryDetailViewController.swift in Sources */,
 				2C1FA10C1B93D98100B3C535 /* OnboardingContentViewController.swift in Sources */,
@@ -533,8 +579,10 @@
 				2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */,
 				836DAD8D1C3BB79500DEA8DF /* SetCharmGroupViewController.swift in Sources */,
 				2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */,
+				833C952D1C404EA200D13E63 /* User.swift in Sources */,
 				2C813EF31B992B1200A6EDA7 /* BraceletSettings.swift in Sources */,
 				2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */,
+				833C95311C404F6B00D13E63 /* Charm_Group.swift in Sources */,
 				83ED30F61C249E680047E5D9 /* StoriesTableViewController.swift in Sources */,
 				839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */,
 				2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */,
@@ -692,7 +740,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -719,7 +767,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

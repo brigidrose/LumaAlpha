@@ -19,7 +19,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
     var storiesTableViewController:UITableViewController!
     var userInfo:AnyObject!
     var bracelet:MBLMetaWear!
-    var charms:[PFObject] = []
+    var charms:[Charm] = []
     var indexOfCharmViewed:Int!
     var stories:[PFObject] = []
     var storiesStoryUnits:[[PFObject]] = []
@@ -339,7 +339,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 //        queryForCharms.includeKey("owners")
         queryForCharms.includeKey("gifter")
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-            self.charms = objects!
+            self.charms = objects as! [Charm]
 //            print("charms loaded")
             self.charmsGalleryCollectionViewController.collectionView?.reloadSections(NSIndexSet(index: 0))
             if (self.charms.count > 0){

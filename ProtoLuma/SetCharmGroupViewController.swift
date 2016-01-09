@@ -11,7 +11,7 @@ import UIKit
 class SetCharmGroupViewController: UIViewController {
 
     @IBOutlet var charmGroupName: UITextField!
-    var charm:PFObject!
+    var charm:Charm!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,15 +25,16 @@ class SetCharmGroupViewController: UIViewController {
     }
     
     @IBAction func createCharmGroupPressed(sender: AnyObject) {
-        let charmGroup = PFObject(className: "Charm_Group")
-        charmGroup["name"] = charmGroupName.text
+        let charmGroup = Charm_Group()
+        charmGroup.name = charmGroupName.text!
         charmGroup.saveInBackgroundWithBlock { (saved, error) -> Void in
             if error == nil {
-                self.charm["charmGroup"] = charmGroup
+                self.charm.charmGroup = charmGroup
                 self.charm.saveInBackgroundWithBlock({ (saved, error) -> Void in
                     if error == nil {
-                        (UIApplication.sharedApplication().delegate as! AppDelegate).collectionController.loadCharms()
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.popToRootViewControllerAnimated(true)
+                        self.tabBarController?.selectedIndex = 0
+                        print("tab bar index: \(self.tabBarController?.selectedIndex)")
                     }else{
                         print(error)
                     }
@@ -41,13 +42,7 @@ class SetCharmGroupViewController: UIViewController {
             }else{
                 print(error)
             }
-            
         }
-        
-        
-    }
-
-    @IBAction func chooseFriendCharmGroupPressed(sender: AnyObject) {
     }
 
     /*

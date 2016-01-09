@@ -45,7 +45,7 @@ class CharmCollectionTableViewController: UITableViewController{
     
     var userInfo:AnyObject!
     var bracelet:MBLMetaWear!
-    var charms:[PFObject]! = []
+    var charms:[Charm]! = []
     var relatedUsersOfCharms = [String: Set<String>]()
     var profileImages = [String: UIImage]()
     var indexPathOfCharmViewed:NSIndexPath!
@@ -63,6 +63,19 @@ class CharmCollectionTableViewController: UITableViewController{
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
 
      
+
+        
+        //store a reference in the app delegate
+        (UIApplication.sharedApplication().delegate as! AppDelegate).collectionController = self
+        
+    }
+
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationItem.rightBarButtonItem = nil
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.title = "Collection"
+        
         // currentUser exists
         if (PFUser.currentUser() != nil){
             MBLMetaWearManager.sharedManager().retrieveSavedMetaWearsWithHandler({(devices) -> Void in
@@ -82,17 +95,6 @@ class CharmCollectionTableViewController: UITableViewController{
         else{
             self.performSegueWithIdentifier("showLogin", sender: self)
         }
-        
-        //store a reference in the app delegate
-        (UIApplication.sharedApplication().delegate as! AppDelegate).collectionController = self
-        
-    }
-
-    
-    override func viewWillAppear(animated: Bool) {
-        self.navigationItem.rightBarButtonItem = nil
-        self.navigationItem.leftBarButtonItem = nil
-        self.navigationItem.title = "Collection"
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
@@ -182,7 +184,7 @@ class CharmCollectionTableViewController: UITableViewController{
         
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if error == nil{
-                self.charms = objects!
+                self.charms = objects as! [Charm]
                 print("\(self.charms.count) charms retrieved")
     //            self.tableView.reloadData()
                 if (self.charms.count > 0){
@@ -239,6 +241,7 @@ class CharmCollectionTableViewController: UITableViewController{
 
     
     func downloadAndSetProfilePhotos(fbIds: Set<String>){
+        print("downloadAndSetProfilePhotos")
         print(fbIds)
         var photosDownloaded = 0
         if fbIds.count > 0 {
@@ -293,6 +296,9 @@ class CharmCollectionTableViewController: UITableViewController{
         print("loading profile photos")
         var uniqueFacebookIds = Set<String>()
         var retrievedCount = 0
+        let charmsWithGroups = self.charms.filter { (charm) -> Bool in
+            return charm.charmGroup != nil
+        }
         for charm in self.charms{
             let otherCharmGroupUsersQuery = PFQuery(className: "Charm")
             if charm["charmGroup"] != nil {
@@ -312,7 +318,7 @@ class CharmCollectionTableViewController: UITableViewController{
                         }
                         self.relatedUsersOfCharms[charm.objectId!] = idsForCharm
                         retrievedCount++
-                        if(retrievedCount == self.charms.count){
+                        if(retrievedCount == charmsWithGroups.count){
                             self.downloadAndSetProfilePhotos(uniqueFacebookIds)
                         }
                     }else{

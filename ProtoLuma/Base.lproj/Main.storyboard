@@ -258,22 +258,6 @@
             </objects>
             <point key="canvasLocation" x="2259" y="1191"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Tjp-dq-lar">
-            <objects>
-                <navigationController id="GTI-gC-ZlV" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WOm-IQ-9KJ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="EfU-EN-g2o" kind="relationship" relationship="rootViewController" id="kac-1d-Zgf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nfV-Xe-GJb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2201" y="1983"/>
-        </scene>
         <!--Add Charm View Controller-->
         <scene sceneID="GSE-Tv-SPZ">
             <objects>
@@ -289,7 +273,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="0Mv-J0-Pbq"/>
                     <connections>
-                        <segue destination="wkt-EH-y7a" kind="show" identifier="showSetCharmGroup" id="NSz-5c-Uv9"/>
+                        <segue destination="wkt-EH-y7a" kind="show" identifier="showNewCharmGroupName" id="NSz-5c-Uv9"/>
+                        <segue destination="lFd-PS-Tnl" kind="show" identifier="showCharmGroupSetting" id="Ysk-5s-C7M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Loa-Rn-wFv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -308,23 +293,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Create a new Charm Group" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg0-FW-BNQ">
-                                <rect key="frame" x="56" y="86" width="208" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zw-LV-fbO">
-                                <rect key="frame" x="138" y="136" width="45" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q19-SV-wA9">
-                                <rect key="frame" x="111" y="171" width="98" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaO-cb-Li6">
                                 <rect key="frame" x="137" y="209" width="46" height="30"/>
                                 <state key="normal" title="Create"/>
@@ -332,19 +300,21 @@
                                     <action selector="createCharmGroupPressed:" destination="wkt-EH-y7a" eventType="touchUpInside" id="sDa-w6-5Xw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h82-uQ-eut">
-                                <rect key="frame" x="6" y="280" width="308" height="30"/>
-                                <state key="normal" title="Or choose one of your friends Charm Groups"/>
-                                <connections>
-                                    <action selector="chooseFriendCharmGroupPressed:" destination="wkt-EH-y7a" eventType="touchUpInside" id="ZSd-uG-vzd"/>
-                                </connections>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Enter New Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg0-FW-BNQ">
+                                <rect key="frame" x="96" y="83" width="129" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q19-SV-wA9">
+                                <rect key="frame" x="64" y="159" width="191" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Xg0-FW-BNQ" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="AO6-ad-7og"/>
-                            <constraint firstItem="8Zw-LV-fbO" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="Etu-81-Gsd"/>
-                            <constraint firstItem="h82-uQ-eut" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="Go6-Wh-Ctg"/>
                             <constraint firstItem="Q19-SV-wA9" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="ewt-rT-mGd"/>
                             <constraint firstItem="qaO-cb-Li6" firstAttribute="centerX" secondItem="zUo-Oq-0f9" secondAttribute="centerX" id="gsg-AW-GWI"/>
                         </constraints>
@@ -356,7 +326,38 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2I1-xy-BhD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2212" y="3607"/>
+            <point key="canvasLocation" x="2207" y="3864"/>
+        </scene>
+        <!--Charm Group Setting Table View Controller-->
+        <scene sceneID="hJF-nV-zPL">
+            <objects>
+                <tableViewController id="lFd-PS-Tnl" customClass="CharmGroupSettingTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Nt-5r-f4t">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="p8s-O9-XnI">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p8s-O9-XnI" id="NJn-vd-fhg">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="lFd-PS-Tnl" id="buM-9F-jjK"/>
+                            <outlet property="delegate" destination="lFd-PS-Tnl" id="9wH-W9-50M"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <segue destination="wkt-EH-y7a" kind="show" identifier="showNewCharmGroupName" id="jWJ-NW-k6x"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xuI-GJ-6ZH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2908" y="3500"/>
         </scene>
         <!--Account View Controller-->
         <scene sceneID="T5h-Da-cBf">
@@ -383,9 +384,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="dVi-t6-mp6"/>
                     <connections>
-                        <segue destination="GTI-gC-ZlV" kind="presentation" identifier="showAddCharm" id="0HD-Rl-Zl5"/>
                         <segue destination="mkt-53-6MV" kind="presentation" identifier="loggedOut" modalTransitionStyle="flipHorizontal" id="O42-oJ-8jX"/>
                         <segue destination="Qns-7h-Ftg" kind="presentation" identifier="loggedInWithoutBracelet" id="deY-Gc-PN2"/>
+                        <segue destination="EfU-EN-g2o" kind="show" identifier="showAddCharm" id="uWY-5Q-Gsh"/>
+                        <segue destination="Qns-7h-Ftg" kind="show" identifier="changeBracelet" id="xlU-Wr-tIa"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dAJ-8N-7cp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -405,7 +407,7 @@
                     <connections>
                         <segue destination="J8n-qy-qZg" kind="relationship" relationship="viewControllers" id="yyf-ea-rW8"/>
                         <segue destination="acl-cA-6p0" kind="relationship" relationship="viewControllers" id="HF0-8S-e7K"/>
-                        <segue destination="5TJ-iL-V7Q" kind="relationship" relationship="viewControllers" id="QZJ-A4-XcI"/>
+                        <segue destination="5TJ-iL-V7Q" kind="relationship" relationship="viewControllers" id="IG3-xY-XG1"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CGV-TC-xKj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -478,8 +480,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lfn-Ox-up4"/>
-        <segue reference="deY-Gc-PN2"/>
+        <segue reference="xlU-Wr-tIa"/>
         <segue reference="O42-oJ-8jX"/>
+        <segue reference="NSz-5c-Uv9"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
 </document>

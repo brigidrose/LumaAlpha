@@ -13,7 +13,7 @@ import SDWebImage
 class AccountViewController: UITableViewController {
     var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var metawearManager:MBLMetaWearManager!
-    var charms:[PFObject] = []
+    var charms:[Charm] = []
     var bracelet:MBLMetaWear!
     
     override func viewDidLoad() {
@@ -75,7 +75,8 @@ class AccountViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showAddCharm") {
-//            let svc = segue.destinationViewController.childViewControllers[0] as! AddCharmViewController
+            let svc = segue.destinationViewController as! AddCharmViewController
+            svc.charms = charms
 //            var numCharms = 0;
 //            let userId = PFUser.currentUser()!.objectId
 //            for(var i = 0; i < self.charms.count; i++){
@@ -252,7 +253,7 @@ class AccountViewController: UITableViewController {
 //                self.bracelets[indexPath.row].forgetDevice()
 //                self.retrieveSavedMetaWear()
 //            })
-            self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
+            self.performSegueWithIdentifier("changeBracelet", sender: self)
         case 2:
             if (indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1){
                 // Add a New Charm selected
@@ -372,6 +373,7 @@ class AccountViewController: UITableViewController {
     func addCharmButtonTapped(){
         print("add charm button tapped")
         self.performSegueWithIdentifier("showAddCharm", sender: self)
+        print("Performed segue")
     }
     
     func resetButtonTapped(){
@@ -383,7 +385,7 @@ class AccountViewController: UITableViewController {
         queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if error == nil{
-                self.charms = objects!
+                self.charms = objects as! [Charm]
                 print("charms loaded")
                 self.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
             }else{

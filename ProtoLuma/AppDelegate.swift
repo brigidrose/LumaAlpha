@@ -57,6 +57,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // https://parse.com/docs/ios_guide#localdatastore/iOS
         Parse.enableLocalDatastore()
         
+        
+        Charm.registerSubclass()
+        Charm_Group.registerSubclass()
+        User.registerSubclass()
+        User_Charm_Group.registerSubclass()
+        Story.registerSubclass()
+
         // Initialize Parse.
         Parse.setApplicationId("xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d",
             clientKey: "VPxuBA4ASQBaPpusXfocIPKAKNrtJALBYd6LKlSx")
