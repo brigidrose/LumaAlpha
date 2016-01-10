@@ -24,7 +24,7 @@ class CharmSettingsCharmMemberCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setup(memberName:String, memberPhoto:UIImage){
+    func setup(memberName:String, memberPhoto:UIImage?){
         self.memberName.text = memberName
         self.memberPhoto.image = memberPhoto
     }

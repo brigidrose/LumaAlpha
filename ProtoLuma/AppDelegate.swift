@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var deviceId:String!
     var latestBatteryLife:Int?
     var collectionController:CharmCollectionTableViewController!
+    var tabBarController:UITabBarController!
     
     //degrees only go from -180 to 180 so set to 500 which means No Location Yet
     var latestLocation:[Double] = [500, 500]
@@ -418,6 +419,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image
+    }
+    
+    //borrowed from here: https://gist.github.com/licvido/55d12a8eb76a8103c753
+    func RBSquareImage(image: UIImage) -> UIImage {
+        let originalWidth  = image.size.width
+        let originalHeight = image.size.height
+        var x: CGFloat = 0.0
+        var y: CGFloat = 0.0
+        var edge: CGFloat = 0.0
+        
+        if (originalWidth > originalHeight) {
+            // landscape
+            edge = originalHeight
+            x = (originalWidth - edge) / 2.0
+            y = 0.0
+            
+        } else if (originalHeight > originalWidth) {
+            // portrait
+            edge = originalWidth
+            x = 0.0
+            y = (originalHeight - originalWidth) / 2.0
+        } else {
+            // square
+            edge = originalWidth
+        }
+        
+        let cropSquare = CGRectMake(x, y, edge, edge)
+        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
+        
+        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
     }
 
     

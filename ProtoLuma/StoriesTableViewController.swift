@@ -88,6 +88,7 @@ class StoriesTableViewController: UITableViewController {
     
     func titleTapped(sender: AnyObject){
         print("charm title tapped. go to charm settings")
+        self.performSegueWithIdentifier("charmSettingsFromFeed", sender: self)
     }
     
     func scheduledMomentsTapped(sender:UIBarButtonItem){
@@ -164,9 +165,12 @@ class StoriesTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "showScheduledMoments"){
+        if segue.identifier == "showScheduledMoments" {
             let destinationVC = segue.destinationViewController as! ScheduledMomentsTableViewController
             destinationVC.lockedStoriesCount = self.lockedStoriesCount
+        }else if segue.identifier == "charmSettingsFromFeed" {
+            let dvc = segue.destinationViewController as! CharmSettingsTableViewController
+            dvc.charm = charm
         }
     }
 

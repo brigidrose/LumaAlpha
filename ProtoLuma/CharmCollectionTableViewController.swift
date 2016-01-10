@@ -18,6 +18,7 @@ class CharmTableViewCell : UITableViewCell {
     @IBOutlet var scheduledMomentsIcon: UIImageView!
     
     
+    
     func loadItem(title title: String, charmIconImage: UIImage, profilePhotos: Dictionary<String, UIImage>, hasScheduledMoments: Bool) {
         self.charmIconImage.image = charmIconImage
         titleLabel.text = title
@@ -49,6 +50,7 @@ class CharmCollectionTableViewController: UITableViewController{
     var relatedUsersOfCharms = [String: Set<String>]()
     var profileImages = [String: UIImage]()
     var indexPathOfCharmViewed:NSIndexPath!
+    var appDelegate:AppDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,12 +64,12 @@ class CharmCollectionTableViewController: UITableViewController{
         self.refreshControl?.beginRefreshing()
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
 
-     
+        appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
         
         //store a reference in the app delegate
-        (UIApplication.sharedApplication().delegate as! AppDelegate).collectionController = self
-        
+        appDelegate.collectionController = self
+        appDelegate.tabBarController = self.tabBarController!
     }
 
     
@@ -113,7 +115,7 @@ class CharmCollectionTableViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CharmCell") as! CharmTableViewCell
-        let charmName = self.charms[indexPath.row]["name"] as! String
+        let charmName = self.charms[indexPath.row].charmGroup.name
         var hasScheduledMoments = false
         if(self.charms[indexPath.row]["hasScheduledMoments"] != nil){
             hasScheduledMoments = self.charms[indexPath.row]["hasScheduledMoments"] as! Bool
@@ -207,35 +209,7 @@ class CharmCollectionTableViewController: UITableViewController{
         
     }
     
-    //borrowed from here: https://gist.github.com/licvido/55d12a8eb76a8103c753
-    func RBSquareImage(image: UIImage) -> UIImage {
-        let originalWidth  = image.size.width
-        let originalHeight = image.size.height
-        var x: CGFloat = 0.0
-        var y: CGFloat = 0.0
-        var edge: CGFloat = 0.0
-        
-        if (originalWidth > originalHeight) {
-            // landscape
-            edge = originalHeight
-            x = (originalWidth - edge) / 2.0
-            y = 0.0
-            
-        } else if (originalHeight > originalWidth) {
-            // portrait
-            edge = originalWidth
-            x = 0.0
-            y = (originalHeight - originalWidth) / 2.0
-        } else {
-            // square
-            edge = originalWidth
-        }
-        
-        let cropSquare = CGRectMake(x, y, edge, edge)
-        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
-        
-        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
-    }
+
 
     
 
@@ -248,47 +222,48 @@ class CharmCollectionTableViewController: UITableViewController{
             for id in fbIds{
                 let imgURL: NSURL = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")!
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(
-                    request, queue: NSOperationQueue.mainQueue(),
-                    completionHandler: {(response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
-                        if error == nil {
-                            self.profileImages[id] = self.RBSquareImage(UIImage(data: data!)!).circle
-                            photosDownloaded++
-                            print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
-                            if(photosDownloaded == fbIds.count){
-                                self.refreshControl?.endRefreshing()
-                                self.tableView.reloadData()
-                                
-                                let barViewControllers = self.tabBarController?.viewControllers
-                                let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
-                                avc.profileImages = self.profileImages  //shared model
-                                
-                                // New UI design mandates that if a user has any stories, they are pushed into the newest one
-    //                            var mostRecent:PFObject?
-                                var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)
-                                var indexOfMostRecentCharm:Int?
-                                for (index, charm) in self.charms.enumerate(){
-                                    if(charm["latestStory"] != nil){
-                                        let charmDate = charm["latestStory"] as! NSDate
-                                        
-                                        if charmDate.compare(mostRecentLatestStory) == NSComparisonResult.OrderedDescending {
-    //                                        mostRecent = charm
-                                            indexOfMostRecentCharm = index
-                                            mostRecentLatestStory = charm["latestStory"] as! NSDate
-                                        }
+                
+                let urlSession = NSURLSession.sharedSession()
+                urlSession.dataTaskWithRequest(request) { (data, response, error) -> Void in
+                    if error == nil {
+                        self.profileImages[id] = self.appDelegate.RBSquareImage(UIImage(data: data!)!).circle
+                        photosDownloaded++
+                        print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
+                        if(photosDownloaded == fbIds.count){
+                            self.refreshControl?.endRefreshing()
+                            self.tableView.reloadData()
+                            
+                            let barViewControllers = self.tabBarController?.viewControllers
+                            let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+                            avc.profileImages = self.profileImages  //shared model
+                            
+                            // New UI design mandates that if a user has any stories, they are pushed into the newest one
+                            //                            var mostRecent:PFObject?
+                            var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)
+                            var indexOfMostRecentCharm:Int?
+                            for (index, charm) in self.charms.enumerate(){
+                                if(charm["latestStory"] != nil){
+                                    let charmDate = charm["latestStory"] as! NSDate
+                                    
+                                    if charmDate.compare(mostRecentLatestStory) == NSComparisonResult.OrderedDescending {
+                                        //                                        mostRecent = charm
+                                        indexOfMostRecentCharm = index
+                                        mostRecentLatestStory = charm["latestStory"] as! NSDate
                                     }
                                 }
-                                if indexOfMostRecentCharm != nil{
-                                    print("Most recent charm is \(indexOfMostRecentCharm!)")
-                                    self.indexPathOfCharmViewed = NSIndexPath(forRow: indexOfMostRecentCharm!, inSection: 0)
-                                    self.performSegueWithIdentifier("showStoryTable", sender: self)
-                                }
                             }
-                        }else{
-                            print(error)
-                            (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                            if indexOfMostRecentCharm != nil{
+                                print("Most recent charm is \(indexOfMostRecentCharm!)")
+                                self.indexPathOfCharmViewed = NSIndexPath(forRow: indexOfMostRecentCharm!, inSection: 0)
+                                self.performSegueWithIdentifier("showStoryTable", sender: self)
+                            }
                         }
-                })
+                    }else{
+                        print(error)
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                    }
+                }.resume()
+
             }
         }else{
             self.refreshControl?.endRefreshing()

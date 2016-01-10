@@ -33,8 +33,7 @@ class SetCharmGroupViewController: UIViewController {
                 self.charm.saveInBackgroundWithBlock({ (saved, error) -> Void in
                     if error == nil {
                         self.navigationController?.popToRootViewControllerAnimated(true)
-                        
-                        print("tab bar controller: \(self.navigationController?.tabBarController)")
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).tabBarController.selectedIndex = 0
                     }else{
                         print(error)
                     }
