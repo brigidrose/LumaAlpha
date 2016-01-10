@@ -56,7 +56,7 @@ class LoginViewController: UIViewController {
     func loginWithFacebookButtonTapped(sender:UIButton){
         print("signup with facebook tapped")
         sender.enabled = false
-        PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email"], block: {(user:PFUser?, error:NSError?) -> Void in
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email", "user_friends"], block: {(user:PFUser?, error:NSError?) -> Void in
             print(error)
             if let user = user {
                 if user.isNew {

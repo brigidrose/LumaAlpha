@@ -96,6 +96,7 @@ class CharmSettingsTableViewController: UITableViewController {
     
     func addPeoplePressed(){
         print("addPeoplePressed")
+        self.performSegueWithIdentifier("addFriendsToCharm", sender: self)
     }
     
     func disconnectPressed(){
@@ -144,4 +145,10 @@ class CharmSettingsTableViewController: UITableViewController {
         }
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "addFriendsToCharm" {
+            let dvc = segue.destinationViewController as! AddFriendsToCharmTableViewController
+            dvc.charm = charm
+        }
+    }
 }

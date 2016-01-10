@@ -95,6 +95,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
         // Check if BID submitted is found in purchased inventory
         let queryCheckCIDExistsAndOrphaned = PFQuery(className: "Charm")
         queryCheckCIDExistsAndOrphaned.whereKey("serialNumber", equalTo: CID)
+        queryCheckCIDExistsAndOrphaned.includeKey("charmGroup")
         queryCheckCIDExistsAndOrphaned.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if error == nil {
                 if objects?.count != 0 {
@@ -172,7 +173,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showSetCharmGroup" {
+        if segue.identifier == "showNewCharmGroupName" {
             let dvc = segue.destinationViewController as! SetCharmGroupViewController
             dvc.charm = self.charm
         }else if segue.identifier == "showCharmGroupSetting"{

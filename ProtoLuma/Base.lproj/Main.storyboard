@@ -304,10 +304,41 @@
                             <outlet property="delegate" destination="aDK-cy-Ov2" id="HgD-HA-e5X"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="EWs-Yc-2Be" kind="show" identifier="addFriendsToCharm" id="nVN-h7-Xax"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XVy-yE-MhI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1617" y="3692"/>
+        </scene>
+        <!--Add Friends To Charm Table View Controller-->
+        <scene sceneID="dW5-Hi-lrW">
+            <objects>
+                <tableViewController id="EWs-Yc-2Be" customClass="AddFriendsToCharmTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="RMP-o1-XA7">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZCb-bo-OKL">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZCb-bo-OKL" id="nmq-Cl-Q99">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="EWs-Yc-2Be" id="0Th-dW-SQ1"/>
+                            <outlet property="delegate" destination="EWs-Yc-2Be" id="U2v-Cr-WGL"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u8V-Rl-OSY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1567" y="4426"/>
         </scene>
         <!--Set Charm Group View Controller-->
         <scene sceneID="nbX-a4-Gzh">
