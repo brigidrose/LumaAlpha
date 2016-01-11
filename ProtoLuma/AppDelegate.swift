@@ -11,6 +11,50 @@ import CoreData
 import MapKit
 import ParseFacebookUtilsV4
 
+func sync(lock: AnyObject, closure: () -> Void) {
+    objc_sync_enter(lock)
+    closure()
+    objc_sync_exit(lock)
+}
+
+//borrowed from here: https://gist.github.com/licvido/55d12a8eb76a8103c753
+func RBSquareImage(image: UIImage) -> UIImage {
+    let originalWidth  = image.size.width
+    let originalHeight = image.size.height
+    var x: CGFloat = 0.0
+    var y: CGFloat = 0.0
+    var edge: CGFloat = 0.0
+    
+    if (originalWidth > originalHeight) {
+        // landscape
+        edge = originalHeight
+        x = (originalWidth - edge) / 2.0
+        y = 0.0
+        
+    } else if (originalHeight > originalWidth) {
+        // portrait
+        edge = originalWidth
+        x = 0.0
+        y = (originalHeight - originalWidth) / 2.0
+    } else {
+        // square
+        edge = originalWidth
+    }
+    
+    let cropSquare = CGRectMake(x, y, edge, edge)
+    let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
+    
+    return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
+}
+
+func displayNoInternetErrorMessage(){
+    let alert = UIAlertController(title: "Error", message: "You don't appear to be connected to the internet.  You need internet to use this app.", preferredStyle: UIAlertControllerStyle.Alert)
+    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+    UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+}
+
+
+
 extension UIImage {
     var rounded: UIImage {
         let imageView = UIImageView(image: self)
@@ -64,6 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         User.registerSubclass()
         User_Charm_Group.registerSubclass()
         Story.registerSubclass()
+        Story_Unit.registerSubclass()
 
         // Initialize Parse.
         Parse.setApplicationId("xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d",
@@ -202,11 +247,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 print("Unlocked moments response: \(response)")
                 if response!["unlockedMoments"] as! Int == 1{
                     //refresh the charms because one is unlocked!
-                    (self.window?.rootViewController?.childViewControllers[0] as! CharmCollectionTableViewController).loadCharms()
+                    self.collectionController.loadCharms()
                 }
             }else{
                 print(error)
-                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                displayNoInternetErrorMessage()
             }
             
         }
@@ -218,11 +263,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         } as MBLNumberHandler)
     }
     
-    func displayNoInternetErrorMessage(){
-        let alert = UIAlertController(title: "Error", message: "You don't appear to be connected to the internet.  You need internet to use this app.", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-        self.window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
-    }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -421,35 +461,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return image
     }
     
-    //borrowed from here: https://gist.github.com/licvido/55d12a8eb76a8103c753
-    func RBSquareImage(image: UIImage) -> UIImage {
-        let originalWidth  = image.size.width
-        let originalHeight = image.size.height
-        var x: CGFloat = 0.0
-        var y: CGFloat = 0.0
-        var edge: CGFloat = 0.0
-        
-        if (originalWidth > originalHeight) {
-            // landscape
-            edge = originalHeight
-            x = (originalWidth - edge) / 2.0
-            y = 0.0
-            
-        } else if (originalHeight > originalWidth) {
-            // portrait
-            edge = originalWidth
-            x = 0.0
-            y = (originalHeight - originalWidth) / 2.0
-        } else {
-            // square
-            edge = originalWidth
-        }
-        
-        let cropSquare = CGRectMake(x, y, edge, edge)
-        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
-        
-        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
-    }
 
     
 

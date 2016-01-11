@@ -14,6 +14,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
     let charmMemberReuseIdentifier = "CharmSettingsCharmMemberCell"
     
     var charm:Charm!
+    var existingCharmGroupMemberFbIds:Set<String>!
     var profileImages = [String:UIImage]()
     var appDelegate:AppDelegate!
     var friends = [User]()
@@ -28,6 +29,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
+        
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
@@ -48,8 +50,11 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                 let data : NSArray = resultdict.objectForKey("data") as! NSArray
 //                print("---------------------------------\nFriends found:")
 //                print(data)
-                for friend in data {
-                    self.fbFriends.append(friend as! [String : String])
+                for friend in data as! [[String:String]] {
+                    //only show the fb users that are not already group members
+                    if !self.existingCharmGroupMemberFbIds.contains(friend["id"]!) {
+                        self.fbFriends.append(friend)
+                    }
                     
                 }
                 if let after = ((resultdict["paging"] as? NSDictionary)?.objectForKey("cursors") as? NSDictionary)?.objectForKey("after") as? String {
@@ -101,14 +106,14 @@ class AddFriendsToCharmTableViewController: UITableViewController {
         let friend = friends[indexPath.row]
         print("adding \(friend.fullName()) to charm group")
         let checkIfAlreadyInGroupQuery = PFQuery(className: "User_Charm_Group")
-        checkIfAlreadyInGroupQuery.whereKey("charmGroup", equalTo: charm.charmGroup)
+        checkIfAlreadyInGroupQuery.whereKey("charmGroup", equalTo: charm.charmGroup!)
         checkIfAlreadyInGroupQuery.whereKey("user", equalTo: friend)
         checkIfAlreadyInGroupQuery.findObjectsInBackgroundWithBlock { (userCharmGroups, error) -> Void in
             if error == nil {
                 if userCharmGroups!.count == 0 {
                     //create new user charm group
                     let newUserCharmGroup = User_Charm_Group()
-                    newUserCharmGroup.charmGroup = self.charm.charmGroup
+                    newUserCharmGroup.charmGroup = self.charm.charmGroup!
                     newUserCharmGroup.user = friend
                     newUserCharmGroup.saveInBackgroundWithBlock({ (saved, error) -> Void in
                         if error == nil {
@@ -200,7 +205,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                     let urlSession = NSURLSession.sharedSession()
                     urlSession.dataTaskWithRequest(request) { (data, response, error) -> Void in
                         if error == nil {
-                            let circleImage = self.appDelegate.RBSquareImage(UIImage(data: data!)!).circle
+                            let circleImage = RBSquareImage(UIImage(data: data!)!).circle
                             self.profileImages[id] = circleImage
                             //load pics into the collection controller so we don't have to redownload them after
                             self.appDelegate.collectionController.profileImages[id] = circleImage
@@ -212,7 +217,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                             }
                         }else{
                             print(error)
-                            self.appDelegate.displayNoInternetErrorMessage()
+                            displayNoInternetErrorMessage()
                         }
                     }.resume()
                 }

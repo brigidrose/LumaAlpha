@@ -15,9 +15,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //    var cancelButton:UIBarButtonItem!
     var sendButton:UIBarButtonItem!
     
-    var charms:[PFObject]! = []
-    var forCharm:PFObject!
-    var storyUnits:[PFObject] = []
+    var charms:[Charm]! = []
+    var forCharm:Charm!
+    var storyUnits:[Story_Unit] = []
     var mediaAssets:[PHAsset] = []
     var mediaDescriptions:[String] = []
     var unlockParameterType:String!
@@ -148,11 +148,12 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
 //                                        stvc.loadStoriesForCharmViewed()
                                         self.tabBarController?.selectedIndex = 0
+                                        self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
                                     }
                                     else{
                                         print(error)
                                         self.navigationItem.rightBarButtonItem?.enabled = true
-                                        (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                                        displayNoInternetErrorMessage()
                                     }
                                 })
                             }
@@ -160,7 +161,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                         else{
                             print(error)
                             self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
-                            (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                            displayNoInternetErrorMessage()
                         }
                     })
                 })
@@ -180,7 +181,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                 else{
                     print(error)
                     self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
-                    (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                    displayNoInternetErrorMessage()
                 }
                 
             })
@@ -231,7 +232,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         if (self.forCharm == nil){
             let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
             let charm = self.charms[indexPath.row]
-            cell.charmTitle.text = charm["name"] as? String
+            cell.charmTitle.text = charm.charmGroup!.name
             cell.charmTitle.textColor = UIColor.blackColor()
             cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
             cell.backgroundColor = UIColor.whiteColor()
@@ -244,25 +245,14 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("charmCell") as! CharmWithSubtitleTableViewCell
                 let charm = self.forCharm
-//                let charmOwner = charm["owner"] as? PFUser
-                let charmGifter = charm["gifter"] as? PFUser
-                if (charmGifter != nil){
-//                    let charmOwnerFirstName = charmOwner?["firstName"] as! String
-//                    let charmOwnerLastName = charmOwner?["lastName"] as! String
-                    let charmGifterFirstName = charmGifter?["firstName"] as! String
-                    let charmGifterLastName = charmGifter?["lastName"] as! String
-                    if (charmGifter == PFUser.currentUser()!){
-                        cell.charmSubtitle.text = "Gifted charm"
-                    }
-                    else{
-                        cell.charmSubtitle.text = "Gifted by \(charmGifterFirstName) \(charmGifterLastName)."
-                    }
-                    cell.charmTitle.text = charm["name"] as? String
-                    cell.charmTitle.textColor = UIColor.blackColor()
-                    cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
-                    cell.backgroundColor = UIColor.whiteColor()
-                    cell.accessoryType = UITableViewCellAccessoryType.None
-                }
+
+//                cell.charmSubtitle.text = "Gifted charm"
+//                cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
+
+                cell.charmTitle.text = charm.charmGroup!.name
+                cell.charmTitle.textColor = UIColor.blackColor()
+                cell.backgroundColor = UIColor.whiteColor()
+                cell.accessoryType = UITableViewCellAccessoryType.None
                 return cell
             case 1:
                 switch indexPath.row{

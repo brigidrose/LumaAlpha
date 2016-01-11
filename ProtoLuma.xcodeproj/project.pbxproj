@@ -60,6 +60,7 @@
 		8370A7EC1C41B21F00811014 /* CharmSettingsCharmMemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370A7EA1C41B21F00811014 /* CharmSettingsCharmMemberCell.swift */; };
 		8370A7ED1C41B21F00811014 /* CharmSettingsCharmMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370A7EB1C41B21F00811014 /* CharmSettingsCharmMemberCell.xib */; };
 		8370A7EF1C4215A700811014 /* AddFriendsToCharmTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370A7EE1C4215A700811014 /* AddFriendsToCharmTableViewController.swift */; };
+		8370A7F11C432CDF00811014 /* Story_Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370A7F01C432CDF00811014 /* Story_Unit.swift */; };
 		839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */; };
 		839D4AD61C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */; };
 		83ED30F01C228B5D0047E5D9 /* CharmCollectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED30EF1C228B5D0047E5D9 /* CharmCollectionTableViewController.swift */; };
@@ -146,6 +147,7 @@
 		8370A7EA1C41B21F00811014 /* CharmSettingsCharmMemberCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmSettingsCharmMemberCell.swift; sourceTree = "<group>"; };
 		8370A7EB1C41B21F00811014 /* CharmSettingsCharmMemberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharmSettingsCharmMemberCell.xib; sourceTree = "<group>"; };
 		8370A7EE1C4215A700811014 /* AddFriendsToCharmTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendsToCharmTableViewController.swift; sourceTree = "<group>"; };
+		8370A7F01C432CDF00811014 /* Story_Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Story_Unit.swift; sourceTree = "<group>"; };
 		839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledMomentsTableViewController.swift; sourceTree = "<group>"; };
 		839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduledMomentsHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		83ED30EF1C228B5D0047E5D9 /* CharmCollectionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmCollectionTableViewController.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				833C952C1C404EA200D13E63 /* User.swift */,
 				833C952E1C404ED900D13E63 /* Charm.swift */,
 				833C95341C4055F400D13E63 /* Story.swift */,
+				8370A7F01C432CDF00811014 /* Story_Unit.swift */,
 				833C95321C4054E700D13E63 /* User_Charm_Group.swift */,
 				833C95301C404F6B00D13E63 /* Charm_Group.swift */,
 			);
@@ -588,6 +591,7 @@
 				2C947FA81B87E6D900607770 /* AccountViewController.swift in Sources */,
 				2CAC3E011B9B550E00C41BE9 /* CharmPickerTableViewCell.swift in Sources */,
 				2C1FA10E1B93DD9D00B3C535 /* LoginViewController.swift in Sources */,
+				8370A7F11C432CDF00811014 /* Story_Unit.swift in Sources */,
 				833C95291C3FBD4700D13E63 /* CharmGroupSettingTableViewCell.swift in Sources */,
 				8370A7EF1C4215A700811014 /* AddFriendsToCharmTableViewController.swift in Sources */,
 				2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */,
@@ -764,7 +768,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -791,7 +795,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

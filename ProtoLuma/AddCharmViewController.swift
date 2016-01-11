@@ -108,7 +108,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
 //                    else{
                         print("CID available")
 //                         CID available, proceed to add user as owner of charm
-                        self.charm.owner = PFUser.currentUser() as! User
+                        self.charm.owner = PFUser.currentUser() as? User
                         self.charm.claimed = true
                     
                         self.charm.saveInBackgroundWithBlock({ (success, error) -> Void in
@@ -137,7 +137,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                                             for charm in results as! [Charm] {
                                                 for charmGroup in self.unusedCharmGroups {
                                                     if charm.charmGroup == charmGroup {
-                                                        charmGroup.members.append(charm.owner)
+                                                        charmGroup.members.append(charm.owner!)
                                                     }
                                                 }
                                             }

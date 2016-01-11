@@ -16,26 +16,60 @@ class CharmSettingsTableViewController: UITableViewController {
     let charmMemberReuseIdentifier = "CharmSettingsCharmMemberCell"
     var charm:Charm!
     var profileImages = [String: UIImage]()
+    var deleteGroupMemberIndexPath: NSIndexPath? = nil
+    var charmGroupMemberFbIds = Set<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: buttonCellReuseIdentifier, bundle: nil), forCellReuseIdentifier: buttonCellReuseIdentifier)
         tableView.registerNib(UINib(nibName: charmMemberReuseIdentifier, bundle: nil), forCellReuseIdentifier: charmMemberReuseIdentifier)
         
+        
+        var missingFbPhotos = Set<String>()
+        
         let queryForCharmGroupMembers = PFQuery(className: "Charm")
-        queryForCharmGroupMembers.whereKey("charmGroup", equalTo: charm.charmGroup)
+        queryForCharmGroupMembers.whereKey("charmGroup", equalTo: charm.charmGroup!)
         queryForCharmGroupMembers.whereKey("owner", notEqualTo: PFUser.currentUser()!)
         queryForCharmGroupMembers.includeKey("owner")
         queryForCharmGroupMembers.findObjectsInBackgroundWithBlock { (charms, error) -> Void in
             if error == nil {
                 for charm in charms as! [Charm]{
-                    self.charmGroupMembers.append(charm.owner)
+                    self.charmGroupMembers.append(charm.owner!)
+                    self.charmGroupMemberFbIds.insert(charm.owner!.facebookId)
+                    if(!self.profileImages.keys.contains(charm.owner!.facebookId)){
+                        missingFbPhotos.insert(charm.owner!.facebookId)
+                    }
                 }
-                self.tableView.reloadData()
+                let queryForInvitedCharmGroupMembers = PFQuery(className: "User_Charm_Group")
+                queryForInvitedCharmGroupMembers.whereKey("charmGroup", equalTo: self.charm.charmGroup!)
+                queryForInvitedCharmGroupMembers.whereKey("user", notEqualTo: PFUser.currentUser()!)
+                queryForInvitedCharmGroupMembers.includeKey("user")
+                queryForInvitedCharmGroupMembers.findObjectsInBackgroundWithBlock({ (userCharmGroups, error) -> Void in
+                    if error == nil {
+                        for userCharmGroup in userCharmGroups as! [User_Charm_Group] {
+                            self.charmGroupMembers.append(userCharmGroup.user)
+                            self.charmGroupMemberFbIds.insert(userCharmGroup.user.facebookId)
+                            if(!self.profileImages.keys.contains(userCharmGroup.user.facebookId)){
+                                missingFbPhotos.insert(userCharmGroup.user.facebookId)
+                            }
+                        }
+                        self.charmGroupMembersLoaded()
+                        self.downloadAndSetProfilePhotos(missingFbPhotos)
+                    }else{
+                        print(error)
+                    }
+                })
             }else{
                 print(error)
             }
         }
+        
+        
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        tableView.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
     }
     
     
@@ -54,6 +88,21 @@ class CharmSettingsTableViewController: UITableViewController {
         return 0
     }
     
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if indexPath.section == 0 && indexPath.row != 0{
+            return true
+        }
+        return false
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            deleteGroupMemberIndexPath = indexPath
+            let charmGroupMember = charmGroupMembers[indexPath.row - 1]
+            confirmDelete(charmGroupMember)
+        }
+    }
+    
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
@@ -68,7 +117,7 @@ class CharmSettingsTableViewController: UITableViewController {
             }else{
                 let cell = tableView.dequeueReusableCellWithIdentifier(charmMemberReuseIdentifier, forIndexPath: indexPath) as! CharmSettingsCharmMemberCell
                 let charmGroupMember = charmGroupMembers[indexPath.row - 1]
-                cell.setup(charmGroupMember.fullName(), memberPhoto: profileImages[charmGroupMember.facebookId]!)
+                cell.setup(charmGroupMember.fullName(), memberPhoto: profileImages[charmGroupMember.facebookId])
                 return cell
             }
         }else if indexPath.section == 1 {
@@ -94,22 +143,6 @@ class CharmSettingsTableViewController: UITableViewController {
         return cell
     }
     
-    func addPeoplePressed(){
-        print("addPeoplePressed")
-        self.performSegueWithIdentifier("addFriendsToCharm", sender: self)
-    }
-    
-    func disconnectPressed(){
-        print("disconnectPressed")
-    }
-    
-    func editNamePressed(){
-        print("editNamePressed")
-    }
-    
-    func reportAProblemPressed(){
-        print("reportAProblemPressed")
-    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 44
@@ -119,6 +152,35 @@ class CharmSettingsTableViewController: UITableViewController {
         let containerView = UIView(frame: CGRectMake(0, 0, view.frame.width, sectionHeaderHeight[section]))
         containerView.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
         return containerView
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 2 {
+            return 50
+        }
+        return 0
+    }
+    
+    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 2 {
+            let containerView = UIView(frame: CGRectMake(0, 0, view.frame.width, 50))
+            containerView.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+            
+            let label = UILabel(frame: CGRectMake(0, 10, view.frame.width, 30))
+            label.textAlignment = .Center
+            label.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
+            
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.LongStyle
+            formatter.timeStyle = .NoStyle
+            let dateString = formatter.stringFromDate(self.charm.createdAt!)
+            label.text = "Created \(dateString)"
+            
+            containerView.addSubview(label)
+        
+            return containerView
+        }
+        return nil
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -149,6 +211,122 @@ class CharmSettingsTableViewController: UITableViewController {
         if segue.identifier == "addFriendsToCharm" {
             let dvc = segue.destinationViewController as! AddFriendsToCharmTableViewController
             dvc.charm = charm
+            dvc.existingCharmGroupMemberFbIds = self.charmGroupMemberFbIds
         }
     }
+    
+    func charmGroupMembersLoaded(){
+        self.tableView.reloadData()
+    }
+    
+    func addPeoplePressed(){
+        print("addPeoplePressed")
+        self.performSegueWithIdentifier("addFriendsToCharm", sender: self)
+    }
+    
+    func disconnectPressed(){
+        print("disconnectPressed")
+    }
+    
+    func editNamePressed(){
+        print("editNamePressed")
+    }
+    
+    func reportAProblemPressed(){
+        print("reportAProblemPressed")
+    }
+    
+    func removeContributor(indexPath: NSIndexPath){
+        let charmGroupMember = charmGroupMembers[indexPath.row - 1]
+        print("Removing \(charmGroupMember.fullName()) from charm group")
+        //find the charm for this user, and remove them from being the owner, and mark the charm as unclaimed
+        let removedUserCharmQuery = PFQuery(className: "Charm")
+        removedUserCharmQuery.whereKey("charmGroup", equalTo: charm.charmGroup!)
+        removedUserCharmQuery.whereKey("owner", equalTo: charmGroupMember)
+        removedUserCharmQuery.findObjectsInBackgroundWithBlock { (charms, error) -> Void in
+            if error == nil {
+                //removing owner if exists
+                if charms!.count > 0 {
+                    let charm = charms![0] as! Charm
+                    charm.owner = nil
+                    charm.charmGroup = nil
+                    charm.claimed = false
+                    charm.saveInBackground()
+                }
+            }else{
+                print(error)
+            }
+        }
+        charmGroupMembers.removeAtIndex(indexPath.row - 1)
+    }
+
+    
+    func confirmDelete(user: User) {
+        let alert = UIAlertController(title: "Remove Contributor", message: "Are you sure you want to remove \(user.fullName())?", preferredStyle: .ActionSheet)
+        
+        let DeleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: handleDeleteUser)
+        let CancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: cancelDeleteUser)
+        
+        alert.addAction(DeleteAction)
+        alert.addAction(CancelAction)
+        
+        // Support display in iPad
+        alert.popoverPresentationController?.sourceView = self.view
+        alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0)
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func handleDeleteUser(alertAction: UIAlertAction!) -> Void {
+        if let indexPath = deleteGroupMemberIndexPath {
+            tableView.beginUpdates()
+            
+            removeContributor(indexPath)
+            
+            // Note that indexPath is wrapped in an array:  [indexPath]
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            
+            deleteGroupMemberIndexPath = nil
+            
+            tableView.endUpdates()
+        }
+    }
+    
+    func cancelDeleteUser(alertAction: UIAlertAction!) {
+        deleteGroupMemberIndexPath = nil
+    }
+    
+    func downloadAndSetProfilePhotos(fbIds: Set<String>){
+        print("downloadAndSetProfilePhotos")
+        print(fbIds)
+        var photosDownloaded = 0
+        if fbIds.count > 0 {
+            for id in fbIds{
+                let imgURL: NSURL = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")!
+                let request: NSURLRequest = NSURLRequest(URL: imgURL)
+                
+                let urlSession = NSURLSession.sharedSession()
+                urlSession.dataTaskWithRequest(request) { (data, response, error) -> Void in
+                    if error == nil {
+                        self.profileImages[id] = RBSquareImage(UIImage(data: data!)!).circle
+                        photosDownloaded++
+                        print("photo downloaded in charm settings.  number \(photosDownloaded) out of \(fbIds.count)")
+                        if(photosDownloaded == fbIds.count){
+                            dispatch_async(dispatch_get_main_queue()){
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }else{
+                        print(error)
+                        displayNoInternetErrorMessage()
+                    }
+                }.resume()
+                
+            }
+        }else{
+            self.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }
+    }
+
 }

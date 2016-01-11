@@ -161,7 +161,7 @@ class AccountViewController: UITableViewController {
             else{
                 let cell = tableView.dequeueReusableCellWithIdentifier("CharmWithSubtitleTableViewCell") as! CharmWithSubtitleTableViewCell
                 let charm = self.charms[indexPath.row]
-                cell.charmTitle.text = charm.charmGroup.name
+                cell.charmTitle.text = charm.charmGroup!.name
 //                let charmOwner = charm["owner"] as? PFUser
 //                if (charmOwner != nil){
 //                    let charmOwnerFirstName = charmOwner?["firstName"] as? String
@@ -399,7 +399,7 @@ class AccountViewController: UITableViewController {
                 self.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
             }else{
                 print(error)
-                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                displayNoInternetErrorMessage()
             }
         })
         

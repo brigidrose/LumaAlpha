@@ -1,14 +1,14 @@
 //
-//  Charm.swift
+//  Story_Unit.swift
 //  ProtoLuma
 //
-//  Created by Chris on 1/8/16.
+//  Created by Chris on 1/10/16.
 //  Copyright © 2016 Chun-Wei Chen. All rights reserved.
 //
 
 import Foundation
 
-class Charm: PFObject, PFSubclassing {
+class Story_Unit: PFObject, PFSubclassing {
     
     override class func initialize() {
         struct Static {
@@ -20,13 +20,9 @@ class Charm: PFObject, PFSubclassing {
     }
     
     static func parseClassName() -> String {
-        return "Charm"
+        return "Story_Unit"
     }
     
-    @NSManaged var charmGroup: Charm_Group?
-    @NSManaged var latestStory: NSDate
-    @NSManaged var owner: User?
-    @NSManaged var claimed: Bool
-    @NSManaged var hasScheduledMoments: Bool
-
+    @NSManaged var file: PFFile?
+    
 }

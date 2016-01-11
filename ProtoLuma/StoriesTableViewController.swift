@@ -27,13 +27,17 @@ class StoryTableViewCell : UITableViewCell {
             sv.removeFromSuperview()
         }
         
-        for unit in storyUnits{
-            let imageView = PFImageView(frame: CGRectZero)
+        for unit in storyUnits as! [Story_Unit]{
+            let imageView = PFImageView(frame: CGRectMake(0,0,100,100))
             imageView.contentMode = .ScaleAspectFit
-            imageView.file = unit["file"] as? PFFile
+            imageView.file = unit.file
             imageView.loadInBackground({ (image, error) -> Void in
-                self.HImageStack.addArrangedSubview(imageView)
-                self.HImageStack.layoutIfNeeded()
+                if error == nil {
+                    self.HImageStack.addArrangedSubview(imageView)
+                    self.HImageStack.layoutIfNeeded()
+                }else{
+                    print(error)
+                }
             })
         }
 
@@ -53,9 +57,11 @@ class StoriesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("storiesTableViewController viewDidLoad")
+        
         let nib = UINib(nibName: "StoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "StoryCell")
-        scheduledMomentsButton = UIBarButtonItem(image: UIImage(named: "CharmsBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "scheduledMomentsTapped:")
+        scheduledMomentsButton = UIBarButtonItem(image: UIImage(named: "Balloons"), style: UIBarButtonItemStyle.Plain, target: self, action: "scheduledMomentsTapped:")
         
         
         
@@ -65,8 +71,12 @@ class StoriesTableViewController: UITableViewController {
         titleButtonLabel.addGestureRecognizer(tap)
         self.navigationItem.titleView = titleButtonLabel
         
+        self.refreshControl?.beginRefreshing()
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        
         loadStoriesForCharmViewed()
 
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -76,7 +86,7 @@ class StoriesTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
 //        self.navigationItem.title = "\(charm.charmGroup.name) >"
-        titleButtonLabel.text = "\(charm.charmGroup.name) >"
+        titleButtonLabel.text = "\(charm.charmGroup!.name) >"
         
         
     }
@@ -84,6 +94,14 @@ class StoriesTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func handleRefresh(refreshControl: UIRefreshControl) {
+        // Do some reloading of data and update the table view's data source
+        // Fetch more objects from a web service, for example...
+        
+        // Simply adding an object to the data source for this example
+        loadStoriesForCharmViewed()
     }
     
     func titleTapped(sender: AnyObject){
@@ -108,11 +126,15 @@ class StoriesTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 175
+        if storiesStoryUnits[indexPath.row].count > 0{
+            return 175
+        }
+        return 88
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        print("getting cell at \(indexPath.row).  stories count is \(stories.count) and storiesStoryUnits count is \(storiesStoryUnits.count)")
         let cell = tableView.dequeueReusableCellWithIdentifier("StoryCell") as! StoryTableViewCell
         if indexPath.row < self.stories.count && indexPath.row < self.storiesStoryUnits.count{
             let story = self.stories[indexPath.row]
@@ -177,10 +199,11 @@ class StoriesTableViewController: UITableViewController {
 
     
     func loadStoriesForCharmViewed(){
+        print("Loading stories for charm group named \(self.charm.charmGroup!.name)")
         self.refreshControl?.beginRefreshing()
         
         var queryForStoriesForCharmViewed = PFQuery(className: "Story")
-        queryForStoriesForCharmViewed.whereKey("charmGroup", equalTo: self.charm["charmGroup"])
+        queryForStoriesForCharmViewed.whereKey("charmGroup", equalTo: self.charm.charmGroup!)
         queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: false)
         queryForStoriesForCharmViewed.countObjectsInBackgroundWithBlock({ (count, error) -> Void in
             if(error == nil){
@@ -192,7 +215,7 @@ class StoriesTableViewController: UITableViewController {
                 }
             }else{
                 print(error)
-                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                displayNoInternetErrorMessage()
             }
         })
         
@@ -206,14 +229,19 @@ class StoriesTableViewController: UITableViewController {
                 self.storiesStoryUnits = Array(count: self.stories.count, repeatedValue: [])
                 // load storiesStoryUnits
                 var storiesStoryUnitsFoundCount = 0
+                print("found \(self.stories.count) stories for charm")
                 if self.stories.count > 0{
                     for story in self.stories{
                         let storyRelation = story.relationForKey("storyUnits")
                         let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
                         queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
-                            self.storiesStoryUnits[self.stories.indexOf(story)!] = objects!
+                            let storyUnits = objects!
+                            print("got \(storyUnits.count) story units")
+                            self.storiesStoryUnits[self.stories.indexOf(story)!] = storyUnits
                             storiesStoryUnitsFoundCount++
+                            print("on \(storiesStoryUnitsFoundCount) of \(self.stories.count) story unit batches to be retrieved")
                             if (storiesStoryUnitsFoundCount == self.stories.count){
+                                print("done loading story units")
                                 //done loading story units
                                 self.refreshControl?.endRefreshing()
                                 self.tableView.reloadData()
@@ -227,7 +255,7 @@ class StoriesTableViewController: UITableViewController {
             }
             else{
                 print(error)
-                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                displayNoInternetErrorMessage()
             }
         })
     }

@@ -105,6 +105,7 @@ class CharmCollectionTableViewController: UITableViewController{
         
         // Simply adding an object to the data source for this example
         loadCharms()
+        appDelegate.checkForUnlockedItems()
     }
     
     // MARK: Table View delegate methods
@@ -115,7 +116,7 @@ class CharmCollectionTableViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CharmCell") as! CharmTableViewCell
-        let charmName = self.charms[indexPath.row].charmGroup.name
+        let charmName = self.charms[indexPath.row].charmGroup!.name
         var hasScheduledMoments = false
         if(self.charms[indexPath.row]["hasScheduledMoments"] != nil){
             hasScheduledMoments = self.charms[indexPath.row]["hasScheduledMoments"] as! Bool
@@ -142,6 +143,7 @@ class CharmCollectionTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("selected charm row \(indexPath.row)")
         self.indexPathOfCharmViewed = indexPath
         self.performSegueWithIdentifier("showStoryTable", sender: self)
     }
@@ -153,6 +155,7 @@ class CharmCollectionTableViewController: UITableViewController{
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showStoryTable"){
+            print("seguing into StoriesTableViewController")
             let destinationVC = segue.destinationViewController as! StoriesTableViewController
             destinationVC.charm = self.charms[self.indexPathOfCharmViewed.row]
             destinationVC.profileImages = self.profileImages
@@ -176,36 +179,58 @@ class CharmCollectionTableViewController: UITableViewController{
         
         self.tabBarController?.tabBar.items![1].enabled = true
         self.tabBarController?.tabBar.items![2].enabled = true
+        
+        self.refreshControl?.endRefreshing()
+        self.tableView.reloadData()
+
     }
     
     func loadCharms(){
         print("loading charms")
+        PFCloud.callFunctionInBackground("getCharmGroupsWithScheduledMomentInfo", withParameters: nil) { (response, error) -> Void in
+            if error == nil{
+                print("charmGroupsWithLockedStories moments response: \(response)")
+                if response!["charms"] != nil {
+                    let charmGroupsWithScheduledMoments = response!["charmGroupsWithLockedStories"] as! [Charm_Group]
+                    for charmGroup in charmGroupsWithScheduledMoments {
+                        for charm in self.charms {
+                            if charm.charmGroup!.objectId == charmGroup.objectId {
+                                charm.hasScheduledMoments = true
+                            }
+                        }
+                    }
+                    self.tableView.reloadData()
+                }
+            }else{
+                print(error)
+                displayNoInternetErrorMessage()
+            }
+            
+        }
+        
         let queryForCharms = PFQuery(className: "Charm")
         queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
         queryForCharms.includeKey("charmGroup")
+        queryForCharms.whereKeyExists("charmGroup")
         
         queryForCharms.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if error == nil{
                 self.charms = objects as! [Charm]
                 print("\(self.charms.count) charms retrieved")
-    //            self.tableView.reloadData()
-                if (self.charms.count > 0){
-                    print("loading charms into new page")
-                    
-                    
-                    print("loading profile photos...")
-                    self.populateCharmsAndEnableBarItems();
-                    //load all profile photos in the background
-                    self.loadProfilePhotos()
-                }else{
-                    self.populateCharmsAndEnableBarItems();
-                    self.refreshControl?.endRefreshing()
-                }
+                
+                self.populateCharmsAndEnableBarItems();
+                
+                //load all profile photos in the background
+                self.loadProfilePhotos()
+                
+                
             }else{
                 print(error)
-                (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                displayNoInternetErrorMessage()
             }
         })
+        
+        
         
     }
     
@@ -226,47 +251,52 @@ class CharmCollectionTableViewController: UITableViewController{
                 let urlSession = NSURLSession.sharedSession()
                 urlSession.dataTaskWithRequest(request) { (data, response, error) -> Void in
                     if error == nil {
-                        self.profileImages[id] = self.appDelegate.RBSquareImage(UIImage(data: data!)!).circle
+                        self.profileImages[id] = RBSquareImage(UIImage(data: data!)!).circle
                         photosDownloaded++
                         print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
                         if(photosDownloaded == fbIds.count){
-                            self.refreshControl?.endRefreshing()
-                            self.tableView.reloadData()
-                            
                             let barViewControllers = self.tabBarController?.viewControllers
                             let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
                             avc.profileImages = self.profileImages  //shared model
+                         
+                            print("all photos downloaded.  reloading table view")
+                            dispatch_async(dispatch_get_main_queue()){
+                                print("actually reloading it now")
+                                self.tableView.reloadData()
+                            }
+                        
                             
-                            // New UI design mandates that if a user has any stories, they are pushed into the newest one
-                            //                            var mostRecent:PFObject?
-                            var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)
-                            var indexOfMostRecentCharm:Int?
-                            for (index, charm) in self.charms.enumerate(){
-                                if(charm["latestStory"] != nil){
-                                    let charmDate = charm["latestStory"] as! NSDate
-                                    
-                                    if charmDate.compare(mostRecentLatestStory) == NSComparisonResult.OrderedDescending {
-                                        //                                        mostRecent = charm
-                                        indexOfMostRecentCharm = index
-                                        mostRecentLatestStory = charm["latestStory"] as! NSDate
-                                    }
-                                }
-                            }
-                            if indexOfMostRecentCharm != nil{
-                                print("Most recent charm is \(indexOfMostRecentCharm!)")
-                                self.indexPathOfCharmViewed = NSIndexPath(forRow: indexOfMostRecentCharm!, inSection: 0)
-                                self.performSegueWithIdentifier("showStoryTable", sender: self)
-                            }
+                            
+                            // too buggy, commented out for now
+//                            // New UI design mandates that if a user has any stories, they are pushed into the newest one
+//                            //                            var mostRecent:PFObject?
+//                            var mostRecentLatestStory = NSDate(timeIntervalSince1970: 0.0)
+//                            var indexOfMostRecentCharm:Int?
+//                            for (index, charm) in self.charms.enumerate(){
+//                                if(charm["latestStory"] != nil){
+//                                    let charmDate = charm["latestStory"] as! NSDate
+//                                    
+//                                    if charmDate.compare(mostRecentLatestStory) == NSComparisonResult.OrderedDescending {
+//                                        //                                        mostRecent = charm
+//                                        indexOfMostRecentCharm = index
+//                                        mostRecentLatestStory = charm["latestStory"] as! NSDate
+//                                    }
+//                                }
+//                            }
+//                            if indexOfMostRecentCharm != nil{
+//                                print("Most recent charm is \(indexOfMostRecentCharm!)")
+//                                self.indexPathOfCharmViewed = NSIndexPath(forRow: indexOfMostRecentCharm!, inSection: 0)
+//                                self.performSegueWithIdentifier("showStoryTable", sender: self)
+//                            }
                         }
                     }else{
                         print(error)
-                        (UIApplication.sharedApplication().delegate as! AppDelegate).displayNoInternetErrorMessage()
+                        displayNoInternetErrorMessage()
                     }
                 }.resume()
 
             }
         }else{
-            self.refreshControl?.endRefreshing()
             self.tableView.reloadData()
         }
     }
@@ -275,39 +305,71 @@ class CharmCollectionTableViewController: UITableViewController{
         print("loading profile photos")
         var uniqueFacebookIds = Set<String>()
         var retrievedCount = 0
-        let charmsWithGroups = self.charms.filter { (charm) -> Bool in
-            return charm.charmGroup != nil
-        }
         for charm in self.charms{
             let otherCharmGroupUsersQuery = PFQuery(className: "Charm")
-            if charm["charmGroup"] != nil {
-                otherCharmGroupUsersQuery.whereKey("charmGroup", equalTo: charm["charmGroup"])
-                otherCharmGroupUsersQuery.includeKey("owner")
-                otherCharmGroupUsersQuery.findObjectsInBackgroundWithBlock({ (charms, error) -> Void in
-                    if error == nil {
-                        print("got \((charms ?? []).count) related users");
-                        var idsForCharm = Set<String>()
-                        for charm in charms ?? []{
-                            let fbId = charm["owner"]["facebookId"] as! String
-                            //don't download a pic if we already have it from earlier.
-                            if !self.profileImages.keys.contains(fbId){
-                                uniqueFacebookIds.insert(fbId)
-                            }
-                            idsForCharm.insert(fbId)
+            otherCharmGroupUsersQuery.whereKey("charmGroup", equalTo: charm.charmGroup!)
+            otherCharmGroupUsersQuery.includeKey("owner")
+            otherCharmGroupUsersQuery.findObjectsInBackgroundWithBlock({ (charms, error) -> Void in
+                if error == nil {
+                    print("got \((charms ?? []).count) related users");
+                    var idsForCharm = Set<String>()
+                    for charm in charms as! [Charm]{
+                        let fbId = charm.owner!.facebookId
+                        //don't download a pic if we already have it from earlier.
+                        if !self.profileImages.keys.contains(fbId){
+                            uniqueFacebookIds.insert(fbId)
                         }
-                        self.relatedUsersOfCharms[charm.objectId!] = idsForCharm
-                        retrievedCount++
-                        if(retrievedCount == charmsWithGroups.count){
-                            self.downloadAndSetProfilePhotos(uniqueFacebookIds)
-                        }
-                    }else{
-                        print(error)
+                        idsForCharm.insert(fbId)
                     }
-                })
-            }else{
-                //this charm has no charm group.  
-                print("charm with id \(charm["id"]) has no group")
-            }
+                    //threadsafe lock on the datastructure
+                    sync(self.relatedUsersOfCharms){
+                        if self.relatedUsersOfCharms.keys.contains(charm.objectId!) {
+                            self.relatedUsersOfCharms[charm.objectId!] = self.relatedUsersOfCharms[charm.objectId!]!.union(idsForCharm)
+                        }else{
+                            self.relatedUsersOfCharms[charm.objectId!] = idsForCharm
+                        }
+                    }
+                    retrievedCount++
+                    if(retrievedCount == self.charms.count*2){
+                        self.downloadAndSetProfilePhotos(uniqueFacebookIds)
+                    }
+                }else{
+                    print(error)
+                }
+            })
+            let queryForInvitedCharmGroupMembers = PFQuery(className: "User_Charm_Group")
+            queryForInvitedCharmGroupMembers.whereKey("charmGroup", equalTo: charm.charmGroup!)
+            queryForInvitedCharmGroupMembers.whereKey("user", notEqualTo: PFUser.currentUser()!)
+            queryForInvitedCharmGroupMembers.includeKey("user")
+            queryForInvitedCharmGroupMembers.findObjectsInBackgroundWithBlock({ (userCharmGroups, error) -> Void in
+                if error == nil {
+                    print("got \((userCharmGroups ?? []).count) invited users");
+                    var idsForCharm = Set<String>()
+                    for userCharmGroup in userCharmGroups as! [User_Charm_Group] {
+                        let fbId = userCharmGroup.user.facebookId
+                        //don't download a pic if we already have it from earlier.
+                        if !self.profileImages.keys.contains(fbId){
+                            uniqueFacebookIds.insert(fbId)
+                        }
+                        idsForCharm.insert(fbId)
+                    }
+                    //threadsafe lock on the datastructure
+                    sync(self.relatedUsersOfCharms){
+                        if self.relatedUsersOfCharms.keys.contains(charm.objectId!) {
+                            self.relatedUsersOfCharms[charm.objectId!] = self.relatedUsersOfCharms[charm.objectId!]!.union(idsForCharm)
+                        }else{
+                            self.relatedUsersOfCharms[charm.objectId!] = idsForCharm
+                        }
+                    }
+                    retrievedCount++
+                    if(retrievedCount == self.charms.count*2){
+                        self.downloadAndSetProfilePhotos(uniqueFacebookIds)
+                    }
+                }else{
+                    print(error)
+                }
+            })
+            
         }
         
     }

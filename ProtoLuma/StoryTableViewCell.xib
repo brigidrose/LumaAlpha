@@ -24,6 +24,7 @@
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="XIf-ie-MWG">
                         <rect key="frame" x="52" y="89" width="260" height="77"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="77" id="rZT-gA-Gs2"/>
                         </constraints>
@@ -36,6 +37,7 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="XIf-ie-MWG" firstAttribute="leading" secondItem="luT-OM-vP7" secondAttribute="leading" constant="52" id="2cd-8v-jaX"/>
                     <constraint firstAttribute="trailing" secondItem="XIf-ie-MWG" secondAttribute="trailing" constant="8" id="xaf-2u-6L8"/>
                 </constraints>
             </tableViewCellContentView>
