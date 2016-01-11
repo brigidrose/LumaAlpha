@@ -117,7 +117,11 @@ class CharmSettingsTableViewController: UITableViewController {
             }else{
                 let cell = tableView.dequeueReusableCellWithIdentifier(charmMemberReuseIdentifier, forIndexPath: indexPath) as! CharmSettingsCharmMemberCell
                 let charmGroupMember = charmGroupMembers[indexPath.row - 1]
-                cell.setup(charmGroupMember.fullName(), memberPhoto: profileImages[charmGroupMember.facebookId])
+                var memberPhoto:UIImage? = nil
+                if profileImages.keys.contains(charmGroupMember.facebookId) {
+                    memberPhoto = profileImages[charmGroupMember.facebookId]
+                }
+                cell.setup(charmGroupMember.fullName(), memberPhoto: memberPhoto)
                 return cell
             }
         }else if indexPath.section == 1 {
@@ -257,6 +261,20 @@ class CharmSettingsTableViewController: UITableViewController {
                 print(error)
             }
         }
+        //remove from user_charm_group table of group invitations
+        let removeFromUserCharmGroupQuery = PFQuery(className: "User_Charm_Group")
+        removeFromUserCharmGroupQuery.whereKey("charmGroup", equalTo: charm.charmGroup!)
+        removeFromUserCharmGroupQuery.whereKey("user", equalTo: charmGroupMember)
+        removeFromUserCharmGroupQuery.findObjectsInBackgroundWithBlock { (userCharmGroups, error) -> Void in
+            if error == nil {
+                for userCharmGroup in userCharmGroups as! [User_Charm_Group] {
+                    userCharmGroup.deleteInBackground()
+                }
+            }else{
+                print(error)
+            }
+        }
+        
         charmGroupMembers.removeAtIndex(indexPath.row - 1)
     }
 

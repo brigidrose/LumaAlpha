@@ -13,9 +13,10 @@ import UIKit
 class CharmTableViewCell : UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var charmIconImage: UIImageView!
-    var addedProfileImages = Set<String>()
+    var addedProfileImageViews = Dictionary<String, UIImageView>()
     @IBOutlet var profileImages: UIStackView!
     @IBOutlet var scheduledMomentsIcon: UIImageView!
+    
     
     
     
@@ -23,16 +24,36 @@ class CharmTableViewCell : UITableViewCell {
         self.charmIconImage.image = charmIconImage
         titleLabel.text = title
         
+        
         //add user photos to stackview
         for (fbId, userImage) in profilePhotos {
-            if !addedProfileImages.contains(fbId){
+            if !addedProfileImageViews.keys.contains(fbId){
                 let imageView = UIImageView(image: userImage)
                 imageView.contentMode = .ScaleAspectFit
                 profileImages.addArrangedSubview(imageView)
                 print("added profile photo to charm \(title) for user \(fbId)")
-                addedProfileImages.insert(fbId)
+                addedProfileImageViews[fbId] = imageView
             }
         }
+        
+        var removeTheseIdsFromAddedProfileImages = Set<String>()
+        
+        //find users that are in addedProfileImages but NOT in profileImages
+        for (fbId, imageView) in addedProfileImageViews {
+            if !profilePhotos.keys.contains(fbId){
+                //oh crap, we have an image in the profileImages view that is not in the profilePhotos array.  This user was probably deleted.  Remove them.
+                print("removed profile photo from charm \(title) for user \(fbId)")
+                profileImages.removeArrangedSubview(imageView)
+                imageView.removeFromSuperview()
+                removeTheseIdsFromAddedProfileImages.insert(fbId)
+            }
+        }
+        
+        for fbIdToRemove in removeTheseIdsFromAddedProfileImages {
+            addedProfileImageViews.removeValueForKey(fbIdToRemove)
+        }
+        
+        
         UIView.animateWithDuration(0.25) { () -> Void in
             self.profileImages.layoutIfNeeded()
         }
@@ -187,26 +208,7 @@ class CharmCollectionTableViewController: UITableViewController{
     
     func loadCharms(){
         print("loading charms")
-        PFCloud.callFunctionInBackground("getCharmGroupsWithScheduledMomentInfo", withParameters: nil) { (response, error) -> Void in
-            if error == nil{
-                print("charmGroupsWithLockedStories moments response: \(response)")
-                if response!["charms"] != nil {
-                    let charmGroupsWithScheduledMoments = response!["charmGroupsWithLockedStories"] as! [Charm_Group]
-                    for charmGroup in charmGroupsWithScheduledMoments {
-                        for charm in self.charms {
-                            if charm.charmGroup!.objectId == charmGroup.objectId {
-                                charm.hasScheduledMoments = true
-                            }
-                        }
-                    }
-                    self.tableView.reloadData()
-                }
-            }else{
-                print(error)
-                displayNoInternetErrorMessage()
-            }
-            
-        }
+
         
         let queryForCharms = PFQuery(className: "Charm")
         queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)
@@ -217,6 +219,32 @@ class CharmCollectionTableViewController: UITableViewController{
             if error == nil{
                 self.charms = objects as! [Charm]
                 print("\(self.charms.count) charms retrieved")
+                
+                //reset scheduled moments flags
+                for charm in self.charms {
+                    charm.hasScheduledMoments = false
+                }
+                
+                PFCloud.callFunctionInBackground("getCharmGroupsWithScheduledMomentInfo", withParameters: nil) { (response, error) -> Void in
+                    if error == nil{
+                        print("charmGroupsWithLockedStories moments response: \(response)")
+                        if response!["charms"] != nil {
+                            let charmGroupsWithScheduledMoments = response!["charmGroupsWithLockedStories"] as! [Charm_Group]
+                            for charmGroup in charmGroupsWithScheduledMoments {
+                                for charm in self.charms {
+                                    if charm.charmGroup!.objectId == charmGroup.objectId {
+                                        charm.hasScheduledMoments = true
+                                    }
+                                }
+                            }
+                            self.tableView.reloadData()
+                        }
+                    }else{
+                        print(error)
+                        displayNoInternetErrorMessage()
+                    }
+                    
+                }
                 
                 self.populateCharmsAndEnableBarItems();
                 
@@ -235,13 +263,11 @@ class CharmCollectionTableViewController: UITableViewController{
     }
     
 
-
-    
-
     
     func downloadAndSetProfilePhotos(fbIds: Set<String>){
         print("downloadAndSetProfilePhotos")
         print(fbIds)
+        print("related users of charms: \(self.relatedUsersOfCharms)")
         var photosDownloaded = 0
         if fbIds.count > 0 {
             for id in fbIds{
@@ -305,6 +331,10 @@ class CharmCollectionTableViewController: UITableViewController{
         print("loading profile photos")
         var uniqueFacebookIds = Set<String>()
         var retrievedCount = 0
+        
+        //reset related users array in case one was deleted
+        self.relatedUsersOfCharms = [String: Set<String>]()
+        
         for charm in self.charms{
             let otherCharmGroupUsersQuery = PFQuery(className: "Charm")
             otherCharmGroupUsersQuery.whereKey("charmGroup", equalTo: charm.charmGroup!)
