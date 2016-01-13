@@ -29,6 +29,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     var shouldResetSelectedCharm = true
     var momentTitle:TextFieldTableViewCell? = nil
     var momentDesc:TextViewTableViewCell? = nil
+    var activeField: UITextView?
+    var oldContentInset:UIEdgeInsets!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +57,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.backgroundColor = UIColor(white: 1, alpha: 1)
+        
+        
+        registerForKeyboardNotifications()
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +68,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     }
     
     override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+//        super.viewWillAppear(animated)
         if(shouldResetSelectedCharm){
             print("resetting selected charm")
             self.forCharm = nil
@@ -508,7 +513,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //                self.showUnlockParameterPicker = !self.showUnlockParameterPicker
                 self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
-        case 3: print("did select row in section 3")
+        case 3:
+            print("did select row in section 3")
+            print("indexPath.row for selected row in section 3: \(indexPath.row)")
         default: print("didSelectSomeRow")
         }
     }
@@ -552,7 +559,10 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             // == 1
             // This would be the moment desc
         }
+        self.activeField = nil
     }
+    
+
     
     func indexPathForCellContainingView(view: UIView, inTableView tableView:UITableView) -> NSIndexPath? {
         let viewCenterRelativeToTableview = tableView.convertPoint(CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds)), fromView:view)
@@ -563,6 +573,55 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     func textViewDoneButtonTapped(sender:UIBarButtonItem){
         print("done button tapped")
         self.view.endEditing(true)
+        
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(textView, inTableView: self.tableView)!
+        print(indexPathForTextView)
+        if (indexPathForTextView.section == 3){
+            self.activeField = textView //only set activeField for section 3
+        }
+        
+    }
+    
+    func registerForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    
+    
+    func keyboardWasShown(aNotification: NSNotification) {
+        oldContentInset = self.tableView.contentInset
+        if activeField != nil {
+            let info = aNotification.userInfo as! [String: AnyObject],
+            kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue().size,
+            contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
+            
+            self.tableView.contentInset = contentInsets
+            self.tableView.scrollIndicatorInsets = contentInsets
+            
+            // If active text field is hidden by keyboard, scroll it so it's visible
+            // Your app might not need or want this behavior.
+            var aRect = self.view.frame
+            aRect.size.height -= kbSize.height
+            
+            print("keyboard was shown!")
+            if !CGRectContainsPoint(aRect, activeField!.frame.origin) {
+                let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableView)!
+                let myRect = tableView.rectForRowAtIndexPath(NSIndexPath(forItem: indexPathForTextView.row, inSection: 3)) //get offset for first the row in section
+    //            print("scrolling rect to visible.  activeField.frame is \(activeField!.frame) and parent is \(myRect)")
+                let scrollToRect = CGRectMake(0, myRect.origin.y + activeField!.frame.origin.y, activeField!.frame.size.width, activeField!.frame.size.height) //add the offsets of the text field and the
+                self.tableView.scrollRectToVisible(scrollToRect, animated: true)
+            }
+        }
+    }
+    
+    func keyboardWillBeHidden(aNotification: NSNotification) {
+//        let contentInsets = UIEdgeInsetsZero
+        self.tableView.contentInset = oldContentInset
+        self.tableView.scrollIndicatorInsets = oldContentInset
     }
 
     func addMediaButtonTapped(sender:UIButton){
