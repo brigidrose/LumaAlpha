@@ -23,5 +23,6 @@ class Story: PFObject, PFSubclassing {
         return "Story"
     }
     
+    @NSManaged var sender:User!
     
 }

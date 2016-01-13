@@ -16,7 +16,7 @@ class StoryTableViewCell : UITableViewCell {
     @IBOutlet var title: UILabel!
     @IBOutlet var storyDesc: UILabel!
     
-    func loadItem(title title: String, description: String, creatorPhoto: UIImage, storyUnits: [PFObject]) {
+    func loadItem(title title: String, description: String, creatorPhoto: UIImage?, storyUnits: [PFObject]) {
         self.title.text = title
         self.storyDesc.text = description
         
@@ -137,9 +137,13 @@ class StoriesTableViewController: UITableViewController {
         print("getting cell at \(indexPath.row).  stories count is \(stories.count) and storiesStoryUnits count is \(storiesStoryUnits.count)")
         let cell = tableView.dequeueReusableCellWithIdentifier("StoryCell") as! StoryTableViewCell
         if indexPath.row < self.stories.count && indexPath.row < self.storiesStoryUnits.count{
-            let story = self.stories[indexPath.row]
-            let sender = story["sender"] as! PFObject
-            cell.loadItem(title: story["title"] as! String, description:  story["description"] as! String, creatorPhoto: self.profileImages[sender["facebookId"] as! String]!, storyUnits: self.storiesStoryUnits[indexPath.row])
+            let story = self.stories[indexPath.row] as! Story
+            let sender = story.sender
+            var image:UIImage? = nil
+            if(self.profileImages[sender.facebookId] != nil){
+                image = self.profileImages[sender.facebookId]
+            }
+            cell.loadItem(title: story["title"] as! String, description:  story["description"] as! String, creatorPhoto: image, storyUnits: self.storiesStoryUnits[indexPath.row])
         }
         // Configure the cell...
 

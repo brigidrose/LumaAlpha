@@ -23,6 +23,7 @@ class DateTimePickerTableViewCell: UITableViewCell {
         self.dateTimePicker = UIDatePicker(frame: CGRectZero)
         self.dateTimePicker.translatesAutoresizingMaskIntoConstraints = false
         self.dateTimePicker.datePickerMode = UIDatePickerMode.DateAndTime
+        self.dateTimePicker.timeZone = NSTimeZone.localTimeZone()
         self.contentView.addSubview(self.dateTimePicker)
         
         let viewsDictionary = ["dateTimePicker":self.dateTimePicker]

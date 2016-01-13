@@ -231,6 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func checkForUnlockedItems(){
         let date = NSDate()
+        //fix this so that we are sending UTC time instead of local time to the server.
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components([.Hour, .Minute, .Month, .Year, .Day], fromDate: date)
         let params:[String:NSObject] = [
