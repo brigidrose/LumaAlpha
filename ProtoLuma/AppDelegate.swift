@@ -241,7 +241,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             "year": components.year,
             "day": components.day,
             "locationX": latestLocation[0],
-            "locationY": latestLocation[1]
+            "locationY": latestLocation[1],
+            "timezoneOffset": NSTimeZone.localTimeZone().secondsFromGMT / 60 / 60 // divide by 60 twice to get hours from seconds.
         ]
         PFCloud.callFunctionInBackground("unlockMoments", withParameters: params) { (response, error) -> Void in
             if error == nil{
