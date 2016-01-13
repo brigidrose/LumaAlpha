@@ -367,6 +367,7 @@ class CharmCollectionTableViewController: UITableViewController{
                     print(error)
                 }
             })
+            
             let queryForInvitedCharmGroupMembers = PFQuery(className: "User_Charm_Group")
             queryForInvitedCharmGroupMembers.whereKey("charmGroup", equalTo: charm.charmGroup!)
             queryForInvitedCharmGroupMembers.whereKey("user", notEqualTo: PFUser.currentUser()!)

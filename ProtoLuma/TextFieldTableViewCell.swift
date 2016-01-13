@@ -11,6 +11,9 @@ import UIKit
 class TextFieldTableViewCell: UITableViewCell {
 
     var textField:UITextField!
+    let keyboardAccessoryView = UIToolbar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 44))
+    var doneButton = UIBarButtonItem()
+
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -27,7 +30,16 @@ class TextFieldTableViewCell: UITableViewCell {
         self.textField.leftViewMode = UITextFieldViewMode.Always
         self.textField.rightView = UIView(frame: CGRectMake(0, 0, 8, self.contentView.frame.height))
         self.textField.rightViewMode = UITextFieldViewMode.Always
+        
+        doneButton.title = "Done"
+        doneButton.style = UIBarButtonItemStyle.Done
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        self.keyboardAccessoryView.setItems([flexSpace,doneButton], animated: true)
+        self.textField.inputAccessoryView = self.keyboardAccessoryView
+        
         self.contentView.addSubview(self.textField)
+        
+        
         
         
         let viewsDictionary = ["textField":self.textField]

@@ -72,6 +72,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             self.mediaAssets = []
             self.mediaDescriptions = []
             self.tableView.reloadData()
+            self.unlockParameterType = nil
+            self.unlockTime = nil
+            self.unlockLocation = nil
         }
         //default to true unless explicitly set for the next time
         self.shouldResetSelectedCharm = true
@@ -235,6 +238,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             cell.charmTitle.text = charm.charmGroup!.name
             cell.charmTitle.textColor = UIColor.blackColor()
             cell.charmSubtitle.textColor = UIColor(white: 0, alpha: 0.8)
+            cell.charmSubtitle.text = ""
             cell.backgroundColor = UIColor.whiteColor()
             cell.accessoryType = UITableViewCellAccessoryType.None
             
@@ -260,7 +264,9 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     let cell = tableView.dequeueReusableCellWithIdentifier("TextFieldTableViewCell") as! TextFieldTableViewCell
                     cell.textField.placeholder = "Name"
                     cell.textField.delegate = self
-                    cell.textField.returnKeyType = UIReturnKeyType.Next
+                    cell.textField.returnKeyType = UIReturnKeyType.Default
+                    (((cell.textField.inputAccessoryView as! UIToolbar).items!)[1].target = self)
+                    (((cell.textField.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
                     self.momentTitle = cell
                     return cell
                 case 1:
@@ -287,6 +293,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                         else{
                             cell.segmentedControl.selectedSegmentIndex = 1
                         }
+                    }else{
+                        cell.segmentedControl.selectedSegmentIndex = -1
                     }
                     cell.segmentedControl.addTarget(self, action: "unlockParameterPicked:", forControlEvents: UIControlEvents.ValueChanged)
                     return cell
@@ -517,7 +525,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         else{
             self.sendButton.enabled = false
         }
-        (self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 1, inSection: 1)) as! TextViewTableViewCell).textView.becomeFirstResponder()
+//        (self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 1, inSection: 1)) as! TextViewTableViewCell).textView.becomeFirstResponder()
         return true
     }
     
