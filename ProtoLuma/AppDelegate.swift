@@ -47,11 +47,6 @@ func RBSquareImage(image: UIImage) -> UIImage {
     return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
 }
 
-func displayNoInternetErrorMessage(){
-    let alert = UIAlertController(title: "Error", message: "You don't appear to be connected to the internet.  You need internet to use this app.", preferredStyle: UIAlertControllerStyle.Alert)
-    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-    UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
-}
 
 
 
@@ -208,6 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                             self.setBatteryLife(bracelet)
                         }else{
                             print(error)
+                            ParseErrorHandlingController.handleParseError(error)
                         }
                     })
                 }
@@ -253,7 +249,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
             }else{
                 print(error)
-                displayNoInternetErrorMessage()
+                ParseErrorHandlingController.handleParseError(error)
             }
             
         }
@@ -361,6 +357,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                             self.notifyBracelet(device, charmSlot: charmSlot)
                         }else{
                             print(error)
+                            ParseErrorHandlingController.handleParseError(error)
                         }
                     })
                 }

@@ -413,6 +413,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                 queryForLockedStoriesForCharmViewed.whereKey("forCharm", equalTo: self.charms[self.indexOfCharmViewed])
                 queryForLockedStoriesForCharmViewed.whereKey("unlocked", equalTo: false)
                 queryForLockedStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+                    if error != nil {
+                        print(error)
+                        ParseErrorHandlingController.handleParseError(error)
+                        return
+                    }
                     self.lockedStories = objects!
                     self.lockedStoriesStoryUnits = Array(count: self.lockedStories.count, repeatedValue: [])
                     self.storiesTableViewController.refreshControl?.endRefreshing()
@@ -425,6 +430,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                         let lockedStoryRelation = lockedStory.relationForKey("storyUnits")
                         let queryForLockedStoryStoryUnits:PFQuery = lockedStoryRelation.query()!
                         queryForLockedStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+                            if error != nil {
+                                print(error)
+                                ParseErrorHandlingController.handleParseError(error)
+                                return
+                            }
                             self.lockedStoriesStoryUnits[self.lockedStories.indexOf(lockedStory)!] = objects!
                             lockedStoriesStoryUnitsFoundCount++
                             if (lockedStoriesStoryUnitsFoundCount == self.lockedStories.count){
@@ -434,6 +444,11 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                                     let storyRelation = story.relationForKey("storyUnits")
                                     let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
                                     queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+                                        if error != nil{
+                                            print(error)
+                                            ParseErrorHandlingController.handleParseError(error)
+                                            return
+                                        }
                                         self.storiesStoryUnits[self.stories.indexOf(story)!] = objects!
                                         storiesStoryUnitsFoundCount++
                                         if (storiesStoryUnitsFoundCount == self.stories.count){
@@ -452,6 +467,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
             }
             else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         })
         

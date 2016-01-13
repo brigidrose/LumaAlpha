@@ -116,6 +116,7 @@ class ClaimBIDViewController: UIViewController {
                                     self.bracelet.saveEventually({(success, error) -> Void in
                                         if (!success){
                                             print(error)
+                                            ParseErrorHandlingController.handleParseError(error)
                                             self.braceletSerialNumber = BID
                                         }
                                         else{
@@ -132,6 +133,7 @@ class ClaimBIDViewController: UIViewController {
                                 }
                                 else{
                                     print(error)
+                                    ParseErrorHandlingController.handleParseError(error)
                                 }
                             })
                             // Transition to Feed View Controller
@@ -140,6 +142,7 @@ class ClaimBIDViewController: UIViewController {
                 }
                 else{
                     print(error)
+                    ParseErrorHandlingController.handleParseError(error)
                 }
             })
 //        }

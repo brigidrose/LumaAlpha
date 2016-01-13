@@ -37,6 +37,7 @@ class StoryTableViewCell : UITableViewCell {
                     self.HImageStack.layoutIfNeeded()
                 }else{
                     print(error)
+                    ParseErrorHandlingController.handleParseError(error)
                 }
             })
         }
@@ -219,7 +220,7 @@ class StoriesTableViewController: UITableViewController {
                 }
             }else{
                 print(error)
-                displayNoInternetErrorMessage()
+                ParseErrorHandlingController.handleParseError(error)
             }
         })
         
@@ -259,7 +260,7 @@ class StoriesTableViewController: UITableViewController {
             }
             else{
                 print(error)
-                displayNoInternetErrorMessage()
+                ParseErrorHandlingController.handleParseError(error)
             }
         })
     }

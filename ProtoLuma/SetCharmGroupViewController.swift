@@ -36,10 +36,12 @@ class SetCharmGroupViewController: UIViewController {
                         (UIApplication.sharedApplication().delegate as! AppDelegate).tabBarController.selectedIndex = 0
                     }else{
                         print(error)
+                        ParseErrorHandlingController.handleParseError(error)
                     }
                 })
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
     }

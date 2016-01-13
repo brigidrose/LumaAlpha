@@ -241,7 +241,7 @@ class CharmCollectionTableViewController: UITableViewController{
                         }
                     }else{
                         print(error)
-                        displayNoInternetErrorMessage()
+                        ParseErrorHandlingController.handleParseError(error)
                     }
                     
                 }
@@ -254,7 +254,7 @@ class CharmCollectionTableViewController: UITableViewController{
                 
             }else{
                 print(error)
-                displayNoInternetErrorMessage()
+                ParseErrorHandlingController.handleParseError(error)
             }
         })
         
@@ -317,7 +317,7 @@ class CharmCollectionTableViewController: UITableViewController{
                         }
                     }else{
                         print(error)
-                        displayNoInternetErrorMessage()
+                        ParseErrorHandlingController.handleParseError(error)
                     }
                 }.resume()
 
@@ -365,6 +365,7 @@ class CharmCollectionTableViewController: UITableViewController{
                     }
                 }else{
                     print(error)
+                    ParseErrorHandlingController.handleParseError(error)
                 }
             })
             
@@ -398,6 +399,7 @@ class CharmCollectionTableViewController: UITableViewController{
                     }
                 }else{
                     print(error)
+                    ParseErrorHandlingController.handleParseError(error)
                 }
             })
             

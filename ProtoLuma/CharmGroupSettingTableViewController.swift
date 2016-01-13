@@ -86,6 +86,7 @@ class CharmGroupSettingTableViewController: UITableViewController {
                     self.tabBarController?.selectedIndex = 0
                 }else{
                     print(error)
+                    ParseErrorHandlingController.handleParseError(error)
                 }
             })
         }

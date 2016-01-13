@@ -57,10 +57,12 @@ class CharmSettingsTableViewController: UITableViewController {
                         self.downloadAndSetProfilePhotos(missingFbPhotos)
                     }else{
                         print(error)
+                        ParseErrorHandlingController.handleParseError(error)
                     }
                 })
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
         
@@ -259,6 +261,7 @@ class CharmSettingsTableViewController: UITableViewController {
                 }
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
         //remove from user_charm_group table of group invitations
@@ -272,6 +275,7 @@ class CharmSettingsTableViewController: UITableViewController {
                 }
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
         
@@ -336,7 +340,7 @@ class CharmSettingsTableViewController: UITableViewController {
                         }
                     }else{
                         print(error)
-                        displayNoInternetErrorMessage()
+                        ParseErrorHandlingController.handleParseError(error)
                     }
                 }.resume()
                 

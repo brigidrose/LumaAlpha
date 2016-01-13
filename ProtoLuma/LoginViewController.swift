@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
     var metawearManager:MBLMetaWearManager!
     var bracelet:PFObject!
     var loginWithFacebookButton:UIButton!
+    var isModal = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,8 @@ class LoginViewController: UIViewController {
         self.view.addConstraint(horizontalConstraint)
         self.view.addConstraints(verticalConstraints)
         self.view.addConstraints(buttonHorizontalConstraints)
+        
+        self.view.backgroundColor = UIColor.whiteColor()
 
     }
 
@@ -57,7 +60,11 @@ class LoginViewController: UIViewController {
         print("signup with facebook tapped")
         sender.enabled = false
         PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email", "user_friends"], block: {(user:PFUser?, error:NSError?) -> Void in
-            print(error)
+            if error != nil{
+                print(error)
+                ParseErrorHandlingController.handleParseError(error)
+                return
+            }
             if let user = user {
                 if user.isNew {
                     if (FBSDKAccessToken.currentAccessToken() != nil){
@@ -102,11 +109,15 @@ class LoginViewController: UIViewController {
                                     if (success){
                                         PFInstallation.currentInstallation()["currentUser"] = PFUser.currentUser()
                                         PFInstallation.currentInstallation().saveInBackgroundWithBlock({(success, error) -> Void in
+                                            if self.isModal {
+                                                self.dismissViewControllerAnimated(true, completion: nil)
+                                            }
                                             self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
                                         })
                                     }
                                     else{
                                         print(error)
+                                        ParseErrorHandlingController.handleParseError(error)
                                         sender.enabled = true
                                     }
                                 })
@@ -127,10 +138,16 @@ class LoginViewController: UIViewController {
                         print(PFUser.currentUser()?["bracelet"])
                         if (PFUser.currentUser()?["bracelet"] == nil){
                             // User doesn't own a bracelet, show BID registration
+                            if self.isModal {
+                                self.dismissViewControllerAnimated(true, completion: nil)
+                            }
                             self.performSegueWithIdentifier("loggedInWithoutBracelet", sender: self)
                         }
                         else{
                             // User owns a bracelet, show Feed
+                            if self.isModal {
+                                self.dismissViewControllerAnimated(true, completion: nil)
+                            }
                             self.performSegueWithIdentifier("loggedIn", sender: self)
                             // FOLLOWING BLOCK ENABLES CHECK FOR CONNECTION TO REGISTERED METAWEAR DEVICE BEFORE PRESENTING CORE APP INTERFACE
                             //                        self.metawearManager.startScanForMetaWearsAllowDuplicates(true, handler: {(devices:[AnyObject]!) -> Void in

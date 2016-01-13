@@ -61,6 +61,7 @@
 		8370A7ED1C41B21F00811014 /* CharmSettingsCharmMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370A7EB1C41B21F00811014 /* CharmSettingsCharmMemberCell.xib */; };
 		8370A7EF1C4215A700811014 /* AddFriendsToCharmTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370A7EE1C4215A700811014 /* AddFriendsToCharmTableViewController.swift */; };
 		8370A7F11C432CDF00811014 /* Story_Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370A7F01C432CDF00811014 /* Story_Unit.swift */; };
+		8398CDBE1C46EA9900518B2A /* ParseErrorHandlingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8398CDBD1C46EA9900518B2A /* ParseErrorHandlingController.swift */; };
 		839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */; };
 		839D4AD61C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */; };
 		83ED30F01C228B5D0047E5D9 /* CharmCollectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED30EF1C228B5D0047E5D9 /* CharmCollectionTableViewController.swift */; };
@@ -148,6 +149,7 @@
 		8370A7EB1C41B21F00811014 /* CharmSettingsCharmMemberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharmSettingsCharmMemberCell.xib; sourceTree = "<group>"; };
 		8370A7EE1C4215A700811014 /* AddFriendsToCharmTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendsToCharmTableViewController.swift; sourceTree = "<group>"; };
 		8370A7F01C432CDF00811014 /* Story_Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Story_Unit.swift; sourceTree = "<group>"; };
+		8398CDBD1C46EA9900518B2A /* ParseErrorHandlingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseErrorHandlingController.swift; sourceTree = "<group>"; };
 		839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledMomentsTableViewController.swift; sourceTree = "<group>"; };
 		839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduledMomentsHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		83ED30EF1C228B5D0047E5D9 /* CharmCollectionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmCollectionTableViewController.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				833C952B1C404E2500D13E63 /* Models */,
 				2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */,
 				2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */,
+				8398CDBD1C46EA9900518B2A /* ParseErrorHandlingController.swift */,
 				2C947FA51B87E2A500607770 /* UIStyleController.swift */,
 				2C947FA91B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift */,
 				2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */,
@@ -579,6 +582,7 @@
 				83ED30F01C228B5D0047E5D9 /* CharmCollectionTableViewController.swift in Sources */,
 				833C95251C3FBA4F00D13E63 /* CharmGroupSettingTableViewController.swift in Sources */,
 				2C947FA21B87AC8500607770 /* NewStoryTabViewController.swift in Sources */,
+				8398CDBE1C46EA9900518B2A /* ParseErrorHandlingController.swift in Sources */,
 				833C952F1C404ED900D13E63 /* Charm.swift in Sources */,
 				8370A7EC1C41B21F00811014 /* CharmSettingsCharmMemberCell.swift in Sources */,
 				2C947FAA1B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift in Sources */,
@@ -768,7 +772,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -795,7 +799,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

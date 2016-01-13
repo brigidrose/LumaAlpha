@@ -306,6 +306,7 @@ class AccountViewController: UITableViewController {
                                 self.showBraceletInfoAlert(bracelet)
                             }else{
                                 print(error)
+                                ParseErrorHandlingController.handleParseError(error)
                             }
                         })
                     }
@@ -399,7 +400,7 @@ class AccountViewController: UITableViewController {
                 self.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
             }else{
                 print(error)
-                displayNoInternetErrorMessage()
+                ParseErrorHandlingController.handleParseError(error)
             }
         })
         

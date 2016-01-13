@@ -70,6 +70,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                 }
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
     }
@@ -124,11 +125,13 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                             self.appDelegate.tabBarController.selectedIndex = 0
                         }else{
                             print(error)
+                            ParseErrorHandlingController.handleParseError(error)
                         }
                     })
                 }
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
     }
@@ -180,6 +183,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
     }
@@ -217,7 +221,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                             }
                         }else{
                             print(error)
-                            displayNoInternetErrorMessage()
+                            ParseErrorHandlingController.handleParseError(error)
                         }
                     }.resume()
                 }

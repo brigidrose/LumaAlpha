@@ -117,6 +117,7 @@ class PairBraceletViewController: UIViewController {
             if(error != nil){
                 print("pairing error")
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }else{
                 print("bracelet configured")
                 self.bracelet.rememberDevice()
@@ -159,6 +160,7 @@ class PairBraceletViewController: UIViewController {
                             }
                             else{
                                 print(error)
+                                ParseErrorHandlingController.handleParseError(error)
                                 self.pairBraceletButton.enabled = true
                             }
                         })

@@ -68,6 +68,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                 }
             }else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         }
     }
@@ -144,12 +145,14 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                                             self.performSegueWithIdentifier("showCharmGroupSetting", sender: self)
                                         }else{
                                             print(error)
+                                            ParseErrorHandlingController.handleParseError(error)
                                         }
                                     })
                                     
                                 }
                             }else{
                                 print(error)
+                                ParseErrorHandlingController.handleParseError(error)
                             }
                         })
 //                    }
@@ -161,6 +164,7 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
             }
             else{
                 print(error)
+                ParseErrorHandlingController.handleParseError(error)
             }
         })
     }
