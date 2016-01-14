@@ -677,10 +677,13 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         self.unlockLocation = PFGeoPoint(location: CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude))
         let geoCoder = CLGeocoder()
         geoCoder.reverseGeocodeLocation(CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude), completionHandler: {(placemarks, error) -> Void in
-            let placemark = (placemarks as [CLPlacemark]!)[0]
-            self.unlockLocationPlacemark = placemark
-            if (self.unlockParameterType == "location"){
-                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
+            guard let placemarks = placemarks as [CLPlacemark]! else { return }
+            if placemarks.count > 0{
+                let placemark = (placemarks as [CLPlacemark]!)[0]
+                self.unlockLocationPlacemark = placemark
+                if (self.unlockParameterType == "location"){
+                    self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
             }
         })
     }
