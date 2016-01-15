@@ -12,7 +12,7 @@ import CTAssetsPickerController
 
 class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, CTAssetsPickerControllerDelegate, MKMapViewDelegate {
 
-//    var cancelButton:UIBarButtonItem!
+    var cancelButton:UIBarButtonItem!
     var sendButton:UIBarButtonItem!
     
     var charms:[Charm]! = []
@@ -35,7 +35,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        self.cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped:")
+        self.cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped:")
 //        self.tabBarController?.navigationItem.leftBarButtonItem = self.cancelButton
         
         self.sendButton = UIBarButtonItem(title: "Send", style: UIBarButtonItemStyle.Done, target: self, action: "sendButtonTapped:")
@@ -70,32 +70,41 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     override func viewWillAppear(animated: Bool) {
 //        super.viewWillAppear(animated)
         if(shouldResetSelectedCharm){
-            print("resetting selected charm")
-            self.forCharm = nil
-            self.momentTitle?.textField.text = ""
-            self.momentDesc?.textView.text = ""
-            self.mediaAssets = []
-            self.mediaDescriptions = []
-            self.tableView.reloadData()
-            self.unlockParameterType = nil
-            self.unlockTime = nil
-            self.unlockLocation = nil
+            resetViewInputs();
         }
         //default to true unless explicitly set for the next time
         self.shouldResetSelectedCharm = true
-        self.navigationItem.rightBarButtonItem = self.sendButton
+        self.navigationItem.rightBarButtonItem = sendButton
+        self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.title = "New Moment"
     }
     
+    func resetViewInputs(){
+        print("resetting selected charm")
+        self.forCharm = nil
+        self.momentTitle?.textField.text = ""
+        self.momentDesc?.textView.text = ""
+        self.mediaAssets = []
+        self.mediaDescriptions = []
+        self.tableView.reloadData()
+        self.unlockParameterType = nil
+        self.unlockTime = nil
+        self.unlockLocation = nil
+
+    }
     
 
 
     // MARK: - Navigation
 
-//    func cancelButtonTapped(sender:UIBarButtonItem){
+    func cancelButtonTapped(sender:UIBarButtonItem){
+        print("cancel button tapped")
 //        self.view.endEditing(true)
 //        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
+        self.view.endEditing(true)
+        resetViewInputs()
+        self.shouldResetSelectedCharm = true
+    }
     
     func sendButtonTapped(sender:UIBarButtonItem){
         print("Send button tapped")
