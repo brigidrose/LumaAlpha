@@ -16,7 +16,7 @@ class CharmsTableViewHeader: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor(white: 1, alpha: 1)
+        self.backgroundColor = tableSectionHeaderColor()
         
         self.sectionTitle = UILabel(frame: CGRectZero)
         self.sectionTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +28,7 @@ class CharmsTableViewHeader: UIView {
         
         self.sectionSeparator = UIView(frame: CGRectZero)
         self.sectionSeparator.translatesAutoresizingMaskIntoConstraints = false
-        self.sectionSeparator.backgroundColor = UIColor.blackColor()
+        self.sectionSeparator.backgroundColor = tableSectionHeaderColor()
         self.addSubview(self.sectionSeparator)
         
         let viewsDictionary = ["sectionTitle":self.sectionTitle, "sectionSeparator":self.sectionSeparator]

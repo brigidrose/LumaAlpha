@@ -71,7 +71,7 @@ class CharmSettingsTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        tableView.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+        tableView.backgroundColor = tableSectionHeaderColor()
     }
     
     
@@ -156,7 +156,7 @@ class CharmSettingsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let containerView = UIView(frame: CGRectMake(0, 0, view.frame.width, sectionHeaderHeight[section]))
-        containerView.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+        containerView.backgroundColor = tableSectionHeaderColor()
         return containerView
     }
     
@@ -170,7 +170,7 @@ class CharmSettingsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 2 {
             let containerView = UIView(frame: CGRectMake(0, 0, view.frame.width, 50))
-            containerView.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+            containerView.backgroundColor = tableSectionHeaderColor()
             
             let label = UILabel(frame: CGRectMake(0, 10, view.frame.width, 30))
             label.textAlignment = .Center

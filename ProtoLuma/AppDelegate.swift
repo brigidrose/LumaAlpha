@@ -47,7 +47,9 @@ func RBSquareImage(image: UIImage) -> UIImage {
     return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
 }
 
-
+func tableSectionHeaderColor() -> UIColor{
+    return UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+}
 
 
 extension UIImage {

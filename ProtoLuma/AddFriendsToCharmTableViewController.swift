@@ -159,7 +159,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let containerView = UIView(frame: CGRectMake(0, 0, view.frame.width, 55))
-        containerView.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+        containerView.backgroundColor = tableSectionHeaderColor()
         
         let headerTitle = UILabel(frame: CGRectMake(20, 10, view.frame.width, 32))
         headerTitle.text = "Add: "
