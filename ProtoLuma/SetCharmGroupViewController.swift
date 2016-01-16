@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class SetCharmGroupViewController: UIViewController {
 
@@ -25,6 +26,8 @@ class SetCharmGroupViewController: UIViewController {
     }
     
     @IBAction func createCharmGroupPressed(sender: AnyObject) {
+        let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        progressHUD.labelText = "Saving..."
         let charmGroup = Charm_Group()
         charmGroup.name = charmGroupName.text!
         charmGroup.saveInBackgroundWithBlock { (saved, error) -> Void in
@@ -34,13 +37,16 @@ class SetCharmGroupViewController: UIViewController {
                     if error == nil {
                         self.navigationController?.popToRootViewControllerAnimated(true)
                         (UIApplication.sharedApplication().delegate as! AppDelegate).tabBarController.selectedIndex = 0
+                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                     }else{
                         print(error)
+                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                         ParseErrorHandlingController.handleParseError(error)
                     }
                 })
             }else{
                 print(error)
+                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                 ParseErrorHandlingController.handleParseError(error)
             }
         }

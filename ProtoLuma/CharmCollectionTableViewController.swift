@@ -208,7 +208,7 @@ class CharmCollectionTableViewController: UITableViewController{
     
     func loadCharms(){
         print("loading charms")
-
+        
         
         let queryForCharms = PFQuery(className: "Charm")
         queryForCharms.whereKey("owner", equalTo: PFUser.currentUser()!)

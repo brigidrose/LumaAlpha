@@ -24,6 +24,7 @@ class CharmSettingsTableViewController: UITableViewController {
         tableView.registerNib(UINib(nibName: buttonCellReuseIdentifier, bundle: nil), forCellReuseIdentifier: buttonCellReuseIdentifier)
         tableView.registerNib(UINib(nibName: charmMemberReuseIdentifier, bundle: nil), forCellReuseIdentifier: charmMemberReuseIdentifier)
         
+        self.refreshControl?.beginRefreshing()
         
         var missingFbPhotos = Set<String>()
         
@@ -43,6 +44,7 @@ class CharmSettingsTableViewController: UITableViewController {
                 let queryForInvitedCharmGroupMembers = PFQuery(className: "User_Charm_Group")
                 queryForInvitedCharmGroupMembers.whereKey("charmGroup", equalTo: self.charm.charmGroup!)
                 queryForInvitedCharmGroupMembers.whereKey("user", notEqualTo: PFUser.currentUser()!)
+                queryForInvitedCharmGroupMembers.whereKey("user", notContainedIn: self.charmGroupMembers) //dedup
                 queryForInvitedCharmGroupMembers.includeKey("user")
                 queryForInvitedCharmGroupMembers.findObjectsInBackgroundWithBlock({ (userCharmGroups, error) -> Void in
                     if error == nil {
@@ -334,9 +336,7 @@ class CharmSettingsTableViewController: UITableViewController {
                         photosDownloaded++
                         print("photo downloaded in charm settings.  number \(photosDownloaded) out of \(fbIds.count)")
                         if(photosDownloaded == fbIds.count){
-                            dispatch_async(dispatch_get_main_queue()){
-                                self.tableView.reloadData()
-                            }
+                            self.doneLoading()
                         }
                     }else{
                         print(error)
@@ -346,6 +346,12 @@ class CharmSettingsTableViewController: UITableViewController {
                 
             }
         }else{
+            doneLoading()
+        }
+    }
+    
+    func doneLoading(){
+        dispatch_async(dispatch_get_main_queue()){
             self.refreshControl?.endRefreshing()
             self.tableView.reloadData()
         }

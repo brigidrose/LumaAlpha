@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CTAssetsPickerController
+import MBProgressHUD
 
 class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, CTAssetsPickerControllerDelegate, MKMapViewDelegate {
 
@@ -108,6 +109,8 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     
     func sendButtonTapped(sender:UIBarButtonItem){
         print("Send button tapped")
+        let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        progressHUD.labelText = "Sending..."
 //        self.navigationItem.leftBarButtonItem?.enabled = false
 //        self.navigationItem.rightBarButtonItem?.enabled = false
         self.navigationItem.rightBarButtonItem?.enabled = false
@@ -165,11 +168,13 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
 //                                        stvc.loadStoriesForCharmViewed()
                                         self.tabBarController?.selectedIndex = 0
+                                        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
                                         self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
                                     }
                                     else{
                                         print(error)
                                         self.navigationItem.rightBarButtonItem?.enabled = true
+                                        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
                                         ParseErrorHandlingController.handleParseError(error)
                                     }
                                 })
@@ -178,6 +183,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                         else{
                             print(error)
                             self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
+                            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
                             ParseErrorHandlingController.handleParseError(error)
                         }
                     })
@@ -193,10 +199,13 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //                    let stvc = barViewControllers![0] as! StoriesTabViewController
 //                    stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
 //                    stvc.loadStoriesForCharmViewed()
+                    progressHUD.progress = 1
+                    MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
                     self.tabBarController?.selectedIndex = 0
                 }
                 else{
                     print(error)
+                    MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
                     self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
                     ParseErrorHandlingController.handleParseError(error)
                 }

@@ -7,6 +7,11 @@
 //
 
 class CharmSettingsButtonCell: UITableViewCell {
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .None
+    }
 
     @IBOutlet var button: UIButton!
     var buttonAction:(() -> Void)!

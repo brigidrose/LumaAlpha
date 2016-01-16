@@ -33,6 +33,8 @@ class AddFriendsToCharmTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        self.refreshControl?.beginRefreshing()
         getFBFriends(nil)
     }
     
@@ -66,7 +68,6 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                         return friend["id"]!
                     })
                     self.getParseUsersForFbIds(fbIds)
-                    self.downloadAndSetProfilePhotos()
                 }
             }else{
                 print(error)
@@ -173,18 +174,22 @@ class AddFriendsToCharmTableViewController: UITableViewController {
     }
     
     func getParseUsersForFbIds(fbIds:[String]){
-        let userQuery = PFQuery(className: "_User")
-        userQuery.whereKey("facebookId", containedIn: fbIds)
-        userQuery.findObjectsInBackgroundWithBlock { (users, error) -> Void in
-            if error == nil {
-                for user in (users as! [User]) {
-                    self.friends.append(user)
+        if fbIds.count > 0 {
+            let userQuery = PFQuery(className: "_User")
+            userQuery.whereKey("facebookId", containedIn: fbIds)
+            userQuery.findObjectsInBackgroundWithBlock { (users, error) -> Void in
+                if error == nil {
+                    for user in (users as! [User]) {
+                        self.friends.append(user)
+                    }
+                    self.downloadAndSetProfilePhotos()
+                }else{
+                    print(error)
+                    ParseErrorHandlingController.handleParseError(error)
                 }
-                self.tableView.reloadData()
-            }else{
-                print(error)
-                ParseErrorHandlingController.handleParseError(error)
             }
+        }else{
+            doneDownloading()
         }
     }
     
@@ -203,7 +208,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                     photosDownloaded++
                 }else{
                     print("photo for \(id) is being downloaded")
-                    let imgURL: NSURL = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=large")!
+                    let imgURL: NSURL = NSURL(string: "https://graph.facebook.com/\(id)/picture?type=normal")!
                     let request: NSURLRequest = NSURLRequest(URL: imgURL)
                     
                     let urlSession = NSURLSession.sharedSession()
@@ -217,7 +222,7 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                             print("adding friends: photo downloaded.  number \(photosDownloaded) out of \(self.fbFriends.count)")
                             if(photosDownloaded == self.fbFriends.count){
                                 //done
-                                self.tableView.reloadData()
+                                self.doneDownloading()
                             }
                         }else{
                             print(error)
@@ -227,9 +232,16 @@ class AddFriendsToCharmTableViewController: UITableViewController {
                 }
             }
             if photosLoadedFromCharmCollectionCache {
-                self.tableView.reloadData()
+                doneDownloading()
             }
         }else{
+            doneDownloading()
+        }
+    }
+    
+    func doneDownloading(){
+        dispatch_async(dispatch_get_main_queue()){
+            self.refreshControl?.endRefreshing()
             self.tableView.reloadData()
         }
     }
