@@ -108,6 +108,15 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     }
     
     func sendButtonTapped(sender:UIBarButtonItem){
+        var analyticsDimensions = [
+            "attachmentCount": String(self.mediaAssets.count),
+            "userId": PFUser.currentUser()!.objectId!,
+            "titleLength": String(self.momentTitle?.textField.text?.characters.count),
+            "descriptionLength": String(self.momentDesc?.textView.text.characters.count),
+            "unlockType": "None"
+        ]
+        
+
         print("Send button tapped")
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         progressHUD.labelText = "Sending..."
@@ -120,6 +129,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
         story["sender"] = PFUser.currentUser()
         story["charmGroup"] = self.forCharm["charmGroup"]
         if (self.unlockParameterType != nil){
+            analyticsDimensions["unlockType"] = self.unlockParameterType
             print("unlock parameter type is not nil")
             story["unlockType"] = self.unlockParameterType
             if (self.unlockParameterType == "time"){
@@ -134,6 +144,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
             story["unlocked"] = true
         }
         story["readStatus"] = false
+        PFAnalytics.trackEvent("sentNewMoment", dimensions:analyticsDimensions)
         print("Creating image manager")
         let manager = PHImageManager.defaultManager()
         let storyUnitsRelation:PFRelation = story.relationForKey("storyUnits")
@@ -202,6 +213,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     progressHUD.progress = 1
                     MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
                     self.tabBarController?.selectedIndex = 0
+                    self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
                 }
                 else{
                     print(error)

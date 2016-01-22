@@ -63,8 +63,12 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
         charmGroupQuery.includeKey("charmGroup")
         charmGroupQuery.findObjectsInBackgroundWithBlock { (userCharmGroups, error) -> Void in
             if error == nil{
-                for userCharmGroup in userCharmGroups! {
-                    self.charmGroups.append(userCharmGroup["charmGroup"] as! Charm_Group)
+                if userCharmGroups != nil {
+                    for userCharmGroup in userCharmGroups! {
+                        if userCharmGroup["charmGroup"] != nil {
+                            self.charmGroups.append(userCharmGroup["charmGroup"] as! Charm_Group)
+                        }
+                    }
                 }
             }else{
                 print(error)
@@ -102,11 +106,15 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                 if objects?.count != 0 {
                     // CID exists
                     self.charm = objects![0] as! Charm
-//                    if (charm["claimed"] as? Bool == true){
-//                        // CID already claimed
-//                        print("CID already claimed")
-//                    }
-//                    else{
+                    if (self.charm.claimed == true){
+                        // CID already claimed
+                        print("CID already claimed")
+                        //tell the user
+                        let alert = UIAlertController(title: "Error", message: "This charm has already been claimed", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+                        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+                    }
+                    else{
                         print("CID available")
 //                         CID available, proceed to add user as owner of charm
                         self.charm.owner = PFUser.currentUser() as? User
@@ -155,11 +163,14 @@ class AddCharmViewController: UIViewController, UITextFieldDelegate {
                                 ParseErrorHandlingController.handleParseError(error)
                             }
                         })
-//                    }
+                    }
                 }
                 else{
                     // CID doesn't exist
                     print("CID doesn't exist!");
+                    let alert = UIAlertController(title: "Error", message: "This charm does not exist.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+                    UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
                 }
             }
             else{
