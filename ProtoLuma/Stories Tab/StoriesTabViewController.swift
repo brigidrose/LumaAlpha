@@ -383,8 +383,8 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
 //            print("story is not nil")
             let relation = story.relationForKey("storyUnits")
             let queryForStoryUnits = relation.query()
-            queryForStoryUnits?.limit = 3
-            queryForStoryUnits?.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+            queryForStoryUnits.limit = 3
+            queryForStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
 //                print(objects as! [PFObject])
                 if (story["unlocked"] as! Bool){
                     if(indexPath.row < self.storiesStoryUnits.count){
@@ -428,7 +428,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                     var lockedStoriesStoryUnitsFoundCount = 0
                     for lockedStory in self.lockedStories{
                         let lockedStoryRelation = lockedStory.relationForKey("storyUnits")
-                        let queryForLockedStoryStoryUnits:PFQuery = lockedStoryRelation.query()!
+                        let queryForLockedStoryStoryUnits:PFQuery = lockedStoryRelation.query()
                         queryForLockedStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
                             if error != nil {
                                 print(error)
@@ -442,7 +442,7 @@ class StoriesTabViewController: UIViewController, UICollectionViewDataSource, UI
                                 var storiesStoryUnitsFoundCount = 0
                                 for story in self.stories{
                                     let storyRelation = story.relationForKey("storyUnits")
-                                    let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
+                                    let queryForStoryStoryUnits:PFQuery = storyRelation.query()
                                     queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
                                         if error != nil{
                                             print(error)

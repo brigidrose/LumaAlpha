@@ -301,7 +301,7 @@ class AccountViewController: UITableViewController {
                     if (bracelet.state != MBLConnectionState.Connected){
                         bracelet.connectWithHandler({(error) -> Void in
                             if error == nil{
-                                print("reconnected with \(bracelet.deviceInfo.serialNumber)")
+                                print("reconnected with \(bracelet.deviceInfo?.serialNumber)")
                                 //get battery life and upload
                                 self.showBraceletInfoAlert(bracelet)
                             }else{
@@ -326,9 +326,9 @@ class AccountViewController: UITableViewController {
     func showBraceletInfoAlert(device: MBLMetaWear){
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         device.readBatteryLifeWithHandler({ (num, err) -> Void in
-            let batteryLife:Int! = Int(num)
+            let batteryLife:Int! = Int(num!)
             appDelegate.latestBatteryLife = batteryLife
-            let alert = UIAlertController(title: "Bracelet Info", message: "Battery Life: \(batteryLife)%\nBracelet ID: \(device.deviceInfo.serialNumber)", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Bracelet Info", message: "Battery Life: \(batteryLife)%\nBracelet ID: \(device.deviceInfo?.serialNumber)", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         } as MBLNumberHandler)

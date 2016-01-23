@@ -238,7 +238,7 @@ class StoriesTableViewController: UITableViewController {
                 if self.stories.count > 0{
                     for story in self.stories{
                         let storyRelation = story.relationForKey("storyUnits")
-                        let queryForStoryStoryUnits:PFQuery = storyRelation.query()!
+                        let queryForStoryStoryUnits:PFQuery = storyRelation.query()
                         queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
                             let storyUnits = objects!
                             print("got \(storyUnits.count) story units")

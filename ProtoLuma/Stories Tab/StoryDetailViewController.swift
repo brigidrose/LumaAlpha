@@ -82,7 +82,7 @@ class StoryDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func loadStoryUnits(){
         let storyUnitsRelation = self.story.relationForKey("storyUnits")
         let queryForStoryUnits = storyUnitsRelation.query()
-        queryForStoryUnits?.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
+        queryForStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             self.storyUnits = objects!
             self.storyUnitsTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.None)
         })

@@ -151,10 +151,12 @@ class PairBraceletViewController: UIViewController {
                         device.connectWithHandler({(error) -> Void in
                             print("Connected")
                             if (error == nil){
-                                print("connected to \(device.deviceInfo.serialNumber)")
-                                if (device.deviceInfo.serialNumber == self.braceletSerialNumber){
-                                    self.bracelet = device
-                                    self.pairAndSetupANCS()
+                                if(device.deviceInfo != nil){
+                                    print("connected to \(device.deviceInfo!.serialNumber)")
+                                    if (device.deviceInfo!.serialNumber == self.braceletSerialNumber){
+                                        self.bracelet = device
+                                        self.pairAndSetupANCS()
+                                    }
                                 }
                                 self.pairBraceletButton.enabled = true
                             }

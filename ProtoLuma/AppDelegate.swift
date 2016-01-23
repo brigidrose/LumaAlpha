@@ -200,9 +200,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 if (bracelet.state != MBLConnectionState.Connected){
                     bracelet.connectWithHandler({(error) -> Void in
                         if error == nil{
-                            print("reconnected with \(bracelet.deviceInfo.serialNumber)")
-                            //get battery life and upload
-                            self.setBatteryLife(bracelet)
+                            if(bracelet.deviceInfo != nil){
+                                print("reconnected with \(bracelet.deviceInfo!.serialNumber)")
+                                //get battery life and upload
+                                self.setBatteryLife(bracelet)
+                            }else{
+                                print("Error, bracelet device info is nil")
+                            }
                         }else{
                             print(error)
                             ParseErrorHandlingController.handleParseError(error)
@@ -258,7 +262,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func setBatteryLife(device: MBLMetaWear){
         device.readBatteryLifeWithHandler({ (num, err) -> Void in
-            self.latestBatteryLife = Int(num)
+            if(num != nil){
+                self.latestBatteryLife = Int(num!)
+            }
         } as MBLNumberHandler)
     }
     
@@ -282,35 +288,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     
     func notifyBracelet(device: MBLMetaWear, charmSlot: UInt8){
-        device.hapticBuzzer.startHapticWithDutyCycle(255, pulseWidth: 500, completion: nil)
-        device.led.flashLEDColor(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
+        device.hapticBuzzer?.startHapticWithDutyCycleAsync(255, pulseWidth: 500, completion: nil)
+        device.led?.flashLEDColorAsync(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
         let length:UInt8 = 7; // Specific to your NeoPixel stand
         let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
         let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand
         
-        let strand:MBLNeopixelStrand = device.neopixel.strandWithColor(color, speed: speed, pin: 0, length: length);
+        let strand:MBLNeopixelStrand = (device.neopixel?.strandWithColor(color, speed: speed, pin: 0, length: length))!;
         
-        strand.setPixel(charmSlot, color: UIColor.redColor())
+        strand.setPixelAsync(charmSlot, color: UIColor.redColor())
         
         let timeBetweenFlashes = 800 * NSEC_PER_MSEC
         
         var delay = timeBetweenFlashes
         var time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue(), {
-            strand.setPixel(charmSlot, color: UIColor.greenColor())
+            strand.setPixelAsync(charmSlot, color: UIColor.greenColor())
         })
         
         delay += timeBetweenFlashes
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue(), {
-            strand.setPixel(charmSlot, color: UIColor.blueColor())
+            strand.setPixelAsync(charmSlot, color: UIColor.blueColor())
             
         })
         
         delay += timeBetweenFlashes
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue(), {
-            strand.turnStrandOff()
+            strand.clearAllPixelsAsync()
             self.setBatteryLife(device)
         })
     }
