@@ -36,25 +36,30 @@
 #import <MetaWear/MBLConstants.h>
 #import <MetaWear/MBLEvent.h>
 #import <MetaWear/MBLModule.h>
+@class MBLNumericData;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Interface to an abstract barometer sensor. If you need more advanced
  features then upcast to the specific sensor on your board, MBLBarometerBMP280.
  @see MBLAmbientLightLTR329
  */
-@interface MBLBarometer : MBLModule <NSCoding>
+@interface MBLBarometer : MBLModule
 
 /**
  Data representing the atmospheric pressure measured by barometer.
- Event callbacks will be provided an MBLNumericData object whose float
+ Event callbacks will be provided an MBLNumericData object whose double
  value will be pressure in pascals.
  */
-@property (nonatomic, strong, readonly) MBLData *pressure;
+@property (nonatomic, readonly) MBLData MBL_GENERIC(MBLNumericData *) *pressure;
 /**
  Data representing the altidue calulated from atmospheric pressure.
- Event callbacks will be provided an MBLNumericData object whose float
+ Event callbacks will be provided an MBLNumericData object whose double
  value will be altitude in meters.
  */
-@property (nonatomic, strong, readonly) MBLData *altitude;
+@property (nonatomic, readonly) MBLData MBL_GENERIC(MBLNumericData *) *altitude;
 
 @end
+
+NS_ASSUME_NONNULL_END

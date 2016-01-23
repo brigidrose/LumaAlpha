@@ -35,6 +35,7 @@
 
 #import <MetaWear/MBLAccelerometer.h>
 #import <MetaWear/MBLAccelerometerBMI160.h>
+#import <MetaWear/MBLAccelerometerBMI160LowOrHighGEvent.h>
 #import <MetaWear/MBLAccelerometerData.h>
 #import <MetaWear/MBLAccelerometerMMA8452Q.h>
 #import <MetaWear/MBLAmbientLight.h>
@@ -48,6 +49,7 @@
 #import <MetaWear/MBLDataSample.h>
 #import <MetaWear/MBLDataSwitch.h>
 #import <MetaWear/MBLDeviceInfo.h>
+#import <MetaWear/MBLEntityEvent.h>
 #import <MetaWear/MBLEvent.h>
 #import <MetaWear/MBLFilter.h>
 #import <MetaWear/MBLGPIO.h>
@@ -61,6 +63,9 @@
 #import <MetaWear/MBLI2CData.h>
 #import <MetaWear/MBLiBeacon.h>
 #import <MetaWear/MBLLED.h>
+#import <MetaWear/MBLMagnetometer.h>
+#import <MetaWear/MBLMagnetometerBMM150.h>
+#import <MetaWear/MBLMagnetometerData.h>
 #import <MetaWear/MBLMechanicalSwitch.h>
 #import <MetaWear/MBLMetaWear.h>
 #import <MetaWear/MBLMetaWearManager.h>
@@ -71,6 +76,10 @@
 #import <MetaWear/MBLOrientationData.h>
 #import <MetaWear/MBLRegister.h>
 #import <MetaWear/MBLRMSAccelerometerData.h>
+#import <MetaWear/MBLSettings.h>
+#import <MetaWear/MBLStringData.h>
 #import <MetaWear/MBLTemperature.h>
 #import <MetaWear/MBLExternalThermistor.h>
 #import <MetaWear/MBLTimer.h>
+
+#import <MetaWear/BFTask+MBLExtensions.h>

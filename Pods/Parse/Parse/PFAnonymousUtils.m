@@ -23,18 +23,11 @@
 
 + (BFTask *)logInInBackground {
     PFAnonymousAuthenticationProvider *provider = [self _authenticationProvider];
-    NSString *authType = [[provider class] authType];
-    return [PFUser logInWithAuthTypeInBackground:authType authData:provider.authData];
+    return [PFUser logInWithAuthTypeInBackground:PFAnonymousUserAuthenticationType authData:provider.authData];
 }
 
 + (void)logInWithBlock:(PFUserResultBlock)block {
     [[self logInInBackground] thenCallBackOnMainThreadAsync:block];
-}
-
-+ (void)logInWithTarget:(id)target selector:(SEL)selector {
-    [self logInWithBlock:^(PFUser *user, NSError *error) {
-        [PFInternalUtils safePerformSelector:selector withTarget:target object:user object:error];
-    }];
 }
 
 ///--------------------------------------
@@ -42,7 +35,7 @@
 ///--------------------------------------
 
 + (BOOL)isLinkedWithUser:(PFUser *)user {
-    return [user isLinkedWithAuthType:[[[self _authenticationProvider] class] authType]];
+    return [user isLinkedWithAuthType:PFAnonymousUserAuthenticationType];
 }
 
 ///--------------------------------------
@@ -66,7 +59,7 @@ static PFAnonymousAuthenticationProvider *authenticationProvider_;
         provider = authenticationProvider_;
         if (!provider) {
             provider = [[PFAnonymousAuthenticationProvider alloc] init];
-            [PFUser registerAuthenticationProvider:provider];
+            [PFUser registerAuthenticationDelegate:provider forAuthType:PFAnonymousUserAuthenticationType];
             authenticationProvider_ = provider;
         }
     });
@@ -74,7 +67,7 @@ static PFAnonymousAuthenticationProvider *authenticationProvider_;
 }
 
 + (void)_clearAuthenticationProvider {
-    [PFUser _unregisterAuthenticationProvider:authenticationProvider_];
+    [PFUser _unregisterAuthenticationDelegateForAuthType:PFAnonymousUserAuthenticationType];
     dispatch_sync([self _providerAccessQueue], ^{
         authenticationProvider_ = nil;
     });
@@ -86,7 +79,17 @@ static PFAnonymousAuthenticationProvider *authenticationProvider_;
 
 + (PFUser *)_lazyLogIn {
     PFAnonymousAuthenticationProvider *provider = [self _authenticationProvider];
-    return [PFUser logInLazyUserWithAuthType:[[provider class] authType] authData:provider.authData];
+    return [PFUser logInLazyUserWithAuthType:PFAnonymousUserAuthenticationType authData:provider.authData];
+}
+
+@end
+
+@implementation PFAnonymousUtils (Deprecated)
+
++ (void)logInWithTarget:(nullable id)target selector:(nullable SEL)selector {
+    [self logInWithBlock:^(PFUser *user, NSError *error) {
+        [PFInternalUtils safePerformSelector:selector withTarget:target object:user object:error];
+    }];
 }
 
 @end

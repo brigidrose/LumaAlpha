@@ -35,6 +35,10 @@
 
 #import <MetaWear/MBLAccelerometer.h>
 #import <MetaWear/bmi160.h>
+@class MBLNumericData;
+@class MBLAccelerometerBMI160LowOrHighGEvent;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Accelerometer sensitiviy ranges
@@ -49,11 +53,18 @@ typedef NS_ENUM(uint8_t, MBLAccelerometerBMI160Range) {
 /**
  Interface to a BMI160 accelerometer
  */
-@interface MBLAccelerometerBMI160 : MBLAccelerometer <NSCoding>
+@interface MBLAccelerometerBMI160 : MBLAccelerometer
 /**
  Maximum acceleration the accelerometer can report
  */
 @property (nonatomic) MBLAccelerometerBMI160Range fullScaleRange;
+
+
+/**
+ Event representing a low-g (free fall) or high-g (impact) event.
+ Event callbacks will be provided an empty MBLDataSample object
+ */
+@property (nonatomic, readonly) MBLAccelerometerBMI160LowOrHighGEvent *lowOrHighGEvent;
 
 
 /**
@@ -65,14 +76,14 @@ typedef NS_ENUM(uint8_t, MBLAccelerometerBMI160Range) {
  Event representing a tap (single, double, or both based on tapType) on the tapDetectionAxis.
  Event callbacks will be provided an empty MBLDataSample object
  */
-@property (nonatomic, strong, readonly) MBLEvent *tapEvent;
+@property (nonatomic, readonly) MBLEvent MBL_GENERIC(MBLDataSample *) *tapEvent;
 
 
 /**
  Event representing an orientation change.
  Event callbacks will be provided an MBLOrientationData object
  */
-@property (nonatomic, strong, readonly) MBLEvent *orientationEvent;
+@property (nonatomic, readonly) MBLEvent MBL_GENERIC(MBLOrientationData *) *orientationEvent;
 
 
 /**
@@ -80,23 +91,25 @@ typedef NS_ENUM(uint8_t, MBLAccelerometerBMI160Range) {
  Event callbacks will be provided an MBLNumericData object, where a bool value of
  YES means flat, and NO means not-flat.
  */
-@property (nonatomic, strong, readonly) MBLEvent *flatEvent;
+@property (nonatomic, readonly) MBLEvent MBL_GENERIC(MBLNumericData *) *flatEvent;
 
 
 /**
  This event will fire when a step pattern is detected. Event callbacks will be provided
  an MBLNumericData object, whose int value is always 1.
  */
-@property (nonatomic, strong, readonly) MBLEvent *stepEvent;
+@property (nonatomic, readonly) MBLEvent MBL_GENERIC(MBLNumericData *) *stepEvent;
 /**
  This data endpoint keeps a running counter in hardware of the number of steps taken.
  Event callbacks will be provided an MBLNumericData object, whose unsigened value is
  the number steps taken.  Note this only counts up when stepEvent is active.
  */
-@property (nonatomic, strong, readonly) MBLData *stepCounter;
+@property (nonatomic, readonly) MBLData MBL_GENERIC(MBLNumericData *) *stepCounter;
 /**
  Use this to reset stepCounter to 0
  */
-- (void)resetStepCount;
+- (BFTask *)resetStepCount;
 
 @end
+
+NS_ASSUME_NONNULL_END
