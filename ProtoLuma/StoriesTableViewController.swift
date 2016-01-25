@@ -227,6 +227,7 @@ class StoriesTableViewController: UITableViewController {
         queryForStoriesForCharmViewed = PFQuery(className: "Story")
         queryForStoriesForCharmViewed.whereKey("charmGroup", equalTo: self.charm["charmGroup"])
         queryForStoriesForCharmViewed.whereKey("unlocked", equalTo: true)
+        queryForStoriesForCharmViewed.includeKey("sender")
         queryForStoriesForCharmViewed.orderByDescending("createdAt")
         queryForStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if (error == nil){
