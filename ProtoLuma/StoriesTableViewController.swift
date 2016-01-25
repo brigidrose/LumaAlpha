@@ -16,11 +16,16 @@ class StoryTableViewCell : UITableViewCell {
     @IBOutlet var title: UILabel!
     @IBOutlet var storyDesc: UILabel!
     
+    var story:Story!
+    var storyUnits:[Story_Unit]!
+    
     func loadItem(title title: String, description: String, creatorPhoto: UIImage?, storyUnits: [PFObject]) {
         self.title.text = title
         self.storyDesc.text = description
         
         self.creatorPhoto.image = creatorPhoto
+        
+        self.storyUnits = storyUnits as! [Story_Unit]
         
         for sv in self.HImageStack.arrangedSubviews{
             self.HImageStack.removeArrangedSubview(sv)
@@ -48,12 +53,13 @@ class StoryTableViewCell : UITableViewCell {
 class StoriesTableViewController: UITableViewController {
 
     var charm:Charm!
-    var stories:[PFObject] = []
-    var storiesStoryUnits:[[PFObject]] = []
+    var stories:[Story] = []
+    var storiesStoryUnits:[[Story_Unit]] = []
     var profileImages = [String: UIImage]()
     var lockedStoriesCount:Int32 = 0
     var scheduledMomentsButton:UIBarButtonItem!
     let titleButtonLabel = UILabel()
+    var selectedRow:NSIndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,17 +144,26 @@ class StoriesTableViewController: UITableViewController {
         print("getting cell at \(indexPath.row).  stories count is \(stories.count) and storiesStoryUnits count is \(storiesStoryUnits.count)")
         let cell = tableView.dequeueReusableCellWithIdentifier("StoryCell") as! StoryTableViewCell
         if indexPath.row < self.stories.count && indexPath.row < self.storiesStoryUnits.count{
-            let story = self.stories[indexPath.row] as! Story
+            let story = self.stories[indexPath.row]
             let sender = story.sender
             var image:UIImage? = nil
             if(self.profileImages[sender.facebookId] != nil){
                 image = self.profileImages[sender.facebookId]
             }
             cell.loadItem(title: story["title"] as! String, description:  story["description"] as! String, creatorPhoto: image, storyUnits: self.storiesStoryUnits[indexPath.row])
+            cell.story = story
+            //add longpress gesture recognizer as edit gesture for now
+            let gr = UILongPressGestureRecognizer(target: self, action: "editStory:")
+            cell.addGestureRecognizer(gr)
         }
         // Configure the cell...
 
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath) {
+        print("tapped row \(indexPath.row)")
+        selectedRow = indexPath
     }
 
 
@@ -200,6 +215,28 @@ class StoriesTableViewController: UITableViewController {
             dvc.charm = charm
         }
     }
+    
+    func editStory(sender: UIGestureRecognizer){
+        print("edit story pressed")
+        if sender.state == UIGestureRecognizerState.Ended {
+        
+            guard let rowIndex = selectedRow?.row else {
+                print("Could not get row index from selected row in edit story handler")
+                return
+            }
+            
+            let story = self.stories[rowIndex]
+            
+            let nstvc = NewStoryTabViewController()
+            nstvc.shouldResetSelectedCharm = false
+            nstvc.storyUnits = self.storiesStoryUnits[rowIndex]
+            nstvc.forCharm = self.charm
+            nstvc.momentTitle?.textField.text = story.title
+            nstvc.momentDesc?.textView.text = story["description"] as! String
+            self.navigationController?.pushViewController(nstvc, animated: true)
+        }
+        
+    }
 
 
     
@@ -231,7 +268,7 @@ class StoriesTableViewController: UITableViewController {
         queryForStoriesForCharmViewed.orderByDescending("createdAt")
         queryForStoriesForCharmViewed.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
             if (error == nil){
-                self.stories = objects!
+                self.stories = objects as! [Story]
                 self.storiesStoryUnits = Array(count: self.stories.count, repeatedValue: [])
                 // load storiesStoryUnits
                 var storiesStoryUnitsFoundCount = 0
@@ -243,7 +280,7 @@ class StoriesTableViewController: UITableViewController {
                         queryForStoryStoryUnits.findObjectsInBackgroundWithBlock({(objects, error) -> Void in
                             let storyUnits = objects!
                             print("got \(storyUnits.count) story units")
-                            self.storiesStoryUnits[self.stories.indexOf(story)!] = storyUnits
+                            self.storiesStoryUnits[self.stories.indexOf(story)!] = storyUnits as! [Story_Unit]
                             storiesStoryUnitsFoundCount++
                             print("on \(storiesStoryUnitsFoundCount) of \(self.stories.count) story unit batches to be retrieved")
                             if (storiesStoryUnitsFoundCount == self.stories.count){
