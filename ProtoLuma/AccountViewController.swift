@@ -328,7 +328,7 @@ class AccountViewController: UITableViewController {
         device.readBatteryLifeWithHandler({ (num, err) -> Void in
             let batteryLife:Int! = Int(num!)
             appDelegate.latestBatteryLife = batteryLife
-            let alert = UIAlertController(title: "Bracelet Info", message: "Battery Life: \(batteryLife)%\nBracelet ID: \(device.deviceInfo?.serialNumber)", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Bracelet Info", message: "Battery Life: \(batteryLife!)%\nBracelet ID: \(device.deviceInfo!.serialNumber)", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         } as MBLNumberHandler)

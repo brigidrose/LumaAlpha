@@ -294,11 +294,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
         let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand
         
-        let strand:MBLNeopixelStrand = (device.neopixel?.strandWithColor(color, speed: speed, pin: 0, length: length))!;
+        let strand:MBLNeopixelStrand = device.neopixel!.strandWithColor(color, speed: speed, pin: 0, length: length);
+        
+        strand.initializeAsync().waitUntilFinished()
+        
+        print("initialized neopixel strand")
         
         strand.setPixelAsync(charmSlot, color: UIColor.redColor())
+        print("set pixel async the first time")
         
-        let timeBetweenFlashes = 800 * NSEC_PER_MSEC
+        let timeBetweenFlashes = 1000 * NSEC_PER_MSEC
         
         var delay = timeBetweenFlashes
         var time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -316,7 +321,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         delay += timeBetweenFlashes
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue(), {
-            strand.clearAllPixelsAsync()
+            strand.clearAllPixelsAsync().waitUntilFinished()
+            strand.deinitializeAsync()
             self.setBatteryLife(device)
         })
     }
