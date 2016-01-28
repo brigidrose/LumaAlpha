@@ -91,6 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var collectionController:CharmCollectionTableViewController!
     var tabBarController:UITabBarController!
     var openedAppTime:NSDate?
+    var notifiedOfNewMomentTime:NSDate?
     
     //degrees only go from -180 to 180 so set to 500 which means No Location Yet
     var latestLocation:[Double] = [500, 500]
@@ -246,6 +247,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         if openedAppTime == nil {
             openedAppTime = NSDate()
+        }
+        
+        //calculate time since last notification
+        if notifiedOfNewMomentTime != nil {
+            let endTime = NSDate()
+            let timeInterval: Double = endTime.timeIntervalSinceDate(notifiedOfNewMomentTime!);
+            var dimensions = [
+                "timeInterval": String(timeInterval)
+            ]
+            if let user = PFUser.currentUser() {
+                dimensions["userId"] = user.objectId
+            }
+            
+            print("Reporting that user had \(timeInterval) seconds between receiving a notification and opening the app")
+            
+            PFAnalytics.trackEvent("timeBetweenNewNotificationAndOpeningApp", dimensions: dimensions)
+            
+            //reset to nil so that the app knows to restart timer when another notification is received
+            notifiedOfNewMomentTime = nil
         }
     }
     
@@ -417,6 +437,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         print("CharmSlot: \(charmSlot)")
         
+        //only record start time of timer for time between receiving notification and opening app if it has not been set and if the app is in the background.
+        let appState = application.applicationState
+        if notifiedOfNewMomentTime == nil && appState == .Background {
+            notifiedOfNewMomentTime = NSDate()
+        }
         
         pushReceivedWithCharmSlot(charmSlot)
         
