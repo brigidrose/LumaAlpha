@@ -90,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var latestBatteryLife:Int?
     var collectionController:CharmCollectionTableViewController!
     var tabBarController:UITabBarController!
+    var openedAppTime:NSDate?
     
     //degrees only go from -180 to 180 so set to 500 which means No Location Yet
     var latestLocation:[Double] = [500, 500]
@@ -149,6 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 //            NSThread.detachNewThreadSelector(Selector("pushReceived"), toTarget:self, withObject: nil);
 //        })
 
+        openedAppTime = NSDate()
         return true
     }
 
@@ -174,7 +176,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
         print("application did enter background")
-
+        
+        //calculate time spent in app
+        if openedAppTime != nil {
+            let endTime = NSDate()
+            let timeInterval: Double = endTime.timeIntervalSinceDate(openedAppTime!);
+            var dimensions = [
+                "timeInApp": String(timeInterval)
+            ]
+            if let user = PFUser.currentUser() {
+                dimensions["userId"] = user.objectId
+            }
+            
+            print("Reporting that user spent \(timeInterval) in app")
+            
+            PFAnalytics.trackEvent("timeInApp", dimensions: dimensions)
+            
+            //reset to nil so that the app knows to restart timer when the app opens again
+            openedAppTime = nil
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -182,6 +202,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         print("application will enter foreground")
         checkForUnlockedItems()
+        
         
     }
 
@@ -222,6 +243,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 print("no saved bracelet found in appdelegate")
             }
         })
+        
+        if openedAppTime == nil {
+            openedAppTime = NSDate()
+        }
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
