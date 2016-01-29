@@ -804,34 +804,10 @@
 			baseConfigurationReference = C46A74428C940DBAA412D414 /* Pods-ProtoLuma.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 47;
-=======
-				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
 				CURRENT_PROJECT_VERSION = 48;
->>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
-=======
-				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
-				CURRENT_PROJECT_VERSION = 48;
->>>>>>> origin/master
-=======
-				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
-				CURRENT_PROJECT_VERSION = 48;
->>>>>>> origin/master
-=======
-				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
-				CURRENT_PROJECT_VERSION = 48;
->>>>>>> origin/master
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -843,23 +819,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 				PROVISIONING_PROFILE = "";
-=======
-				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
->>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
-=======
-				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
->>>>>>> origin/master
-=======
-				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
->>>>>>> origin/master
-=======
-				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
->>>>>>> origin/master
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";
@@ -872,25 +832,9 @@
 			baseConfigurationReference = 265B19E26B3DCC62B1A214DE /* Pods-ProtoLuma.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-<<<<<<< HEAD
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 47;
-=======
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
 				CURRENT_PROJECT_VERSION = 48;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -902,23 +846,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 				PROVISIONING_PROFILE = "";
-=======
-				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
->>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
-=======
-				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
->>>>>>> origin/master
-=======
-				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
->>>>>>> origin/master
-=======
-				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
->>>>>>> origin/master
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";
