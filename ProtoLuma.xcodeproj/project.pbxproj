@@ -807,6 +807,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -816,6 +817,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
 				CURRENT_PROJECT_VERSION = 48;
 >>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				CURRENT_PROJECT_VERSION = 48;
+>>>>>>> origin/master
 =======
 				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
@@ -840,10 +846,14 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "";
 =======
 				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
 >>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
+>>>>>>> origin/master
 =======
 				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
 >>>>>>> origin/master
@@ -873,7 +883,10 @@
 				CURRENT_PROJECT_VERSION = 48;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+>>>>>>> origin/master
 =======
 >>>>>>> origin/master
 =======
@@ -892,10 +905,14 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "";
 =======
 				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
 >>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
+>>>>>>> origin/master
 =======
 				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
 >>>>>>> origin/master
