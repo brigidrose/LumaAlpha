@@ -28,6 +28,8 @@
 #import <SZTextView/SZTextView.h>
 #import <HockeySDK/HockeySDK.h>
 #import <Instabug/Instabug.h>
-
+#import "CYLTabBarController.h"
+#import "CYLTabBar.h"
+#import "CYLPlusButton.h"
 
 #endif /* ProtoLuma_Bridging_Header_h */

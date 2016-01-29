@@ -37,6 +37,11 @@
 		2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC3DFD1B9A505900C41BE9 /* AddCharmViewController.swift */; };
 		2CAC3E011B9B550E00C41BE9 /* CharmPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC3E001B9B550E00C41BE9 /* CharmPickerTableViewCell.swift */; };
 		2CC91DC31B83FC360082CF6A /* StoriesTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */; };
+		2CED69AB1C5AE89E009E8897 /* NewMomentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CED69AA1C5AE89E009E8897 /* NewMomentViewController.swift */; };
+		2CED69AF1C5AF9CF009E8897 /* LumaTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CED69AE1C5AF9CF009E8897 /* LumaTabBarController.swift */; };
+		2CED69B71C5AFE29009E8897 /* CYLPlusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CED69B21C5AFE29009E8897 /* CYLPlusButton.m */; };
+		2CED69B81C5AFE29009E8897 /* CYLTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CED69B41C5AFE29009E8897 /* CYLTabBar.m */; };
+		2CED69B91C5AFE29009E8897 /* CYLTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CED69B61C5AFE29009E8897 /* CYLTabBarController.m */; };
 		2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */; };
 		2CF2FE211B7EBB6200F4E11D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF2FE1F1B7EBB6200F4E11D /* Main.storyboard */; };
 		2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2CF2FE221B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld */; };
@@ -120,6 +125,14 @@
 		2CAC3DFD1B9A505900C41BE9 /* AddCharmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCharmViewController.swift; sourceTree = "<group>"; };
 		2CAC3E001B9B550E00C41BE9 /* CharmPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmPickerTableViewCell.swift; sourceTree = "<group>"; };
 		2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoriesTabViewController.swift; path = "Stories Tab/StoriesTabViewController.swift"; sourceTree = "<group>"; };
+		2CED69AA1C5AE89E009E8897 /* NewMomentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentViewController.swift; sourceTree = "<group>"; };
+		2CED69AE1C5AF9CF009E8897 /* LumaTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LumaTabBarController.swift; sourceTree = "<group>"; };
+		2CED69B11C5AFE29009E8897 /* CYLPlusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYLPlusButton.h; sourceTree = "<group>"; };
+		2CED69B21C5AFE29009E8897 /* CYLPlusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYLPlusButton.m; sourceTree = "<group>"; };
+		2CED69B31C5AFE29009E8897 /* CYLTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYLTabBar.h; sourceTree = "<group>"; };
+		2CED69B41C5AFE29009E8897 /* CYLTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYLTabBar.m; sourceTree = "<group>"; };
+		2CED69B51C5AFE29009E8897 /* CYLTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYLTabBarController.h; sourceTree = "<group>"; };
+		2CED69B61C5AFE29009E8897 /* CYLTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYLTabBarController.m; sourceTree = "<group>"; };
 		2CF2FE181B7EBB6200F4E11D /* ProtoLuma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtoLuma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF2FE1B1B7EBB6200F4E11D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CF2FE201B7EBB6200F4E11D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -221,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				2CC91DC21B83FC360082CF6A /* StoriesTabViewController.swift */,
-				2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */,
 				2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */,
 				2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */,
 				2C26F9B31B86951C0081388C /* CharmsGalleryCollectionViewCell.swift */,
@@ -234,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */,
+				2CED69AA1C5AE89E009E8897 /* NewMomentViewController.swift */,
 				2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */,
 				2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */,
 				2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */,
@@ -243,6 +256,19 @@
 				2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */,
 			);
 			name = "New Moment";
+			sourceTree = "<group>";
+		};
+		2CED69B01C5AFE29009E8897 /* CYLTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				2CED69B11C5AFE29009E8897 /* CYLPlusButton.h */,
+				2CED69B21C5AFE29009E8897 /* CYLPlusButton.m */,
+				2CED69B31C5AFE29009E8897 /* CYLTabBar.h */,
+				2CED69B41C5AFE29009E8897 /* CYLTabBar.m */,
+				2CED69B51C5AFE29009E8897 /* CYLTabBarController.h */,
+				2CED69B61C5AFE29009E8897 /* CYLTabBarController.m */,
+			);
+			path = CYLTabBarController;
 			sourceTree = "<group>";
 		};
 		2CF2FE0F1B7EBB6200F4E11D = {
@@ -277,6 +303,7 @@
 				2C947FA51B87E2A500607770 /* UIStyleController.swift */,
 				2C947FA91B87ED7C00607770 /* ButtonWithPromptTableViewCell.swift */,
 				2C947F9F1B87AB2C00607770 /* ProtoLumaTabBarViewController.swift */,
+				2CED69AE1C5AF9CF009E8897 /* LumaTabBarController.swift */,
 				2C947FAB1B87FBF800607770 /* CharmWithSubtitleTableViewCell.swift */,
 				83ED30EE1C228A920047E5D9 /* Collection */,
 				2C7E343F1B9B72C000EFA603 /* Onboarding + Setup */,
@@ -288,6 +315,7 @@
 				2CF2FE2A1B7EBB6200F4E11D /* Info.plist */,
 				2CF2FE221B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld */,
 				2C6278D11B7F1E08006DDBE7 /* ProtoLuma-Bridging-Header.h */,
+				2CED69B01C5AFE29009E8897 /* CYLTabBarController */,
 			);
 			path = ProtoLuma;
 			sourceTree = "<group>";
@@ -344,6 +372,7 @@
 				839D4AD31C2FADBE001917CA /* ScheduledMomentsTableViewController.swift */,
 				839D4AD51C2FB020001917CA /* ScheduledMomentsHeaderTableViewCell.xib */,
 				83ED30F51C249E680047E5D9 /* StoriesTableViewController.swift */,
+				2C947F9B1B87A81B00607770 /* StoryDetailViewController.swift */,
 				83ED30F71C24A2930047E5D9 /* StoryTableViewCell.xib */,
 			);
 			name = Collection;
@@ -580,6 +609,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83ED30F01C228B5D0047E5D9 /* CharmCollectionTableViewController.swift in Sources */,
+				2CED69AF1C5AF9CF009E8897 /* LumaTabBarController.swift in Sources */,
 				833C95251C3FBA4F00D13E63 /* CharmGroupSettingTableViewController.swift in Sources */,
 				2C947FA21B87AC8500607770 /* NewStoryTabViewController.swift in Sources */,
 				8398CDBE1C46EA9900518B2A /* ParseErrorHandlingController.swift in Sources */,
@@ -608,10 +638,13 @@
 				2C1FA10A1B93D83300B3C535 /* OnboardingPageViewController.swift in Sources */,
 				2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */,
 				836DAD8D1C3BB79500DEA8DF /* SetCharmGroupViewController.swift in Sources */,
+				2CED69B71C5AFE29009E8897 /* CYLPlusButton.m in Sources */,
 				2CF2FE241B7EBB6200F4E11D /* ProtoLuma.xcdatamodeld in Sources */,
 				833C952D1C404EA200D13E63 /* User.swift in Sources */,
 				2C813EF31B992B1200A6EDA7 /* BraceletSettings.swift in Sources */,
+				2CED69B81C5AFE29009E8897 /* CYLTabBar.m in Sources */,
 				2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */,
+				2CED69AB1C5AE89E009E8897 /* NewMomentViewController.swift in Sources */,
 				833C95311C404F6B00D13E63 /* Charm_Group.swift in Sources */,
 				83009D831C419F9000FD20FC /* CharmSettingsTableViewController.swift in Sources */,
 				83ED30F61C249E680047E5D9 /* StoriesTableViewController.swift in Sources */,
@@ -619,6 +652,7 @@
 				2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */,
 				2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,
+				2CED69B91C5AFE29009E8897 /* CYLTabBarController.m in Sources */,
 				2CAC3DFC1B9A1C0C00C41BE9 /* PairBraceletViewController.swift in Sources */,
 				2C26F9B41B86951C0081388C /* CharmsGalleryCollectionViewCell.swift in Sources */,
 				2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */,
@@ -770,9 +804,28 @@
 			baseConfigurationReference = C46A74428C940DBAA412D414 /* Pods-ProtoLuma.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brigid Walsh (X3DC8R7EA9)";
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 47;
+=======
+				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				CURRENT_PROJECT_VERSION = 48;
+>>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				CURRENT_PROJECT_VERSION = 48;
+>>>>>>> origin/master
+=======
+				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Cassano (SQLPRCSNU4)";
+				CURRENT_PROJECT_VERSION = 48;
+>>>>>>> origin/master
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -784,7 +837,19 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3d9eb6e5-0943-430f-b2ef-b79ae99ede83";
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+				PROVISIONING_PROFILE = "";
+=======
+				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
+>>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
+>>>>>>> origin/master
+=======
+				PROVISIONING_PROFILE = "337e736a-35fb-4500-ac12-d751d456f661";
+>>>>>>> origin/master
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";
@@ -797,9 +862,22 @@
 			baseConfigurationReference = 265B19E26B3DCC62B1A214DE /* Pods-ProtoLuma.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+<<<<<<< HEAD
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 47;
+=======
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 48;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -811,7 +889,19 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lumalegacy.Luma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "70b91137-7075-4f69-bae6-25004534c1ed";
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+				PROVISIONING_PROFILE = "";
+=======
+				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
+>>>>>>> 0571ac73346277612f250cd300327e651e33b5ec
+=======
+				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
+>>>>>>> origin/master
+=======
+				PROVISIONING_PROFILE = "8a94d245-7c6a-42a1-af00-ad9ab1375025";
+>>>>>>> origin/master
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtoLuma/ProtoLuma-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "Pods/*";

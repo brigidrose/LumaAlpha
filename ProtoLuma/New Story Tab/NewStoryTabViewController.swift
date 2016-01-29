@@ -101,10 +101,10 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
     func cancelButtonTapped(sender:UIBarButtonItem){
         print("cancel button tapped")
 //        self.view.endEditing(true)
-//        self.dismissViewControllerAnimated(true, completion: nil)
-        self.view.endEditing(true)
-        resetViewInputs()
-        self.shouldResetSelectedCharm = true
+        self.dismissViewControllerAnimated(true, completion: nil)
+//        self.view.endEditing(true)
+//        resetViewInputs()
+//        self.shouldResetSelectedCharm = true
     }
     
     func sendButtonTapped(sender:UIBarButtonItem){
@@ -180,7 +180,10 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
 //                                        stvc.loadStoriesForCharmViewed()
                                         self.tabBarController?.selectedIndex = 0
                                         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-                                        self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
+                                        
+                                        self.appDelegate.collectionController.navigateToCharmMoments(self.forCharm.objectId!)
+                                        self.dismissViewControllerAnimated(true, completion: nil)
+//                                            self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
                                     }
                                     else{
                                         print(error)

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '0E284592A754098B857B705F'
+               BlueprintIdentifier = 'BB770F69530732E18014862D'
                BlueprintName = 'Pods-ProtoLuma'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_ProtoLuma.framework'>

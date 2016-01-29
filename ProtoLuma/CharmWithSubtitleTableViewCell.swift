@@ -21,7 +21,7 @@ class CharmWithSubtitleTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+//        self.selectionStyle = UITableViewCellSelectionStyle.None
         self.backgroundColor = UIColor(white: 1, alpha: 1)
         
         self.charmImageView = UIImageView(frame: CGRectZero)

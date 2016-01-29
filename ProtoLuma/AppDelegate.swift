@@ -90,6 +90,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var latestBatteryLife:Int?
     var collectionController:CharmCollectionTableViewController!
     var tabBarController:UITabBarController!
+    var openedAppTime:NSDate?
+    var notifiedOfNewMomentTime:NSDate?
     
     //degrees only go from -180 to 180 so set to 500 which means No Location Yet
     var latestLocation:[Double] = [500, 500]
@@ -106,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         User_Charm_Group.registerSubclass()
         Story.registerSubclass()
         Story_Unit.registerSubclass()
-
+        PlusButtonSubclass.registerSubclass()
         // Initialize Parse.
         Parse.setApplicationId("xAFjlwpW52pygLuQXOCMuDH5TtqVRttGNQH3Kj4d",
             clientKey: "VPxuBA4ASQBaPpusXfocIPKAKNrtJALBYd6LKlSx")
@@ -136,19 +138,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         UIStyleController.applyStyle()
         self.metawearManager = MBLMetaWearManager.sharedManager()
 
-        self.window?.tintColor = UIColor(red:0.95, green:0.09, blue:0.25, alpha:1)
-        
         self.locationManager = CLLocationManager()
         self.locationManager.delegate = self
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.startMonitoringSignificantLocationChanges()
+        if ((CYLExternPushlishButton) != nil){
+            print("hello push \(CYLExternPushlishButton)")
+            CYLExternPushlishButton.addTarget(self, action: "newMomentButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        }
         
+        self.window = UIWindow()
+        self.window?.tintColor = UIColor(red:0.95, green:0.09, blue:0.25, alpha:1)
+        self.window!.rootViewController = LumaTabBarController()
+        self.window!.makeKeyAndVisible()
+        print((self.window?.rootViewController as! LumaTabBarController))
+
 //        let delay = 10000.0;
 //        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay));
 //        dispatch_after(time, dispatch_get_main_queue(), {
 //            NSThread.detachNewThreadSelector(Selector("pushReceived"), toTarget:self, withObject: nil);
 //        })
 
+        openedAppTime = NSDate()
         return true
     }
 
@@ -162,7 +173,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 annotation: annotation)
     }
 
-    
+    func newMomentButtonTapped(sender:AnyObject)
+    {
+        print("launch moment composer")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let newMomentNavigationVC = storyboard.instantiateViewControllerWithIdentifier("NewMomentNavigationController")
+        (newMomentNavigationVC.childViewControllers[0] as! NewStoryTabViewController).charms = (((self.window?.rootViewController as! LumaTabBarController).viewControllers[0] as! UINavigationController).childViewControllers[0] as! CharmCollectionTableViewController).charms
+        self.window?.rootViewController?.presentViewController(newMomentNavigationVC, animated: true, completion: nil)
+    }
+
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -174,7 +193,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
         print("application did enter background")
-
+        
+        //calculate time spent in app
+        if openedAppTime != nil {
+            let endTime = NSDate()
+            let timeInterval: Double = endTime.timeIntervalSinceDate(openedAppTime!);
+            var dimensions = [
+                "timeInApp": String(timeInterval)
+            ]
+            if let user = PFUser.currentUser() {
+                dimensions["userId"] = user.objectId
+            }
+            
+            print("Reporting that user spent \(timeInterval) in app")
+            
+            PFAnalytics.trackEvent("timeInApp", dimensions: dimensions)
+            
+            //reset to nil so that the app knows to restart timer when the app opens again
+            openedAppTime = nil
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -182,6 +219,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         print("application will enter foreground")
         checkForUnlockedItems()
+        
         
     }
 
@@ -222,6 +260,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 print("no saved bracelet found in appdelegate")
             }
         })
+        
+        if openedAppTime == nil {
+            openedAppTime = NSDate()
+        }
+        
+        //calculate time since last notification
+        if notifiedOfNewMomentTime != nil {
+            let endTime = NSDate()
+            let timeInterval: Double = endTime.timeIntervalSinceDate(notifiedOfNewMomentTime!);
+            var dimensions = [
+                "timeInterval": String(timeInterval)
+            ]
+            if let user = PFUser.currentUser() {
+                dimensions["userId"] = user.objectId
+            }
+            
+            print("Reporting that user had \(timeInterval) seconds between receiving a notification and opening the app")
+            
+            PFAnalytics.trackEvent("timeBetweenNewNotificationAndOpeningApp", dimensions: dimensions)
+            
+            //reset to nil so that the app knows to restart timer when another notification is received
+            notifiedOfNewMomentTime = nil
+        }
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -392,6 +453,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         print("CharmSlot: \(charmSlot)")
         
+        //only record start time of timer for time between receiving notification and opening app if it has not been set and if the app is in the background.
+        let appState = application.applicationState
+        if notifiedOfNewMomentTime == nil && appState == .Background {
+            notifiedOfNewMomentTime = NSDate()
+        }
         
         pushReceivedWithCharmSlot(charmSlot)
         

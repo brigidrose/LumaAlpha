@@ -8,6 +8,7 @@
 
 import UIKit
 import ParseUI
+import MBProgressHUD
 
 class StoryTableViewCell : UITableViewCell {
     
@@ -60,6 +61,7 @@ class StoriesTableViewController: UITableViewController {
     var scheduledMomentsButton:UIBarButtonItem!
     let titleButtonLabel = UILabel()
     var selectedRow:NSIndexPath?
+    var indexPathOfStoryViewed:NSIndexPath!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +72,7 @@ class StoriesTableViewController: UITableViewController {
         tableView.registerNib(nib, forCellReuseIdentifier: "StoryCell")
         scheduledMomentsButton = UIBarButtonItem(image: UIImage(named: "Balloons"), style: UIBarButtonItemStyle.Plain, target: self, action: "scheduledMomentsTapped:")
         
-        
+
         
         titleButtonLabel.frame = CGRectMake(0, 0, 70, 44);
         titleButtonLabel.userInteractionEnabled = true
@@ -92,7 +94,7 @@ class StoriesTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-//        self.navigationItem.title = "\(charm.charmGroup.name) >"
+        self.navigationItem.title = "\(charm.charmGroup!.name)"
         titleButtonLabel.text = "\(charm.charmGroup!.name) >"
         
         
@@ -161,48 +163,48 @@ class StoriesTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.Delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+            print("delete row at \(indexPath.row)")
+        }
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Edit", handler: { (action, indexPath) -> Void in
+            print("Edit \(indexPath.row)")
+            let alertVC = UIAlertController(title: "Edit Moment", message: "Stay tuned—to be enabled with an upcoming app update!", preferredStyle: UIAlertControllerStyle.Alert)
+            let cancelAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
+            alertVC.addAction(cancelAction)
+            self.presentViewController(alertVC, animated: true, completion: nil)
+            
+        })
+        editAction.backgroundColor = UIColor(red:1, green:0.58, blue:0, alpha:1)
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Delete", handler: { (action, indexPath) -> Void in
+            print("Delete \(indexPath.row)")
+            self.deleteStory(indexPath.row)
+        })
+        deleteAction.backgroundColor = UIColor(red:1, green:0.23, blue:0.19, alpha:1)
+        return [deleteAction,editAction]
+
+    }
+    
+    
     override func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath) {
         print("tapped row \(indexPath.row)")
         selectedRow = indexPath
     }
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.indexPathOfStoryViewed = indexPath
+        self.performSegueWithIdentifier("showStoryDetail", sender: self)
+    }
+    
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -213,6 +215,12 @@ class StoriesTableViewController: UITableViewController {
         }else if segue.identifier == "charmSettingsFromFeed" {
             let dvc = segue.destinationViewController as! CharmSettingsTableViewController
             dvc.charm = charm
+        }
+        else if segue.identifier == "showStoryDetail"{
+            let storyDetailVC = segue.destinationViewController as! StoryDetailViewController
+            storyDetailVC.story = self.stories[self.indexPathOfStoryViewed.row]
+            storyDetailVC.storyUnits = self.storiesStoryUnits[self.indexPathOfStoryViewed.row]
+            PFAnalytics.trackEvent("storyOpened", dimensions: ["userId": PFUser.currentUser()!.objectId!, "storyId": self.stories[self.indexPathOfStoryViewed.row].objectId!])
         }
     }
     
@@ -238,7 +246,21 @@ class StoriesTableViewController: UITableViewController {
         
     }
 
-
+    func deleteStory(storyRowNum:Int){
+        let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        progressHUD.labelText = "Deleting..."
+        let story = stories[storyRowNum]
+        print("story to delete is \(story["title"] as? String)")
+        let storyUnits = self.storiesStoryUnits[storyRowNum]
+        for storyUnit in storyUnits{
+            storyUnit.deleteEventually()
+        }
+        self.storiesStoryUnits.removeAtIndex(storyRowNum)
+        story.deleteEventually()
+        self.stories.removeAtIndex(storyRowNum)
+        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
     
     func loadStoriesForCharmViewed(){
         print("Loading stories for charm group named \(self.charm.charmGroup!.name)")

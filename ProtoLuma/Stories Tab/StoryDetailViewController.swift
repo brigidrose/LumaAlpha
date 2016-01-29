@@ -51,6 +51,7 @@ class StoryDetailViewController: UIViewController, UITableViewDelegate, UITableV
             let cell = tableView.dequeueReusableCellWithIdentifier("MomentMediaTableViewCell") as! MomentMediaTableViewCell
             cell.mediaPreviewImageView.file = self.storyUnits[indexPath.row]["file"] as? PFFile
             cell.mediaPreviewImageView.loadInBackground()
+            cell.mediaCaptionTextView.placeholder = ""
             cell.mediaCaptionTextView.text = self.storyUnits[indexPath.row]["description"] as? String
             cell.mediaCaptionTextView.userInteractionEnabled = false
             return cell

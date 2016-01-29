@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'DAC665D88BF7E3F9A085BCAF'
-               BlueprintName = 'TPKeyboardAvoiding'
+               BlueprintIdentifier = 'B714307A71CB415A0544464F'
+               BlueprintName = 'HockeySDK-HockeySDKResources'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'TPKeyboardAvoiding.framework'>
+               BuildableName = 'HockeySDKResources.bundle'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

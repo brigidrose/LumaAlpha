@@ -40,7 +40,7 @@ class MomentMediaTableViewCell: UITableViewCell, UITextViewDelegate {
         self.mediaPreviewImageView = PFImageView(frame: CGRectZero)
         self.mediaPreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         self.mediaPreviewImageView.userInteractionEnabled = true
-        self.mediaPreviewImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        self.mediaPreviewImageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.mediaPreviewImageView.clipsToBounds = true
         self.momentMediaSheet.addSubview(self.mediaPreviewImageView)
         
@@ -75,10 +75,10 @@ class MomentMediaTableViewCell: UITableViewCell, UITextViewDelegate {
         let verticalConstraintsOutsideSheet = NSLayoutConstraint.constraintsWithVisualFormat("V:|-16-[momentMediaSheet]-16-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         self.contentView.addConstraints(verticalConstraintsOutsideSheet)
         
-        let horizontalConstraintsInsideSheet = NSLayoutConstraint.constraintsWithVisualFormat("H:|[mediaPreviewImageView]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: metricsDictionary, views: viewsDictionary)
+        let horizontalConstraintsInsideSheet = NSLayoutConstraint.constraintsWithVisualFormat("H:|[mediaPreviewImageView(squareWidth)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         self.momentMediaSheet.addConstraints(horizontalConstraintsInsideSheet)
         
-        let horizontalConstraintsSeparator = NSLayoutConstraint.constraintsWithVisualFormat("H:|[separatorView]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: metricsDictionary, views: viewsDictionary)
+        let horizontalConstraintsSeparator = NSLayoutConstraint.constraintsWithVisualFormat("H:|[separatorView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         self.momentMediaSheet.addConstraints(horizontalConstraintsSeparator)
         
         let horizontalConstraintsInsideSheetForCaption = NSLayoutConstraint.constraintsWithVisualFormat("H:|[mediaCaptionTextView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)

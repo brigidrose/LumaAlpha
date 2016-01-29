@@ -76,17 +76,19 @@ class CharmCollectionTableViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         let nib = UINib(nibName: "CharmTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "CharmCell")
         
-        self.tabBarController?.tabBar.items![1].enabled = false
-        self.tabBarController?.tabBar.items![2].enabled = false
+//        self.tabBarController?.tabBar.items![1].enabled = false
+//        self.tabBarController?.tabBar.items![2].enabled = false
         
         self.refreshControl?.beginRefreshing()
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
 
+        print("hello charm collection")
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-
+        print("hello charm collection2")
         
         //store a reference in the app delegate
         appDelegate.collectionController = self
@@ -132,6 +134,7 @@ class CharmCollectionTableViewController: UITableViewController{
     // MARK: Table View delegate methods
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(self.charms.count)
         return self.charms.count
     }
     
@@ -188,12 +191,12 @@ class CharmCollectionTableViewController: UITableViewController{
     func populateCharmsAndEnableBarItems(){
         //load charms into the new story controller
         let barViewControllers = self.tabBarController?.viewControllers
-        let nstvc = barViewControllers![1].childViewControllers[0] as! NewStoryTabViewController
-        nstvc.charms = self.charms  //shared model
+//        let nstvc = barViewControllers![0].childViewControllers[0] as! NewStoryTabViewController
+//        nstvc.charms = self.charms  //shared model
         
         print("loading charms into account page")
         //load charms into the account view
-        let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+        let avc = barViewControllers![1].childViewControllers[0] as! AccountViewController
         avc.charms = self.charms  //shared model
         
         print("enabling tab buttons")
@@ -237,6 +240,7 @@ class CharmCollectionTableViewController: UITableViewController{
                                     }
                                 }
                             }
+                            self.refreshControl?.endRefreshing()
                             self.tableView.reloadData()
                         }
                     }else{
@@ -325,6 +329,45 @@ class CharmCollectionTableViewController: UITableViewController{
         }else{
             self.tableView.reloadData()
         }
+    }
+    
+    func navigateToCharmMoments(charmId:String){
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let storiesVC = mainStoryboard.instantiateViewControllerWithIdentifier("StoriesTableViewController") as! StoriesTableViewController
+        let charm = self.locateCharmInCharmsById(charmId, charms: self.charms)
+        storiesVC.charm = charm
+        storiesVC.profileImages = self.profileImages
+        self.navigationController?.pushViewController(storiesVC, animated: true)
+    }
+    
+    func locateCharmInCharmsById(charmId:String, charms:[Charm]) -> Charm{
+        for charm in self.charms{
+            if charm.objectId == charmId{
+                return charm
+            }
+        }
+        // fetch charm from Parse with charmId to replace return Charm()
+        return Charm()
+    }
+    
+    func modalToStory(storyId:String){
+        let query = PFQuery(className: "Story")
+        query.getObjectInBackgroundWithId(storyId, block: {(object, error) -> Void in
+            if (error == nil){
+                let storyDetailVC = StoryDetailViewController()
+                storyDetailVC.story = object as! Story
+                let storyNC = UINavigationController(rootViewController: storyDetailVC)
+                storyNC.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: UIBarButtonItemStyle.Plain, target: self, action: "closeButtonTapped")
+                self.presentViewController(storyNC, animated: true, completion: nil)
+            }
+            else{
+                ParseErrorHandlingController.handleParseError(error)
+            }
+        })
+    }
+    
+    func closeButtonTapped(){
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func loadProfilePhotos(){
