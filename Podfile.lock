@@ -40,6 +40,7 @@ PODS:
   - SDWebImage/Core (3.7.5)
   - SZTextView (1.2.1)
   - TPKeyboardAvoiding (1.2.11)
+  - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
   - CTAssetsPickerController (~> 3.0.0)
@@ -59,6 +60,7 @@ DEPENDENCIES:
   - SDWebImage
   - SZTextView
   - TPKeyboardAvoiding
+  - TTTAttributedLabel
 
 SPEC CHECKSUMS:
   Bolts: f52a250053bb517ca874523c3913776359ab3def
@@ -80,5 +82,6 @@ SPEC CHECKSUMS:
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SZTextView: 906df45afd3c1b24fc5252088d5ef8061513c238
   TPKeyboardAvoiding: e5ce146b313de063957bfa75a13f1e9b0ff18ab7
+  TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
 COCOAPODS: 0.39.0

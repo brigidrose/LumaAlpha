@@ -100,6 +100,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ProtoLuma/SDWebImage.framework"
   install_framework "Pods-ProtoLuma/SZTextView.framework"
   install_framework "Pods-ProtoLuma/TPKeyboardAvoiding.framework"
+  install_framework "Pods-ProtoLuma/TTTAttributedLabel.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ProtoLuma/Bolts.framework"
@@ -118,4 +119,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ProtoLuma/SDWebImage.framework"
   install_framework "Pods-ProtoLuma/SZTextView.framework"
   install_framework "Pods-ProtoLuma/TPKeyboardAvoiding.framework"
+  install_framework "Pods-ProtoLuma/TTTAttributedLabel.framework"
 fi

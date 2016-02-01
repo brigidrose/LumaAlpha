@@ -22,6 +22,8 @@ pod 'RACollectionViewReorderableTripletLayout'
 pod 'SZTextView'
 pod 'HockeySDK', '~> 3.8.5'
 pod 'Instabug'
+pod 'TTTAttributedLabel'
+pod 'JVFloatLabeledTextField'
 
 end
 

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'D359DFC2406304C9C057EF42'
+               BlueprintIdentifier = '30B4800EC90DCA639032C09A'
                BlueprintName = 'RACollectionViewReorderableTripletLayout'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'RACollectionViewReorderableTripletLayout.framework'>

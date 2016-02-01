@@ -16,6 +16,8 @@
 		2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */; };
 		2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */; };
 		2C2AFB6E1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2AFB6D1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift */; };
+		2C2F85AC1C5F22CA00400115 /* NewMomentCanvasTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F85AB1C5F22CA00400115 /* NewMomentCanvasTableViewCell.swift */; };
+		2C2F85AE1C5F255600400115 /* CharmGroupSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F85AD1C5F255600400115 /* CharmGroupSelectionTableViewCell.swift */; };
 		2C30A1C91B965BDA00B64582 /* ClaimBIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */; };
 		2C35037B1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */; };
 		2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */; };
@@ -103,6 +105,8 @@
 		2C26F9B51B8695490081388C /* StoriesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoriesTableViewCell.swift; path = "Stories Tab/StoriesTableViewCell.swift"; sourceTree = "<group>"; };
 		2C26F9B91B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharmTitleBlurbHeaderTableViewCell.swift; path = "Stories Tab/CharmTitleBlurbHeaderTableViewCell.swift"; sourceTree = "<group>"; };
 		2C2AFB6D1B9E41C6003ACA93 /* ImagePreviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C2F85AB1C5F22CA00400115 /* NewMomentCanvasTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentCanvasTableViewCell.swift; sourceTree = "<group>"; };
+		2C2F85AD1C5F255600400115 /* CharmGroupSelectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmGroupSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		2C30A1C81B965BDA00B64582 /* ClaimBIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClaimBIDViewController.swift; sourceTree = "<group>"; };
 		2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlTableViewCell.swift; sourceTree = "<group>"; };
 		2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTimePickerTableViewCell.swift; sourceTree = "<group>"; };
@@ -247,6 +251,8 @@
 			children = (
 				2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */,
 				2CED69AA1C5AE89E009E8897 /* NewMomentViewController.swift */,
+				2C2F85AD1C5F255600400115 /* CharmGroupSelectionTableViewCell.swift */,
+				2C2F85AB1C5F22CA00400115 /* NewMomentCanvasTableViewCell.swift */,
 				2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */,
 				2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */,
 				2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */,
@@ -648,12 +654,14 @@
 				833C95311C404F6B00D13E63 /* Charm_Group.swift in Sources */,
 				83009D831C419F9000FD20FC /* CharmSettingsTableViewController.swift in Sources */,
 				83ED30F61C249E680047E5D9 /* StoriesTableViewController.swift in Sources */,
+				2C2F85AE1C5F255600400115 /* CharmGroupSelectionTableViewCell.swift in Sources */,
 				839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */,
 				2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */,
 				2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,
 				2CED69B91C5AFE29009E8897 /* CYLTabBarController.m in Sources */,
 				2CAC3DFC1B9A1C0C00C41BE9 /* PairBraceletViewController.swift in Sources */,
+				2C2F85AC1C5F22CA00400115 /* NewMomentCanvasTableViewCell.swift in Sources */,
 				2C26F9B41B86951C0081388C /* CharmsGalleryCollectionViewCell.swift in Sources */,
 				2C26F9B61B8695490081388C /* StoriesTableViewCell.swift in Sources */,
 				2CAB01211B98C88700652C76 /* ProfileBlurbTableViewCell.swift in Sources */,

@@ -178,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         print("launch moment composer")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let newMomentNavigationVC = storyboard.instantiateViewControllerWithIdentifier("NewMomentNavigationController")
-        (newMomentNavigationVC.childViewControllers[0] as! NewStoryTabViewController).charms = (((self.window?.rootViewController as! LumaTabBarController).viewControllers[0] as! UINavigationController).childViewControllers[0] as! CharmCollectionTableViewController).charms
+//        (newMomentNavigationVC.childViewControllers[0] as! NewStoryTabViewController).charms = (((self.window?.rootViewController as! LumaTabBarController).viewControllers[0] as! UINavigationController).childViewControllers[0] as! CharmCollectionTableViewController).charms
         self.window?.rootViewController?.presentViewController(newMomentNavigationVC, animated: true, completion: nil)
     }
 

@@ -296,6 +296,25 @@
             </objects>
             <point key="canvasLocation" x="2259" y="1191"/>
         </scene>
+        <!--New Moment View Controller-->
+        <scene sceneID="kc5-LA-ZUM">
+            <objects>
+                <viewController id="Q3i-YM-ZmZ" customClass="NewMomentViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2Ez-Jx-m2g"/>
+                        <viewControllerLayoutGuide type="bottom" id="b2p-QL-Hfv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ucW-uj-5pE">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="RF8-a4-MuC"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YbI-5K-aqs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2175" y="1954"/>
+        </scene>
         <!--Add Charm View Controller-->
         <scene sceneID="GSE-Tv-SPZ">
             <objects>
@@ -557,7 +576,7 @@
         <scene sceneID="5BB-Vt-3JB">
             <objects>
                 <navigationController storyboardIdentifier="NewMomentNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="acl-cA-6p0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="New" image="590B949D-1A06-483D-9730-FF16449002FC" id="qex-f5-VgA"/>
+                    <tabBarItem key="tabBarItem" title="New" image="42D3AE35-DFA2-465B-AE7B-AFDE61AFC4FD" id="qex-f5-VgA"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wsm-lT-TYM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -565,7 +584,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="ope-10-rHZ" kind="relationship" relationship="rootViewController" id="2vh-a8-zu8"/>
+                        <segue destination="Q3i-YM-ZmZ" kind="relationship" relationship="rootViewController" id="Kfj-7a-JN5"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HpU-mu-XJc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -593,7 +612,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="590B949D-1A06-483D-9730-FF16449002FC" width="22" height="22">
+        <image name="42D3AE35-DFA2-465B-AE7B-AFDE61AFC4FD" width="22" height="22">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
