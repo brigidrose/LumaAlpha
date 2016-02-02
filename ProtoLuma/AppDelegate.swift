@@ -87,7 +87,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var metawearManager:MBLMetaWearManager!
     var locationManager:CLLocationManager!
     var deviceId:String!
-    var latestBatteryLife:Int?
+    
+    var latestBatteryLife:Int? {
+        didSet{
+            //report to parse analytics
+            var dimensions = [
+                "batteryLife": String(latestBatteryLife)
+            ]
+            if let user = PFUser.currentUser() {
+                dimensions["userId"] = user.objectId
+            }
+            
+            print("Reporting that battery life of bracelet is \(latestBatteryLife)")
+            
+            PFAnalytics.trackEvent("batteryLife", dimensions: dimensions)
+        }
+    }
+    
     var collectionController:CharmCollectionTableViewController!
     var tabBarController:UITabBarController!
     var openedAppTime:NSDate?

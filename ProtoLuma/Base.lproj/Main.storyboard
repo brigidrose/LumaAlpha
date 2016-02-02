@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="yQE-Oy-wMf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="yQE-Oy-wMf">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
@@ -366,7 +366,7 @@
                         <attributedString key="attributedTitle">
                             <fragment content="Loading...">
                                 <attributes>
-                                    <font key="NSFont" metaFont="controlContent" size="11"/>
+                                    <font key="NSFont" metaFont="smallSystem"/>
                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                 </attributes>
                             </fragment>
@@ -408,7 +408,7 @@
                         <attributedString key="attributedTitle">
                             <fragment content="Loading...">
                                 <attributes>
-                                    <font key="NSFont" metaFont="controlContent" size="11"/>
+                                    <font key="NSFont" metaFont="smallSystem"/>
                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                 </attributes>
                             </fragment>
@@ -576,7 +576,7 @@
         <scene sceneID="5BB-Vt-3JB">
             <objects>
                 <navigationController storyboardIdentifier="NewMomentNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="acl-cA-6p0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="New" image="42D3AE35-DFA2-465B-AE7B-AFDE61AFC4FD" id="qex-f5-VgA"/>
+                    <tabBarItem key="tabBarItem" title="New" image="5B0F2DD2-3CA9-4856-9E8F-46D07C28D1FF" id="qex-f5-VgA"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wsm-lT-TYM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -612,10 +612,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="42D3AE35-DFA2-465B-AE7B-AFDE61AFC4FD" width="22" height="22">
+        <image name="5B0F2DD2-3CA9-4856-9E8F-46D07C28D1FF" width="22" height="22">
             <mutableData key="keyedArchiveRepresentation">
-YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
-GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
+YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
+GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
 DBIAwAAAgAKACtISCRMVWk5TLm9iamVjdHOhFIADgAnSEgkXGqIYGYAEgAWACBAA0h0JHh9fEBROU1RJ
 RkZSZXByZXNlbnRhdGlvboAGgAdPERSeTU0AKgAAB5gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaf8R
 AHX/YAB1/68Adv/ZAHb/8wB2//MAdv/ZAHX/rwB1/2AAaf8RAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -706,12 +706,12 @@ yrfLNsu2zDXMtc01zbXONs62zzfPuNA50LrRPNG+0j/SwdNE08bUSdTL1U7V0dZV1tjXXNfg2GTY6Nls
 2fHadtr724DcBdyK3RDdlt4c3qLfKd+v4DbgveFE4cziU+Lb42Pj6+Rz5PzlhOYN5pbnH+ep6DLovOlG
 6dDqW+rl63Dr++yG7RHtnO4o7rTvQO/M8Fjw5fFy8f/yjPMZ86f0NPTC9VD13vZt9vv3ivgZ+Kj5OPnH
 +lf65/t3/Af8mP0p/br+S/7c/23//9IiIyQlWiRjbGFzc25hbWVYJGNsYXNzZXNfEBBOU0JpdG1hcElt
-YWdlUmVwoyQmJ1pOU0ltYWdlUmVwWE5TT2JqZWN00iIjKSpXTlNBcnJheaIpJ9IiIywtXk5TTXV0YWJs
-ZUFycmF5oywpJ9MvMAkxMjNXTlNXaGl0ZVxOU0NvbG9yU3BhY2VEMCAwABADgAvSIiM1NldOU0NvbG9y
-ojUn0iIjODlXTlNJbWFnZaI4J18QD05TS2V5ZWRBcmNoaXZlctE8PVRyb290gAEACAARABoAIwAtADIA
-NwBFAEsAVABbAGgAbwB3AHkAfgCAAIIAhwCSAJQAlgCYAJ0AoACiAKQApgCoAK0AxADGAMgVahVvFXoV
-gxWWFZoVpRWuFbMVuxW+FcMV0hXWFd0V5RXyFfcV+RX7FgAWCBYLFhAWGBYbFi0WMBY1AAAAAAAAAgEA
-AAAAAAAAPgAAAAAAAAAAAAAAAAAAFjc
+YWdlUmVwoyYnKF8QEE5TQml0bWFwSW1hZ2VSZXBaTlNJbWFnZVJlcFhOU09iamVjdNIiIyorV05TQXJy
+YXmiKijSIiMtLl5OU011dGFibGVBcnJheaMtKijTMDEJMjM0V05TV2hpdGVcTlNDb2xvclNwYWNlRDAg
+MAAQA4AL0iIjNjdXTlNDb2xvcqI2KNIiIzk6V05TSW1hZ2WiOShfEA9OU0tleWVkQXJjaGl2ZXLRPT5U
+cm9vdIABAAgAEQAaACMALQAyADcARQBLAFQAWwBoAG8AdwB5AH4AgACCAIcAkgCUAJYAmACdAKAAogCk
+AKYAqACtAMQAxgDIFWoVbxV6FYMVlhWaFa0VuBXBFcYVzhXRFdYV5RXpFfAV+BYFFgoWDBYOFhMWGxYe
+FiMWKxYuFkAWQxZIAAAAAAAAAgEAAAAAAAAAPwAAAAAAAAAAAAAAAAAAFko
 </mutableData>
         </image>
         <image name="AccountBarButtonIcon" width="25" height="26"/>
