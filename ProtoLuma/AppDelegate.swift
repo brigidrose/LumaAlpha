@@ -127,8 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         BITHockeyManager.sharedHockeyManager().startManager()
         BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation()
         
-        Instabug.startWithToken("fe9bd4920cf21acf47c498d683dbc416", captureSource: IBGCaptureSourceUIKit, invocationEvent: IBGInvocationEventShake)
-
+        Instabug.startWithToken("fe9bd4920cf21acf47c498d683dbc416", invocationEvent: IBGInvocationEventShake)
         
         let userNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
 //        UIApplication.sharedApplication().registerUserNotificationSettings(userNotificationSettings)
