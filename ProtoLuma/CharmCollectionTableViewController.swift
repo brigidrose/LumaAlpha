@@ -106,6 +106,8 @@ class CharmCollectionTableViewController: UITableViewController{
             MBLMetaWearManager.sharedManager().retrieveSavedMetaWearsWithHandler({(devices) -> Void in
                 if ((devices as! [MBLMetaWear]).count > 0){
                     self.loadCharms()
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager = CharmManager.sharedManager
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager.loadCharms()
                 }
                 else{
                     if (PFUser.currentUser()!["bracelet"] != nil){

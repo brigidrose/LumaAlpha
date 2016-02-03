@@ -92,10 +92,10 @@ NSUInteger CYLTabbarItemsCount = 0;
     
     viewController.tabBarItem.title         = title;
     UIImage *normalImage = [UIImage imageNamed:normalImageName];
-    normalImage = [normalImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    normalImage = [normalImage imageWithRenderingMode:UIImageRenderingModeAutomatic];
     viewController.tabBarItem.image         = normalImage;
     UIImage *selectedImage = [UIImage imageNamed:selectedImageName];
-    selectedImage = [selectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    selectedImage = [selectedImage imageWithRenderingMode:UIImageRenderingModeAutomatic];
     viewController.tabBarItem.selectedImage = selectedImage;
     
     [self addChildViewController:viewController];

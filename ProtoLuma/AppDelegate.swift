@@ -86,6 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var metawearManager:MBLMetaWearManager!
     var locationManager:CLLocationManager!
     var deviceId:String!
+    var charmManager:CharmManager!
     
     var latestBatteryLife:Int? {
         didSet{
@@ -192,7 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         print("launch moment composer")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let newMomentNavigationVC = storyboard.instantiateViewControllerWithIdentifier("NewMomentNavigationController")
-        (newMomentNavigationVC.childViewControllers[0] as! NewStoryTabViewController).charms = (((self.window?.rootViewController as! LumaTabBarController).viewControllers[0] as! UINavigationController).childViewControllers[0] as! CharmCollectionTableViewController).charms
+//        (newMomentNavigationVC.childViewControllers[0] as! NewStoryTabViewController).charms = (((self.window?.rootViewController as! LumaTabBarController).viewControllers[0] as! UINavigationController).childViewControllers[0] as! CharmCollectionTableViewController).charms
         self.window?.rootViewController?.presentViewController(newMomentNavigationVC, animated: true, completion: nil)
     }
 
@@ -469,6 +470,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         //only record start time of timer for time between receiving notification and opening app if it has not been set and if the app is in the background.
         let appState = application.applicationState
+
         if notifiedOfNewMomentTime == nil && appState == .Background {
             notifiedOfNewMomentTime = NSDate()
         }

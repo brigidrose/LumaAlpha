@@ -48,6 +48,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         self.toolBarBottom.translatesAutoresizingMaskIntoConstraints = false
         let mediaToolBarItem = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "mediaButtonTapped")
         let lockToolBarItem = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "lockButtonTapped")
+        self.toolBarBottom.tintColor = (UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor
         self.toolBarBottom.items = [mediaToolBarItem, lockToolBarItem]
         self.view.addSubview(self.toolBarBottom)
         
@@ -123,6 +124,10 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
 
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -152,6 +157,8 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     func closeButtonTapped(){
         self.view.endEditing(true)
+        self.view.addSubview(self.toolBarBottom)
+        self.toolBarBottom.hidden = true
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -182,7 +189,13 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     func charmGroupSelectButtonTapped(sender:UIButton){
         print("charmGroupSelectButtonTapped")
         // Push to charmGroupSelect TVC
-        // self.navigationController?.pushViewController(UIViewController(), animated: true)
+         self.performSegueWithIdentifier("showCharmGroupPicker", sender: self)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showCharmGroupPicker"{
+            (segue.destinationViewController as! CharmGroupPickerTableViewController).charms = (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager.charms
+        }
     }
 
     func mediaButtonTapped(){
