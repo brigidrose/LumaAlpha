@@ -201,8 +201,8 @@ class CharmCollectionTableViewController: UITableViewController{
         
         print("enabling tab buttons")
         
-        self.tabBarController?.tabBar.items![1].enabled = true
-        self.tabBarController?.tabBar.items![2].enabled = true
+//        self.tabBarController?.tabBar.items![1].enabled = true
+//        self.tabBarController?.tabBar.items![2].enabled = true
         
         self.refreshControl?.endRefreshing()
         self.tableView.reloadData()
@@ -286,7 +286,7 @@ class CharmCollectionTableViewController: UITableViewController{
                         print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
                         if(photosDownloaded == fbIds.count){
                             let barViewControllers = self.tabBarController?.viewControllers
-                            let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+                            let avc = barViewControllers![1].childViewControllers[0] as! AccountViewController
                             avc.profileImages = self.profileImages  //shared model
                          
                             print("all photos downloaded.  reloading table view")
