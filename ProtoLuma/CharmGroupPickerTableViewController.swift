@@ -16,6 +16,7 @@ class CharmGroupPickerTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.navigationItem.title = "Select Charm"
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelButtonTapped")
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,7 +43,11 @@ class CharmGroupPickerTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func cancelButtonTapped(){
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
 
