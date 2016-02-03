@@ -31,7 +31,7 @@ class CharmTableViewCell : UITableViewCell {
                 let imageView = UIImageView(image: userImage)
                 imageView.contentMode = .ScaleAspectFit
                 profileImages.addArrangedSubview(imageView)
-                print("added profile photo to charm \(title) for user \(fbId)")
+//                print("added profile photo to charm \(title) for user \(fbId)")
                 addedProfileImageViews[fbId] = imageView
             }
         }

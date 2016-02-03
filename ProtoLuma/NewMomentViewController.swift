@@ -20,6 +20,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     var mediaAssets:[PHAsset] = []
     var mediaDescriptions:[String] = []
+    var imageAssets:NSMutableArray = NSMutableArray()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: UIBarButtonItemStyle.Done, target: self, action: "sendButtonTapped:")
         self.tableViewController = UITableViewController()
         self.addChildViewController(self.tableViewController)
-        self.tableViewController.tableView = UITableView(frame: CGRectZero)
+        self.tableViewController.tableView = TPKeyboardAvoidingTableView(frame: CGRectZero)
         self.tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableViewController.tableView.delegate = self
         self.tableViewController.tableView.dataSource = self
@@ -138,7 +139,6 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch indexPath.section{
         case 0:
-            print("moment section")
             if indexPath.row == 0{
                 let cell = tableView.dequeueReusableCellWithIdentifier("TextFieldTableViewCell") as! TextFieldTableViewCell
                 cell.textField.placeholder = "Title"
@@ -152,15 +152,14 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                 return cell
             }
         case 1:
-            print("hellos")
             let cell = tableView.dequeueReusableCellWithIdentifier("MomentMediaTableViewCell") as! MomentMediaTableViewCell
 
-            cell.mediaCaptionTextView.delegate = self
+//            cell.mediaCaptionTextView.delegate = self
             (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
             (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
             cell.mediaCaptionTextView.placeholder = "Description (Optional)"
             cell.mediaCaptionTextView.text = self.mediaDescriptions[indexPath.row]
-            cell.mediaCaptionTextView.delegate = self
+//            cell.mediaCaptionTextView.delegate = self
             cell.mediaPreviewImageView.backgroundColor = nil
           
             let manager = PHImageManager.defaultManager()
@@ -177,11 +176,18 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             options.progressHandler = {(progress, error, stop, info) -> Void in
                 print(progress)
             }
-            manager.requestImageForAsset(asset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
-                // this result handler is called on the main thread for asynchronous requests
-                cell.mediaPreviewImageView?.image = image
-            })
-            print("hellosss")  
+
+            if (self.imageAssets.count > indexPath.row){
+                cell.mediaPreviewImageView.image = self.imageAssets.objectAtIndex(indexPath.row) as? UIImage
+            }
+            else{
+                manager.requestImageForAsset(asset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
+                    // this result handler is called on the main thread for asynchronous requests
+                    self.imageAssets.insertObject(image!, atIndex: indexPath.row)
+                    tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                })
+            }
+            cell.layoutSubviews()
             return cell
         default:
             print("default case")
@@ -196,7 +202,6 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func textViewDidChange(textView: UITextView) {
-        print("HELLOWSSS")
         let size = textView.bounds.size
         let newSize = textView.sizeThatFits(CGSize(width: size.width, height: CGFloat.max))
         
