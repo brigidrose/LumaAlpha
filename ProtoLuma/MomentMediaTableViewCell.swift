@@ -44,17 +44,17 @@ class MomentMediaTableViewCell: UITableViewCell, UITextViewDelegate {
         self.mediaPreviewImageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.momentMediaSheet.addSubview(self.mediaPreviewImageView)
         
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+//        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
         
-        doneButton.title = "Done"
-        doneButton.style = UIBarButtonItemStyle.Done
-        self.keyboardAccessoryView.setItems([flexSpace,doneButton], animated: true)
+//        doneButton.title = "Done"
+//        doneButton.style = UIBarButtonItemStyle.Done
+//        self.keyboardAccessoryView.setItems([flexSpace,doneButton], animated: true)
         
         self.mediaCaptionTextView = SZTextView(frame: CGRectZero)
         self.mediaCaptionTextView.placeholder = "Description (Optional)"
         self.mediaCaptionTextView.scrollsToTop = false
         self.mediaCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        self.mediaCaptionTextView.inputAccessoryView = self.keyboardAccessoryView
+//        self.mediaCaptionTextView.inputAccessoryView = self.keyboardAccessoryView
         self.mediaCaptionTextView.font = UIFont.systemFontOfSize(17)
         self.mediaCaptionTextView.contentInset = UIEdgeInsetsMake(-2,-4,0,0)
         self.mediaCaptionTextView.backgroundColor = nil
@@ -64,10 +64,6 @@ class MomentMediaTableViewCell: UITableViewCell, UITextViewDelegate {
         self.separatorView.translatesAutoresizingMaskIntoConstraints = false
         self.separatorView.backgroundColor = UIColor.blackColor()
         self.momentMediaSheet.addSubview(self.separatorView)
-        
-        
-
-
     }
     
     override func awakeFromNib() {
@@ -120,7 +116,7 @@ class MomentMediaTableViewCell: UITableViewCell, UITextViewDelegate {
         let horizontalConstraintsSeparator = NSLayoutConstraint.constraintsWithVisualFormat("H:|[separatorView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         self.momentMediaSheet.addConstraints(horizontalConstraintsSeparator)
         
-        let horizontalConstraintsInsideSheetForCaption = NSLayoutConstraint.constraintsWithVisualFormat("H:|[mediaCaptionTextView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
+        let horizontalConstraintsInsideSheetForCaption = NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[mediaCaptionTextView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         self.momentMediaSheet.addConstraints(horizontalConstraintsInsideSheetForCaption)
         
         let verticalConstraintsInsideSheet = NSLayoutConstraint.constraintsWithVisualFormat("V:|[mediaPreviewImageView(height)]-8-[mediaCaptionTextView(60)]-8-[separatorView(1)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)

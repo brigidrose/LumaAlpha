@@ -22,6 +22,9 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     var mediaDescriptions:[String] = []
     var imageAssets:NSMutableArray = NSMutableArray()
     
+    var activeField: UITextView?
+    var oldContentInset:UIEdgeInsets!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,7 +33,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: UIBarButtonItemStyle.Done, target: self, action: "sendButtonTapped:")
         self.tableViewController = UITableViewController()
         self.addChildViewController(self.tableViewController)
-        self.tableViewController.tableView = TPKeyboardAvoidingTableView(frame: CGRectZero)
+        self.tableViewController.tableView = UITableView(frame: CGRectZero)
         self.tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableViewController.tableView.delegate = self
         self.tableViewController.tableView.dataSource = self
@@ -124,12 +127,14 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         let buttonVConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[charmImagePreviewImageView(32)]-10-[separatorView(1)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metricsDictionary, views: viewsDictionary)
         charmGroupSelectButton.addConstraints(buttonVConstraints)
 
+        self.registerForKeyboardNotifications()
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.becomeFirstResponder()
+//        self.becomeFirstResponder()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -154,13 +159,14 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("MomentMediaTableViewCell") as! MomentMediaTableViewCell
 
-//            cell.mediaCaptionTextView.delegate = self
-            (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
-            (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
+            cell.mediaCaptionTextView.delegate = self
+//            (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
+//            (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
             cell.mediaCaptionTextView.placeholder = "Description (Optional)"
             cell.mediaCaptionTextView.text = self.mediaDescriptions[indexPath.row]
 //            cell.mediaCaptionTextView.delegate = self
             cell.mediaPreviewImageView.backgroundColor = nil
+            cell.mediaCaptionTextView.returnKeyType = UIReturnKeyType.Done
           
             let manager = PHImageManager.defaultManager()
             
@@ -187,6 +193,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                     tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
                 })
             }
+
             cell.layoutSubviews()
             return cell
         default:
@@ -201,6 +208,34 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
+    func textViewDidBeginEditing(textView: UITextView) {
+        let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(textView, inTableView: self.tableViewController.tableView)!
+        print(indexPathForTextView)
+        if (indexPathForTextView.section == 1){
+            self.activeField = textView //only set activeField for section 1
+            print("indexPathForTextView of activeField is \(indexPathForTextView)")
+        }
+    }
+    
+    func indexPathForCellContainingView(view: UIView, inTableView tableView:UITableView) -> NSIndexPath? {
+        let viewCenterRelativeToTableview = tableView.convertPoint(CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds)), fromView:view)
+        return tableView.indexPathForRowAtPoint(viewCenterRelativeToTableview)
+    }
+
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(textView, inTableView: self.tableViewController.tableView)!
+        print(indexPathForTextView)
+        if (indexPathForTextView.section == 1){
+            self.mediaDescriptions[indexPathForTextView.row] = textView.text
+        }
+        else{
+            // == 1
+            // This would be the moment desc
+        }
+        self.activeField = nil
+    }
+    
     func textViewDidChange(textView: UITextView) {
         let size = textView.bounds.size
         let newSize = textView.sizeThatFits(CGSize(width: size.width, height: CGFloat.max))
@@ -212,6 +247,10 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             self.tableViewController.tableView.endUpdates()
             UIView.setAnimationsEnabled(true)
         }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
 
 
@@ -273,7 +312,11 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n"{
-            textView.resignFirstResponder()
+            if ((textView.superview?.isKindOfClass(TextViewTableViewCell)) != nil){
+                print("text view responded")
+                textView.resignFirstResponder()
+                return false
+            }
             return false
         }
         else{
@@ -303,6 +346,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                 // code here
                 let picker:CTAssetsPickerController = CTAssetsPickerController()
                 picker.defaultAssetCollection = PHAssetCollectionSubtype.SmartAlbumUserLibrary
+
                 // create options for fetching photo only
                 let fetchOptions:PHFetchOptions = PHFetchOptions()
                 fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.Image.rawValue)
@@ -312,7 +356,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                 
                 // to present picker as a form sheet in iPad
                 picker.modalPresentationStyle = UIModalPresentationStyle.FormSheet
-                
+                picker.selectedAssets = NSMutableArray(array: self.mediaAssets)
                 picker.delegate = self
                 self.presentViewController(picker, animated: true, completion: nil)
             })
@@ -325,11 +369,66 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         let presentingVC = self //(picker.presentingViewController?.childViewControllers[0] as! NewStoryTabViewController)
         presentingVC.mediaAssets.appendContentsOf(assets as! [PHAsset])
         presentingVC.mediaDescriptions.appendContentsOf(Array(count: assets.count, repeatedValue: ""))
-        presentingVC.tableViewController.tableView.reloadData()
         picker.dismissViewControllerAnimated(true, completion: {
             print(presentingVC.mediaAssets)
+            presentingVC.imageAssets = NSMutableArray(capacity: picker.selectedAssets.count)
+            presentingVC.tableViewController.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
         })
     }
+    
+    func assetsPickerController(picker: CTAssetsPickerController!, shouldSelectAsset asset: PHAsset!) -> Bool {
+        if picker.selectedAssets.count < 15{
+            return true
+        }
+        else{
+            let alertVC = UIAlertController(title: "Upload Maximum Reached", message: "You can add up to 15 photos to each moment.", preferredStyle: UIAlertControllerStyle.Alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+            picker.presentViewController(alertVC, animated: true, completion: nil)
+            return false
+        }
+    }
+    
+    func registerForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWasShown(aNotification: NSNotification) {
+        print("hey")
+        oldContentInset = self.tableViewController.tableView.contentInset
+        if activeField != nil {
+            let info = aNotification.userInfo as! [String: AnyObject],
+            kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue().size,
+            contentInsets = UIEdgeInsets(top: 53 + 64, left: 0, bottom: kbSize.height, right: 0)
+            
+            self.tableViewController.tableView.contentInset = contentInsets
+            self.tableViewController.tableView.scrollIndicatorInsets = contentInsets
+            
+            // If active text field is hidden by keyboard, scroll it so it's visible
+            // Your app might not need or want this behavior.
+            var aRect = self.view.frame
+            aRect.size.height -= kbSize.height
+            
+            print("keyboard was shown!")
+            if !CGRectContainsPoint(aRect, activeField!.frame.origin) {
+                let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableViewController.tableView)!
+                self.tableViewController.tableView.scrollToRowAtIndexPath(indexPathForTextView, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+//                let myRect = self.tableViewController.tableView.rectForRowAtIndexPath(NSIndexPath(forItem: indexPathForTextView.row, inSection: 1)) //get offset for first the row in section
+//                let scrollToRect = CGRectMake(0, myRect.origin.y + activeField!.frame.origin.y, activeField!.frame.size.width, activeField!.frame.size.height) //add the offsets of the text field and the
+//                print("scrolling rect to visible. \(scrollToRect)")
+
+//                self.tableViewController.tableView.scrollRectToVisible(scrollToRect, animated: true)
+            }
+        }
+    }
+    
+    func keyboardWillBeHidden(aNotification: NSNotification) {
+        //        let contentInsets = UIEdgeInsetsZero
+        print("will hide \(oldContentInset)")
+        self.tableViewController.tableView.contentInset = oldContentInset
+        self.tableViewController.tableView.scrollIndicatorInsets = oldContentInset
+    }
+
     
     // Code by @hcatlin
     func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
@@ -361,7 +460,17 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView == self.tableViewController.tableView{
-            self.view.endEditing(true)
+//            self.view.endEditing(true)
+        }
+    }
+    
+    func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
+        print("tests")
+        if (scrollView == self.tableViewController.tableView){
+            return true
+        }
+        else{
+            return false
         }
     }
     
