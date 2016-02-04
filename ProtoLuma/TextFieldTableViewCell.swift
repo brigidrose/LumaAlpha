@@ -43,7 +43,7 @@ class TextFieldTableViewCell: UITableViewCell {
         let centerXConstraint = NSLayoutConstraint(item: self.textField, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.contentView, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
         self.contentView.addConstraint(centerXConstraint)
         
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-8-[textField]-8-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-16-[textField]-12-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: viewsDictionary)
         self.contentView.addConstraints(verticalConstraints)
         
         let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[textField]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)

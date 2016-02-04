@@ -74,5 +74,10 @@ class CharmGroupSelectionTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        
+    }
 
 }

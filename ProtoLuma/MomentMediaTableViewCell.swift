@@ -51,7 +51,7 @@ class MomentMediaTableViewCell: UITableViewCell, UITextViewDelegate {
 //        self.keyboardAccessoryView.setItems([flexSpace,doneButton], animated: true)
         
         self.mediaCaptionTextView = SZTextView(frame: CGRectZero)
-        self.mediaCaptionTextView.placeholder = "Description (Optional)"
+        self.mediaCaptionTextView.placeholder = "Description"
         self.mediaCaptionTextView.scrollsToTop = false
         self.mediaCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
 //        self.mediaCaptionTextView.inputAccessoryView = self.keyboardAccessoryView
