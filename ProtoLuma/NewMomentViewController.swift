@@ -602,7 +602,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             print("keyboard was shown!")
             let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableViewController.tableView)!
             self.tableViewController.tableView.scrollToRowAtIndexPath(indexPathForTextView, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-            self.keyboardShown = true
+            print("just showed keyboard \(self.keyboardShown)")
             if !CGRectContainsPoint(aRect, activeField!.frame.origin) {
 //                let myRect = self.tableViewController.tableView.rectForRowAtIndexPath(NSIndexPath(forItem: indexPathForTextView.row, inSection: 1)) //get offset for first the row in section
 //                let scrollToRect = CGRectMake(0, myRect.origin.y + activeField!.frame.origin.y, activeField!.frame.size.width, activeField!.frame.size.height) //add the offsets of the text field and the
@@ -611,6 +611,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
 //                self.tableViewController.tableView.scrollRectToVisible(scrollToRect, animated: true)
             }
         }
+        self.keyboardShown = true
     }
     
     func keyboardWillBeHidden(aNotification: NSNotification) {
@@ -651,7 +652,9 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     // end code by @hcatlin
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView == self.tableViewController.tableView && self.keyboardShown{
+        print("hello \(scrollView) is keyboard shown? \(self.keyboardShown)")
+        if (scrollView == self.tableViewController.tableView) && self.keyboardShown{
+            print("hide keyboard")
             self.view.endEditing(true)
         }
     }
