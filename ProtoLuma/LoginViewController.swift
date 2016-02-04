@@ -184,6 +184,7 @@ class LoginViewController: UIViewController {
                 
             } else {
                 print("Uh oh. The user cancelled the Facebook login.")
+                sender.enabled = true
             }
         })
     }

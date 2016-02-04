@@ -196,8 +196,11 @@ class CharmCollectionTableViewController: UITableViewController{
         
         print("loading charms into account page")
         //load charms into the account view
-        let avc = barViewControllers![1].childViewControllers[0] as! AccountViewController
-        avc.charms = self.charms  //shared model
+        if let avc = barViewControllers![1].childViewControllers[0] as? AccountViewController {
+            avc.charms = self.charms  //shared model
+        }else{
+            print("Error!!  Could not cast barViewControllers[1].childViewController[0] to AccountViewController")
+        }
         
         print("enabling tab buttons")
         

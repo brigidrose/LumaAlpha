@@ -112,18 +112,21 @@ class PairBraceletViewController: UIViewController {
 
     func pairAndSetupANCS(){
         print("Pairing now!")
-
-        self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
-            if(error != nil){
-                print("pairing error")
-                print(error)
-                ParseErrorHandlingController.handleParseError(error)
-            }else{
-                print("bracelet configured")
-                self.bracelet.rememberDevice()
-                self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
-            }
-        })
+        
+        //remove ANCS stuff and just remember device
+        self.bracelet.rememberDevice()
+        self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
+//        self.bracelet.setConfiguration(BraceletSettings(), handler: {(error) -> Void in
+//            if(error != nil){
+//                print("pairing error")
+//                print(error)
+//                ParseErrorHandlingController.handleParseError(error)
+//            }else{
+//                print("bracelet configured")
+//                self.bracelet.rememberDevice()
+//                self.performSegueWithIdentifier("RegisteredAndPaired", sender: self)
+//            }
+//        })
     }
     
     // MARK: MetaWearManager Methods

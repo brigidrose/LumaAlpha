@@ -107,12 +107,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var collectionController:CharmCollectionTableViewController!
     var tabBarController:UITabBarController!
     var openedAppTime:NSDate?
-    var notifiedOfNewMomentTime:NSDate?
     
     //degrees only go from -180 to 180 so set to 500 which means No Location Yet
     var latestLocation:[Double] = [500, 500]
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        print("Did finish launching with options!")
         // [Optional] Power your app with Local Datastore. For more info, go to
         // https://parse.com/docs/ios_guide#localdatastore/iOS
         Parse.enableLocalDatastore()
@@ -227,6 +227,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             //reset to nil so that the app knows to restart timer when the app opens again
             openedAppTime = nil
         }
+        
+        //disconnect to save battery
+        self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
+            if (devices.count > 0){
+                let bracelet = devices[0] as! MBLMetaWear
+                if (bracelet.state == MBLConnectionState.Connected){
+                    bracelet.disconnectWithHandler({ (error) -> Void in
+                        //empty
+                        print("disconnected bracelet when app went into background")
+                    })
+                }
+            }
+        })
+        
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -280,24 +294,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             openedAppTime = NSDate()
         }
         
+        //the below is turned off because if I try to access an instance variable in the push handler I get an EXC_BAD_ACCESS error
         //calculate time since last notification
-        if notifiedOfNewMomentTime != nil {
-            let endTime = NSDate()
-            let timeInterval: Double = endTime.timeIntervalSinceDate(notifiedOfNewMomentTime!);
-            var dimensions = [
-                "timeInterval": String(timeInterval)
-            ]
-            if let user = PFUser.currentUser() {
-                dimensions["userId"] = user.objectId
-            }
-            
-            print("Reporting that user had \(timeInterval) seconds between receiving a notification and opening the app")
-            
-            PFAnalytics.trackEvent("timeBetweenNewNotificationAndOpeningApp", dimensions: dimensions)
-            
-            //reset to nil so that the app knows to restart timer when another notification is received
-            notifiedOfNewMomentTime = nil
-        }
+//        if notifiedOfNewMomentTime != nil {
+//            let endTime = NSDate()
+//            let timeInterval: Double = endTime.timeIntervalSinceDate(notifiedOfNewMomentTime!);
+//            var dimensions = [
+//                "timeInterval": String(timeInterval)
+//            ]
+//            if let user = PFUser.currentUser() {
+//                dimensions["userId"] = user.objectId
+//            }
+//            
+//            print("Reporting that user had \(timeInterval) seconds between receiving a notification and opening the app")
+//            
+//            PFAnalytics.trackEvent("timeBetweenNewNotificationAndOpeningApp", dimensions: dimensions)
+//            
+//            //reset to nil so that the app knows to restart timer when another notification is received
+//            notifiedOfNewMomentTime = nil
+//        }
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -363,95 +378,88 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     
     
-    func notifyBracelet(device: MBLMetaWear, charmSlot: UInt8){
+    class func notifyBracelet(device: MBLMetaWear, charmSlot: UInt8, completionHandler: (UIBackgroundFetchResult) -> Void){
         device.hapticBuzzer?.startHapticWithDutyCycleAsync(255, pulseWidth: 500, completion: nil)
-        device.led?.flashLEDColorAsync(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 3)
+//        device.led?.flashLEDColorAsync(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 6).waitUntilFinished()
         let length:UInt8 = 7; // Specific to your NeoPixel stand
         let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
         let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand
         
-        let strand:MBLNeopixelStrand = device.neopixel!.strandWithColor(color, speed: speed, pin: 0, length: length);
+        let strand:MBLNeopixelStrand = device.neopixel!.strandWithColor(color, speed: speed, pin: 0, length: length)
         
-        strand.initializeAsync().waitUntilFinished()
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            strand.initializeAsync().waitUntilFinished()
+            
+            print("initialized neopixel strand")
+            
+            strand.setPixelAsync(charmSlot, color: UIColor.redColor()).waitUntilFinished()
+            print("set pixel async the first time")
+            
+            
+        }
         
-        print("initialized neopixel strand")
-        
-        strand.setPixelAsync(charmSlot, color: UIColor.redColor())
-        print("set pixel async the first time")
-        
-        let timeBetweenFlashes = 1000 * NSEC_PER_MSEC
+        let timeBetweenFlashes = 2000 * NSEC_PER_MSEC
         
         var delay = timeBetweenFlashes
         var time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue(), {
-            strand.setPixelAsync(charmSlot, color: UIColor.greenColor())
+        dispatch_after(time, dispatch_get_global_queue(priority, 0), {
+            print("setting green")
+            strand.setPixelAsync(charmSlot, color: UIColor.greenColor()).waitUntilFinished()
         })
         
         delay += timeBetweenFlashes
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue(), {
-            strand.setPixelAsync(charmSlot, color: UIColor.blueColor())
+        dispatch_after(time, dispatch_get_global_queue(priority, 0), {
+            print("turning off")
+            strand.clearAllPixelsAsync().waitUntilFinished()
             
         })
         
         delay += timeBetweenFlashes
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue(), {
-            strand.clearAllPixelsAsync().waitUntilFinished()
-            strand.deinitializeAsync()
-            self.setBatteryLife(device)
+        dispatch_after(time, dispatch_get_global_queue(priority, 0), {
+            print("deiniting strand")
+            strand.deinitializeAsync().waitUntilFinished()
+            print("disconnecting from device")
+            device.disconnectWithHandler({ (error) -> Void in
+                if error == nil {
+                    print("Disconnected from device")
+                    completionHandler(UIBackgroundFetchResult.NewData)
+                }else{
+                    ParseErrorHandlingController.handleParseError(error)
+                }
+            })
         })
     }
     
-    func pushReceivedWithCharmSlot(charmSlot: UInt8){
-//        self.metawearManager.startScanForMetaWearsAllowDuplicates(false, handler: {(devices:[AnyObject]!) -> Void in
-//            print("scanned for metawear")
-//            for device in devices as! [MBLMetaWear]{
-//                // Loop connect to all devices and drop connection until matches bracelet on file, needs solution where ble advertises serialNumber
-//                if (device.state == MBLConnectionState.Connected){
-//                    print("already connected to bracelet")
-//                    self.notifyBracelet(device, charmSlot: charmSlot)
-//                }
-//                else{
-//                    device.connectWithHandler({(error) -> Void in
-//                        print("Connected")
-//                        if (error == nil){
-//                            print("connected to \(device.deviceInfo.serialNumber)")
-//                            if (device.deviceInfo.serialNumber == currentuser.bracelet.serialNumber){
-//                                self.notifyBracelet(device, charmSlot: charmSlot)
-//                            }
-//                        }
-//                        else{
-//                            print(error)
-//                        }
-//                    })
-//                }
-//            }
-//        })
-//        
-//        
-        self.metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
+    class func pushReceivedWithCharmSlot(charmSlot: UInt8, completionHandler: (UIBackgroundFetchResult) -> Void){
+
+        let metawearManager = MBLMetaWearManager.sharedManager()
+        metawearManager.retrieveSavedMetaWearsWithHandler({(devices:[AnyObject]!) -> Void in
             if (devices.count > 0){
                 
                 let device = devices[0] as! MBLMetaWear
                 if (device.state == MBLConnectionState.Connected){
                     print("already connected to bracelet")
-                    self.notifyBracelet(device, charmSlot: charmSlot)
+                    AppDelegate.notifyBracelet(device, charmSlot: charmSlot, completionHandler: completionHandler)
                 }else{
                     print("not connected to bracelet.  connecting.")
                     device.connectWithHandler({(error) -> Void in
                         print("connected")
                         if (error == nil){
                             print("error is nil")
-                            self.notifyBracelet(device, charmSlot: charmSlot)
+                            AppDelegate.notifyBracelet(device, charmSlot: charmSlot, completionHandler: completionHandler)
                         }else{
                             print(error)
                             ParseErrorHandlingController.handleParseError(error)
+                            completionHandler(UIBackgroundFetchResult.NewData)
                         }
                     })
                 }
             }else{
                 print("no saved metawears found in push notification handler.  fuck.")
+                completionHandler(UIBackgroundFetchResult.NewData)
             }
         })
 
@@ -468,15 +476,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         print("CharmSlot: \(charmSlot)")
         
-        //only record start time of timer for time between receiving notification and opening app if it has not been set and if the app is in the background.
-        let appState = application.applicationState
-        if notifiedOfNewMomentTime == nil && appState == .Background {
-            notifiedOfNewMomentTime = NSDate()
-        }
-        
-        pushReceivedWithCharmSlot(charmSlot)
-        
-        completionHandler(UIBackgroundFetchResult.NewData)
+        AppDelegate.pushReceivedWithCharmSlot(charmSlot, completionHandler: completionHandler)
         
     }
     
