@@ -54,6 +54,7 @@ class StoryDetailViewController: UIViewController, UITableViewDelegate, UITableV
             cell.mediaCaptionTextView.placeholder = ""
             cell.mediaCaptionTextView.text = self.storyUnits[indexPath.row]["description"] as? String
             cell.mediaCaptionTextView.userInteractionEnabled = false
+            cell.layoutSubviews()
             return cell
         }
     }

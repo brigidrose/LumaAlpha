@@ -28,7 +28,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     var oldContentInset:UIEdgeInsets!
     
     var forCharm:Charm!
-    var momentTitle:String!
+    var momentTitle:String = ""
     var momentDescription:String!
     var unlockParameterType:String!
     var unlockTime:NSDate!
@@ -37,12 +37,15 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
+    var keyboardShown:Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "New Moment"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "closeButtonTapped")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: UIBarButtonItemStyle.Done, target: self, action: "sendButtonTapped:")
+        self.navigationItem.rightBarButtonItem?.enabled = false
         self.tableViewController = UITableViewController()
         self.addChildViewController(self.tableViewController)
         self.tableViewController.tableView = UITableView(frame: CGRectZero)
@@ -68,8 +71,8 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         
         self.toolBarBottom = UIToolbar(frame: CGRectZero)
         self.toolBarBottom.translatesAutoresizingMaskIntoConstraints = false
-        let mediaToolBarItem = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "mediaButtonTapped")
-        let lockToolBarItem = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "lockButtonTapped")
+        let mediaToolBarItem = UIBarButtonItem(image: UIImage(named: "mediaUploadBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "mediaButtonTapped")
+        let lockToolBarItem = UIBarButtonItem(image: UIImage(named: "lockBarButtonItemIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "lockButtonTapped")
         self.toolBarBottom.tintColor = (UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor
         self.toolBarBottom.items = [mediaToolBarItem, lockToolBarItem]
         self.view.addSubview(self.toolBarBottom)
@@ -106,12 +109,12 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         let charmImagePreviewImageView = UIImageView(frame: CGRectZero)
         charmImagePreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         charmImagePreviewImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        charmImagePreviewImageView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        charmImagePreviewImageView.image = UIImage(named: "CharmsBarButtonIcon")
         charmGroupSelectButton.addSubview(charmImagePreviewImageView)
 
         self.charmGroupTitleLabel = UILabel(frame: CGRectZero)
         self.charmGroupTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.charmGroupTitleLabel.text = "Charm Group Title Label"
+        self.charmGroupTitleLabel.text = "Tap to Select Charm"
         self.charmGroupTitleLabel.textAlignment = NSTextAlignment.Left
         self.charmGroupTitleLabel.numberOfLines = 1
         charmGroupSelectButton.addSubview(self.charmGroupTitleLabel)
@@ -214,9 +217,8 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                                         //                                        let stvc = barViewControllers![0].childViewControllers[0] as! StoriesTabViewController
                                         //                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
                                         //                                        stvc.loadStoriesForCharmViewed()
-                                        self.tabBarController?.selectedIndex = 0
                                         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-                                        
+                                        self.tabBarController?.selectedIndex = 0
                                         self.appDelegate.collectionController.navigateToCharmMoments(self.forCharm.objectId!)
                                         self.dismissViewControllerAnimated(true, completion: nil)
                                         //                                            self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
@@ -252,7 +254,8 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                     progressHUD.progress = 1
                     MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
                     self.tabBarController?.selectedIndex = 0
-                    self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
+                    self.appDelegate.collectionController.navigateToCharmMoments(self.forCharm.objectId!)
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 else{
                     print(error)
@@ -452,7 +455,12 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if ((textField.superview?.superview?.isKindOfClass(TextFieldTableViewCell)) != nil){
-            print("yoooo")
+            if self.momentTitle != "" && self.forCharm != nil{
+                self.navigationItem.rightBarButtonItem!.enabled = true
+            }
+            else{
+                self.navigationItem.rightBarButtonItem!.enabled = false
+            }
             (self.tableViewController.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! TextViewTableViewCell).textView.becomeFirstResponder()
         }
         return false
@@ -461,9 +469,34 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     func textFieldDidEndEditing(textField: UITextField) {
         if self.indexPathForCellContainingView(textField, inTableView: self.tableViewController.tableView) == NSIndexPath(forRow: 0, inSection: 0){
             // textField is moment title
-            self.momentTitle = textField.text
+            if (textField.text != ""){
+                self.momentTitle = textField.text!
+            }
+            if self.momentTitle != "" && self.forCharm != nil{
+                self.navigationItem.rightBarButtonItem!.enabled = true
+            }
+            else{
+                self.navigationItem.rightBarButtonItem!.enabled = false
+            }
         }
-        print("moment title is \(self.momentTitle)")
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let textFieldRange:NSRange = NSMakeRange(0, textField.text!.characters.count)
+        if (NSEqualRanges(range, textFieldRange) && string.characters.count == 0) {
+            print("just became empty")
+            self.momentTitle = ""
+        }
+        else{
+            self.momentTitle = textField.text! + string
+        }
+        if self.momentTitle != "" && self.forCharm != nil{
+            self.navigationItem.rightBarButtonItem!.enabled = true
+        }
+        else{
+            self.navigationItem.rightBarButtonItem!.enabled = false
+        }
+        return true
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
@@ -569,7 +602,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             print("keyboard was shown!")
             let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableViewController.tableView)!
             self.tableViewController.tableView.scrollToRowAtIndexPath(indexPathForTextView, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-
+            self.keyboardShown = true
             if !CGRectContainsPoint(aRect, activeField!.frame.origin) {
 //                let myRect = self.tableViewController.tableView.rectForRowAtIndexPath(NSIndexPath(forItem: indexPathForTextView.row, inSection: 1)) //get offset for first the row in section
 //                let scrollToRect = CGRectMake(0, myRect.origin.y + activeField!.frame.origin.y, activeField!.frame.size.width, activeField!.frame.size.height) //add the offsets of the text field and the
@@ -582,6 +615,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     func keyboardWillBeHidden(aNotification: NSNotification) {
         //        let contentInsets = UIEdgeInsetsZero
+        self.keyboardShown = false
         print("will hide \(oldContentInset)")
         self.tableViewController.tableView.contentInset = oldContentInset
         self.tableViewController.tableView.scrollIndicatorInsets = oldContentInset
@@ -617,8 +651,8 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     // end code by @hcatlin
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView == self.tableViewController.tableView{
-//            self.view.endEditing(true)
+        if scrollView == self.tableViewController.tableView && self.keyboardShown{
+            self.view.endEditing(true)
         }
     }
     
@@ -640,5 +674,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     func lockButtonTapped(){
         print("lock button tapped")
         // Present Modal Lock Options
+        let lockNC = UINavigationController(rootViewController: LockMomentViewController())
+        self.presentViewController(lockNC, animated: true, completion: nil)
     }
 }

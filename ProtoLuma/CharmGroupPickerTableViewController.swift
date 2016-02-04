@@ -53,6 +53,12 @@ class CharmGroupPickerTableViewController: UITableViewController {
         let indexPath = self.indexPathForCellContainingView(sender, inTableView: self.tableView)!
         self.momentComposerVC.forCharm = self.charms[indexPath.row]
         self.momentComposerVC.charmGroupTitleLabel.text = (self.momentComposerVC.forCharm["charmGroup"] as! Charm_Group)["name"] as? String
+        if self.momentComposerVC.momentTitle != "" && self.momentComposerVC.forCharm != nil{
+            self.momentComposerVC.navigationItem.rightBarButtonItem!.enabled = true
+        }
+        else{
+            self.momentComposerVC.navigationItem.rightBarButtonItem!.enabled = false
+        }
         self.dismissViewControllerAnimated(true, completion: {
         })
     }
