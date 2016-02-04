@@ -422,9 +422,10 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             aRect.size.height -= kbSize.height
             
             print("keyboard was shown!")
+            let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableViewController.tableView)!
+            self.tableViewController.tableView.scrollToRowAtIndexPath(indexPathForTextView, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+
             if !CGRectContainsPoint(aRect, activeField!.frame.origin) {
-                let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableViewController.tableView)!
-                self.tableViewController.tableView.scrollToRowAtIndexPath(indexPathForTextView, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
 //                let myRect = self.tableViewController.tableView.rectForRowAtIndexPath(NSIndexPath(forItem: indexPathForTextView.row, inSection: 1)) //get offset for first the row in section
 //                let scrollToRect = CGRectMake(0, myRect.origin.y + activeField!.frame.origin.y, activeField!.frame.size.width, activeField!.frame.size.height) //add the offsets of the text field and the
 //                print("scrolling rect to visible. \(scrollToRect)")
