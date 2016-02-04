@@ -624,7 +624,7 @@
         <scene sceneID="5BB-Vt-3JB">
             <objects>
                 <navigationController storyboardIdentifier="NewMomentNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="acl-cA-6p0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="New" image="23A40D36-D89E-4D03-B881-9FBCD1106F5B" id="qex-f5-VgA"/>
+                    <tabBarItem key="tabBarItem" title="New" image="B3633A2F-2BF7-4BE8-9AA7-DC0571B6F531" id="qex-f5-VgA"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wsm-lT-TYM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -660,7 +660,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="23A40D36-D89E-4D03-B881-9FBCD1106F5B" width="22" height="22">
+        <image name="AccountBarButtonIcon" width="25" height="26"/>
+        <image name="B3633A2F-2BF7-4BE8-9AA7-DC0571B6F531" width="22" height="22">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -702,7 +703,7 @@ AAABAQADAAAAAQAWAAABAgADAAAABAAACEYBAwADAAAAAQABAAABBgADAAAAAQACAAABEQAEAAAAAQAA
 AAgBEgADAAAAAQABAAABFQADAAAAAQAEAAABFgADAAAAAQAWAAABFwAEAAAAAQAAB5ABHAADAAAAAQAB
 AAABUgADAAAAAQACAAABUwADAAAABAAACE6HcwAHAAAMSAAACFYAAAAAAAgACAAIAAgAAQABAAEAAQAA
 DEhMaW5vAhAAAG1udHJSR0IgWFlaIAfOAAIACQAGADEAAGFjc3BNU0ZUAAAAAElFQyBzUkdCAAAAAAAA
-AAAAAAABAAD21gABAAAAANMtSFAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAD21gABAAAAANMtSFAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAEWNwcnQAAAFQAAAAM2Rlc2MAAAGEAAAAbHd0cHQAAAHwAAAAFGJrcHQAAAIEAAAAFHJY
 WVoAAAIYAAAAFGdYWVoAAAIsAAAAFGJYWVoAAAJAAAAAFGRtbmQAAAJUAAAAcGRtZGQAAALEAAAAiHZ1
 ZWQAAANMAAAAhnZpZXcAAAPUAAAAJGx1bWkAAAP4AAAAFG1lYXMAAAQMAAAAJHRlY2gAAAQwAAAADHJU
@@ -762,7 +763,6 @@ gxWWFZoVpRWuFbMVuxW+FcMV0hXWFd0V5RXyFfcV+RX7FgAWCBYLFhAWGBYbFi0WMBY1AAAAAAAAAgEA
 AAAAAAAAPgAAAAAAAAAAAAAAAAAAFjc
 </mutableData>
         </image>
-        <image name="AccountBarButtonIcon" width="25" height="26"/>
         <image name="CharmsBarButtonIcon" width="22" height="22"/>
         <image name="Collection" width="25" height="25"/>
     </resources>

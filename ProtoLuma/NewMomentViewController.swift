@@ -20,7 +20,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     var mediaAssets:[PHAsset] = []
     var mediaDescriptions:[String] = []
-    var imageAssets:NSMutableArray = NSMutableArray()
+    var imageDictionary:[NSIndexPath:UIImage] = [NSIndexPath:UIImage]()
     
     var activeField: UITextView?
     var oldContentInset:UIEdgeInsets!
@@ -182,17 +182,29 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             options.progressHandler = {(progress, error, stop, info) -> Void in
                 print(progress)
             }
-
-            if (self.imageAssets.count > indexPath.row){
-                cell.mediaPreviewImageView.image = self.imageAssets.objectAtIndex(indexPath.row) as? UIImage
+            
+            if self.imageDictionary.keys.contains(indexPath){
+                cell.mediaPreviewImageView.image = self.imageDictionary[indexPath]
             }
             else{
                 manager.requestImageForAsset(asset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
                     // this result handler is called on the main thread for asynchronous requests
-                    self.imageAssets.insertObject(image!, atIndex: indexPath.row)
-                    tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    self.imageDictionary.updateValue(image!, forKey: indexPath)
+                    if self.tableViewController.tableView.visibleCells.contains(cell){
+                        self.tableViewController.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    }
                 })
             }
+//            if (self.imageAssets.count > indexPath.row){
+//                cell.mediaPreviewImageView.image = self.imageAssets.objectAtIndex(indexPath.row) as? UIImage
+//            }
+//            else{
+//                manager.requestImageForAsset(asset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
+//                    // this result handler is called on the main thread for asynchronous requests
+//                    self.imageAssets.insertObject(image!, atIndex: indexPath.row)
+//                    tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+//                })
+//            }
 
             cell.layoutSubviews()
             return cell
@@ -369,10 +381,10 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         let presentingVC = self //(picker.presentingViewController?.childViewControllers[0] as! NewStoryTabViewController)
         presentingVC.mediaAssets.appendContentsOf(assets as! [PHAsset])
         presentingVC.mediaDescriptions.appendContentsOf(Array(count: assets.count, repeatedValue: ""))
+        presentingVC.tableViewController.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
         picker.dismissViewControllerAnimated(true, completion: {
             print(presentingVC.mediaAssets)
-            presentingVC.imageAssets = NSMutableArray(capacity: picker.selectedAssets.count)
-            presentingVC.tableViewController.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
+//            presentingVC.imageAssets = NSMutableArray(capacity: picker.selectedAssets.count)
         })
     }
     
