@@ -42,8 +42,7 @@ class ButtonWithPromptTableViewCell: UITableViewCell {
         self.button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Highlighted)
         self.button.titleLabel?.textColor = UIColor.whiteColor()
         self.button.titleLabel?.font = UIFont.systemFontOfSize(17, weight: UIFontWeightLight)
-        self.button.setBackgroundImage((UIApplication.sharedApplication().delegate as! AppDelegate)
-.imageWithColor(((UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor)!), forState: UIControlState.Highlighted)
+        self.button.setBackgroundImage((UIApplication.sharedApplication().delegate as! AppDelegate).imageWithColor(((UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor)!), forState: UIControlState.Highlighted)
         self.button.showsTouchWhenHighlighted = false
         self.contentView.addSubview(self.button)
         

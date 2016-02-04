@@ -428,6 +428,7 @@ class NewStoryTabViewController: UITableViewController, UITextFieldDelegate, UIT
                     cell.mediaCaptionTextView.text = self.mediaDescriptions[indexPath.row]
                     cell.mediaCaptionTextView.delegate = self
                     cell.mediaPreviewImageView.backgroundColor = nil
+
                     
                     let manager = PHImageManager.defaultManager()
                     

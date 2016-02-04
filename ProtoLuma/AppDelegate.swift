@@ -83,10 +83,10 @@ extension UIImage {
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
-    var beans:NSMutableDictionary!
     var metawearManager:MBLMetaWearManager!
     var locationManager:CLLocationManager!
     var deviceId:String!
+    var charmManager:CharmManager!
     
     var latestBatteryLife:Int? {
         didSet{

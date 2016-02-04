@@ -122,7 +122,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="a28-ku-A4r">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a28-ku-A4r" id="ewB-4d-TDU">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -169,7 +169,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="tR2-6V-QRS">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tR2-6V-QRS" id="2CR-pH-dR4">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -231,7 +231,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="taG-Pt-IkN">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="taG-Pt-IkN" id="fMD-BB-kXk">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -310,10 +310,58 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="RF8-a4-MuC"/>
+                    <connections>
+                        <segue destination="gni-Ze-JOE" kind="presentation" identifier="showCharmGroupPicker" id="Ez4-4S-NnG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YbI-5K-aqs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2175" y="1954"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="3Bi-uZ-ida">
+            <objects>
+                <navigationController id="gni-Ze-JOE" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Wh-wd-JdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="RTo-sW-nO0" kind="relationship" relationship="rootViewController" id="neI-DP-1vs"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2p2-fR-wHs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3023" y="1954"/>
+        </scene>
+        <!--Charm Group Picker Table View Controller-->
+        <scene sceneID="c5A-Qh-YKG">
+            <objects>
+                <tableViewController id="RTo-sW-nO0" customClass="CharmGroupPickerTableViewController" customModule="ProtoLuma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="QqJ-Qf-4ae">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v3a-dR-djc">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v3a-dR-djc" id="oZR-oI-i8b">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="RTo-sW-nO0" id="v9A-sh-EU2"/>
+                            <outlet property="delegate" destination="RTo-sW-nO0" id="UK9-yO-Jwx"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="CYl-Um-Ra5"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wr5-0o-PY0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3757" y="1954"/>
         </scene>
         <!--Add Charm View Controller-->
         <scene sceneID="GSE-Tv-SPZ">
@@ -348,7 +396,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BdA-rL-qE1">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BdA-rL-qE1" id="mSK-vd-zv2">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -390,7 +438,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZCb-bo-OKL">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZCb-bo-OKL" id="nmq-Cl-Q99">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -476,7 +524,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="p8s-O9-XnI">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p8s-O9-XnI" id="NJn-vd-fhg">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -507,7 +555,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BEN-nS-rcF">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BEN-nS-rcF" id="kBZ-sM-6k6">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -584,7 +632,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Q3i-YM-ZmZ" kind="relationship" relationship="rootViewController" id="Kfj-7a-JN5"/>
+                        <segue destination="Q3i-YM-ZmZ" kind="relationship" relationship="rootViewController" id="ndk-kJ-b0c"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HpU-mu-XJc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -617,8 +665,8 @@
         <image name="Collection" width="25" height="25"/>
         <image name="FC2106E1-7A26-4D82-8711-A33E9BF01A4B" width="22" height="22">
             <mutableData key="keyedArchiveRepresentation">
-YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
-GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
+YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
+GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
 DBIAwAAAgAKACtISCRMVWk5TLm9iamVjdHOhFIADgAnSEgkXGqIYGYAEgAWACBAA0h0JHh9fEBROU1RJ
 RkZSZXByZXNlbnRhdGlvboAGgAdPERSeTU0AKgAAB5gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaf8R
 AHX/YAB1/68Adv/ZAHb/8wB2//MAdv/ZAHX/rwB1/2AAaf8RAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -709,21 +757,21 @@ yrfLNsu2zDXMtc01zbXONs62zzfPuNA50LrRPNG+0j/SwdNE08bUSdTL1U7V0dZV1tjXXNfg2GTY6Nls
 2fHadtr724DcBdyK3RDdlt4c3qLfKd+v4DbgveFE4cziU+Lb42Pj6+Rz5PzlhOYN5pbnH+ep6DLovOlG
 6dDqW+rl63Dr++yG7RHtnO4o7rTvQO/M8Fjw5fFy8f/yjPMZ86f0NPTC9VD13vZt9vv3ivgZ+Kj5OPnH
 +lf65/t3/Af8mP0p/br+S/7c/23//9IiIyQlWiRjbGFzc25hbWVYJGNsYXNzZXNfEBBOU0JpdG1hcElt
-YWdlUmVwoyYnKF8QEE5TQml0bWFwSW1hZ2VSZXBaTlNJbWFnZVJlcFhOU09iamVjdNIiIyorV05TQXJy
-YXmiKijSIiMtLl5OU011dGFibGVBcnJheaMtKijTMDEJMjM0V05TV2hpdGVcTlNDb2xvclNwYWNlRDAg
-MAAQA4AL0iIjNjdXTlNDb2xvcqI2KNIiIzk6V05TSW1hZ2WiOShfEA9OU0tleWVkQXJjaGl2ZXLRPT5U
-cm9vdIABAAgAEQAaACMALQAyADcARQBLAFQAWwBoAG8AdwB5AH4AgACCAIcAkgCUAJYAmACdAKAAogCk
-AKYAqACtAMQAxgDIFWoVbxV6FYMVlhWaFa0VuBXBFcYVzhXRFdYV5RXpFfAV+BYFFgoWDBYOFhMWGxYe
-FiMWKxYuFkAWQxZIAAAAAAAAAgEAAAAAAAAAPwAAAAAAAAAAAAAAAAAAFko
+YWdlUmVwoyQmJ1pOU0ltYWdlUmVwWE5TT2JqZWN00iIjKSpXTlNBcnJheaIpJ9IiIywtXk5TTXV0YWJs
+ZUFycmF5oywpJ9MvMAkxMjNXTlNXaGl0ZVxOU0NvbG9yU3BhY2VEMCAwABADgAvSIiM1NldOU0NvbG9y
+ojUn0iIjODlXTlNJbWFnZaI4J18QD05TS2V5ZWRBcmNoaXZlctE8PVRyb290gAEACAARABoAIwAtADIA
+NwBFAEsAVABbAGgAbwB3AHkAfgCAAIIAhwCSAJQAlgCYAJ0AoACiAKQApgCoAK0AxADGAMgVahVvFXoV
+gxWWFZoVpRWuFbMVuxW+FcMV0hXWFd0V5RXyFfcV+RX7FgAWCBYLFhAWGBYbFi0WMBY1AAAAAAAAAgEA
+AAAAAAAAPgAAAAAAAAAAAAAAAAAAFjc
 </mutableData>
         </image>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="fhy-4B-9Pp"/>
-        <segue reference="Ol1-iy-aYo"/>
-        <segue reference="jhN-h8-nnn"/>
-        <segue reference="xlU-Wr-tIa"/>
+        <segue reference="J2m-Nf-nZC"/>
+        <segue reference="NXJ-9h-4kM"/>
         <segue reference="jWJ-NW-k6x"/>
+        <segue reference="jhN-h8-nnn"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.94901960784313721" green="0.094117647058823528" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
 </document>

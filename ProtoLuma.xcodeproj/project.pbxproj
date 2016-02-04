@@ -22,6 +22,8 @@
 		2C35037B1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */; };
 		2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */; };
 		2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */; };
+		2C7480371C6186D100142EF0 /* CharmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7480361C6186D100142EF0 /* CharmManager.swift */; };
+		2C7480391C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7480381C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift */; };
 		2C7E34441B9B73C200EFA603 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */; };
 		2C7E34461B9B7F0E00EFA603 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */; };
 		2C7E34481B9B927100EFA603 /* MomentMediaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */; };
@@ -112,6 +114,8 @@
 		2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTimePickerTableViewCell.swift; sourceTree = "<group>"; };
 		2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerTableViewCell.swift; sourceTree = "<group>"; };
 		2C6278D11B7F1E08006DDBE7 /* ProtoLuma-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtoLuma-Bridging-Header.h"; sourceTree = "<group>"; };
+		2C7480361C6186D100142EF0 /* CharmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmManager.swift; sourceTree = "<group>"; };
+		2C7480381C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmGroupPickerTableViewController.swift; sourceTree = "<group>"; };
 		2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
 		2C7E34471B9B927100EFA603 /* MomentMediaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentMediaTableViewCell.swift; sourceTree = "<group>"; };
@@ -251,6 +255,7 @@
 			children = (
 				2C947FA11B87AC8500607770 /* NewStoryTabViewController.swift */,
 				2CED69AA1C5AE89E009E8897 /* NewMomentViewController.swift */,
+				2C7480381C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift */,
 				2C2F85AD1C5F255600400115 /* CharmGroupSelectionTableViewCell.swift */,
 				2C2F85AB1C5F22CA00400115 /* NewMomentCanvasTableViewCell.swift */,
 				2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */,
@@ -361,6 +366,7 @@
 			isa = PBXGroup;
 			children = (
 				833C952C1C404EA200D13E63 /* User.swift */,
+				2C7480361C6186D100142EF0 /* CharmManager.swift */,
 				833C952E1C404ED900D13E63 /* Charm.swift */,
 				833C95341C4055F400D13E63 /* Story.swift */,
 				8370A7F01C432CDF00811014 /* Story_Unit.swift */,
@@ -655,10 +661,12 @@
 				83009D831C419F9000FD20FC /* CharmSettingsTableViewController.swift in Sources */,
 				83ED30F61C249E680047E5D9 /* StoriesTableViewController.swift in Sources */,
 				2C2F85AE1C5F255600400115 /* CharmGroupSelectionTableViewCell.swift in Sources */,
+				2C7480391C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift in Sources */,
 				839D4AD41C2FADBE001917CA /* ScheduledMomentsTableViewController.swift in Sources */,
 				2CAC3DFE1B9A505900C41BE9 /* AddCharmViewController.swift in Sources */,
 				2C947FAE1B88039E00607770 /* CharmsTableViewHeader.swift in Sources */,
 				2CF2FE1C1B7EBB6200F4E11D /* AppDelegate.swift in Sources */,
+				2C7480371C6186D100142EF0 /* CharmManager.swift in Sources */,
 				2CED69B91C5AFE29009E8897 /* CYLTabBarController.m in Sources */,
 				2CAC3DFC1B9A1C0C00C41BE9 /* PairBraceletViewController.swift in Sources */,
 				2C2F85AC1C5F22CA00400115 /* NewMomentCanvasTableViewCell.swift in Sources */,
@@ -840,8 +848,8 @@
 			baseConfigurationReference = 265B19E26B3DCC62B1A214DE /* Pods-ProtoLuma.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Luma Legacy, Inc. (U45MJ5LU33)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 48;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

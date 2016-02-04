@@ -31,7 +31,7 @@ class CharmTableViewCell : UITableViewCell {
                 let imageView = UIImageView(image: userImage)
                 imageView.contentMode = .ScaleAspectFit
                 profileImages.addArrangedSubview(imageView)
-                print("added profile photo to charm \(title) for user \(fbId)")
+//                print("added profile photo to charm \(title) for user \(fbId)")
                 addedProfileImageViews[fbId] = imageView
             }
         }
@@ -106,6 +106,8 @@ class CharmCollectionTableViewController: UITableViewController{
             MBLMetaWearManager.sharedManager().retrieveSavedMetaWearsWithHandler({(devices) -> Void in
                 if ((devices as! [MBLMetaWear]).count > 0){
                     self.loadCharms()
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager = CharmManager.sharedManager
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager.loadCharms()
                 }
                 else{
                     if (PFUser.currentUser()!["bracelet"] != nil){
@@ -204,8 +206,8 @@ class CharmCollectionTableViewController: UITableViewController{
         
         print("enabling tab buttons")
         
-        self.tabBarController?.tabBar.items![1].enabled = true
-        self.tabBarController?.tabBar.items![2].enabled = true
+//        self.tabBarController?.tabBar.items![1].enabled = true
+//        self.tabBarController?.tabBar.items![2].enabled = true
         
         self.refreshControl?.endRefreshing()
         self.tableView.reloadData()
@@ -289,7 +291,7 @@ class CharmCollectionTableViewController: UITableViewController{
                         print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
                         if(photosDownloaded == fbIds.count){
                             let barViewControllers = self.tabBarController?.viewControllers
-                            let avc = barViewControllers![2].childViewControllers[0] as! AccountViewController
+                            let avc = barViewControllers![1].childViewControllers[0] as! AccountViewController
                             avc.profileImages = self.profileImages  //shared model
                          
                             print("all photos downloaded.  reloading table view")

@@ -260,7 +260,8 @@ class AccountViewController: UITableViewController {
 //                self.bracelets[indexPath.row].forgetDevice()
 //                self.retrieveSavedMetaWear()
 //            })
-            self.performSegueWithIdentifier("changeBracelet", sender: self)
+//            self.performSegueWithIdentifier("changeBracelet", sender: self)
+            print("bracelet selected")
         case 2:
             if (indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1){
                 // Add a New Charm selected
