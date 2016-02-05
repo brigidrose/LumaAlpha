@@ -30,7 +30,7 @@ class CharmGroupSelectionTableViewCell: UITableViewCell {
         self.charmImagePreviewImageView = UIImageView(frame: CGRectZero)
         self.charmImagePreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         self.charmImagePreviewImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        self.charmImagePreviewImageView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        self.charmImagePreviewImageView.image = UIImage(named: "CharmsBarButtonIcon")
         self.charmGroupSelectButton.addSubview(self.charmImagePreviewImageView)
         
         self.charmGroupTitleLabel = UILabel(frame: CGRectZero)
@@ -73,6 +73,11 @@ class CharmGroupSelectionTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        
     }
 
 }

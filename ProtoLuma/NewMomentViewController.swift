@@ -9,6 +9,7 @@
 import UIKit
 import TPKeyboardAvoiding
 import CTAssetsPickerController
+import MBProgressHUD
 
 class NewMomentViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate, CTAssetsPickerControllerDelegate, UIScrollViewDelegate{
 
@@ -17,6 +18,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     var storyUnits = NSMutableArray()
     
     var charmGroupSelectView:UIView!
+    var charmGroupTitleLabel:UILabel!
     
     var mediaAssets:[PHAsset] = []
     var mediaDescriptions:[String] = []
@@ -25,12 +27,25 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     var activeField: UITextView?
     var oldContentInset:UIEdgeInsets!
     
+    var forCharm:Charm!
+    var momentTitle:String = ""
+    var momentDescription:String!
+    var unlockParameterType:String!
+    var unlockTime:NSDate!
+    var unlockLocation:PFGeoPoint!
+    var unlockLocationPlacemark:CLPlacemark!
+    
+    var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
+    var keyboardShown:Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "New Moment"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "closeButtonTapped")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: UIBarButtonItemStyle.Done, target: self, action: "sendButtonTapped:")
+        self.navigationItem.rightBarButtonItem?.enabled = false
         self.tableViewController = UITableViewController()
         self.addChildViewController(self.tableViewController)
         self.tableViewController.tableView = UITableView(frame: CGRectZero)
@@ -56,8 +71,8 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         
         self.toolBarBottom = UIToolbar(frame: CGRectZero)
         self.toolBarBottom.translatesAutoresizingMaskIntoConstraints = false
-        let mediaToolBarItem = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "mediaButtonTapped")
-        let lockToolBarItem = UIBarButtonItem(image: UIImage(named: "NewStoryBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "lockButtonTapped")
+        let mediaToolBarItem = UIBarButtonItem(image: UIImage(named: "mediaUploadBarButtonIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "mediaButtonTapped")
+        let lockToolBarItem = UIBarButtonItem(image: UIImage(named: "lockBarButtonItemIcon"), style: UIBarButtonItemStyle.Plain, target: self, action: "lockButtonTapped")
         self.toolBarBottom.tintColor = (UIApplication.sharedApplication().delegate as! AppDelegate).window?.tintColor
         self.toolBarBottom.items = [mediaToolBarItem, lockToolBarItem]
         self.view.addSubview(self.toolBarBottom)
@@ -94,15 +109,15 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         let charmImagePreviewImageView = UIImageView(frame: CGRectZero)
         charmImagePreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         charmImagePreviewImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        charmImagePreviewImageView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        charmImagePreviewImageView.image = UIImage(named: "CharmsBarButtonIcon")
         charmGroupSelectButton.addSubview(charmImagePreviewImageView)
 
-        let charmGroupTitleLabel = UILabel(frame: CGRectZero)
-        charmGroupTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        charmGroupTitleLabel.text = "Charm Group Title Label"
-        charmGroupTitleLabel.textAlignment = NSTextAlignment.Left
-        charmGroupTitleLabel.numberOfLines = 1
-        charmGroupSelectButton.addSubview(charmGroupTitleLabel)
+        self.charmGroupTitleLabel = UILabel(frame: CGRectZero)
+        self.charmGroupTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.charmGroupTitleLabel.text = "Tap to Select Charm"
+        self.charmGroupTitleLabel.textAlignment = NSTextAlignment.Left
+        self.charmGroupTitleLabel.numberOfLines = 1
+        charmGroupSelectButton.addSubview(self.charmGroupTitleLabel)
 
         let separatorView = UIView(frame: CGRectZero)
         separatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -131,6 +146,130 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
+    func sendButtonTapped(sender:UIBarButtonItem){
+        var analyticsDimensions = [
+            "attachmentCount": String(self.mediaAssets.count),
+            "userId": PFUser.currentUser()!.objectId!,
+            "titleLength": String(self.momentTitle.characters.count),
+            "descriptionLength": String(self.momentDescription.characters.count),
+            "unlockType": "None"
+        ]
+        
+        
+        print("Send button tapped")
+        let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        progressHUD.labelText = "Sending..."
+        //        self.navigationItem.leftBarButtonItem?.enabled = false
+        //        self.navigationItem.rightBarButtonItem?.enabled = false
+        self.navigationItem.rightBarButtonItem?.enabled = false
+        let story = PFObject(className: "Story")
+        story["title"] = self.momentTitle
+        story["description"] = self.momentDescription
+        story["sender"] = PFUser.currentUser()
+        story["charmGroup"] = self.forCharm["charmGroup"]
+        if (self.unlockParameterType != nil){
+            analyticsDimensions["unlockType"] = self.unlockParameterType
+            print("unlock parameter type is not nil")
+            story["unlockType"] = self.unlockParameterType
+            if (self.unlockParameterType == "time"){
+                story["unlockTime"] = self.unlockTime
+            }
+            else{
+                story["unlockLocation"] = self.unlockLocation
+            }
+            story["unlocked"] = false
+        }
+        else{
+            story["unlocked"] = true
+        }
+        story["readStatus"] = false
+        PFAnalytics.trackEvent("sentNewMoment", dimensions:analyticsDimensions)
+        print("Creating image manager")
+        let manager = PHImageManager.defaultManager()
+        let storyUnitsRelation:PFRelation = story.relationForKey("storyUnits")
+        var savedCount = 0
+        if (self.mediaAssets.count > 0){
+            for mediaAsset in self.mediaAssets{
+                print("Finding media asset")
+                print(mediaAsset)
+                let options = PHImageRequestOptions()
+                options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+                options.synchronous = false
+                options.networkAccessAllowed = true
+                options.progressHandler = {(progress, error, stop, info) -> Void in
+                    print(progress)
+                }
+                manager.requestImageForAsset(mediaAsset, targetSize: CGSizeMake(1200, 1200), contentMode: PHImageContentMode.Default, options: options, resultHandler:{(image:UIImage?, info:[NSObject:AnyObject]?) -> Void in
+                    let storyUnit = PFObject(className: "Story_Unit")
+                    let sizedImage = self.RBResizeImage(image!, targetSize: CGSizeMake(1200, 1200))
+                    storyUnit["file"] = PFFile(data: UIImagePNGRepresentation(sizedImage)!)
+                    storyUnit["description"] = self.mediaDescriptions[self.mediaAssets.indexOf(mediaAsset)!]
+                    storyUnit.saveInBackgroundWithBlock({(success, error) -> Void in
+                        if (error == nil){
+                            print("\(storyUnit) saved!")
+                            savedCount++
+                            storyUnitsRelation.addObject(storyUnit)
+                            if (savedCount == self.mediaAssets.count){
+                                story.saveInBackgroundWithBlock({(success, error) -> Void in
+                                    if (error == nil){
+                                        // load charms into the new story controller
+                                        //                                        let barViewControllers = self.tabBarController?.viewControllers
+                                        //                                        let stvc = barViewControllers![0].childViewControllers[0] as! StoriesTabViewController
+                                        //                                        stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                                        //                                        stvc.loadStoriesForCharmViewed()
+                                        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+                                        self.tabBarController?.selectedIndex = 0
+                                        self.appDelegate.collectionController.navigateToCharmMoments(self.forCharm.objectId!)
+                                        self.dismissViewControllerAnimated(true, completion: nil)
+                                        //                                            self.appDelegate.collectionController.navigationController?.popToRootViewControllerAnimated(true)
+                                    }
+                                    else{
+                                        print(error)
+                                        self.navigationItem.rightBarButtonItem?.enabled = true
+                                        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+                                        ParseErrorHandlingController.handleParseError(error)
+                                    }
+                                })
+                            }
+                        }
+                        else{
+                            print(error)
+                            self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
+                            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+                            ParseErrorHandlingController.handleParseError(error)
+                        }
+                    })
+                })
+            }
+        }else{
+            story.saveInBackgroundWithBlock({(success, error) -> Void in
+                if (error == nil){
+                    //                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                    //                    (self.parentViewController?.presentingViewController?.childViewControllers[0] as! StoriesTabViewController).loadStoriesForCharmViewed()
+                    //                    self.dismissViewControllerAnimated(true, completion: nil)
+                    //                    let barViewControllers = self.tabBarController?.viewControllers
+                    //                    let stvc = barViewControllers![0] as! StoriesTabViewController
+                    //                    stvc.indexOfCharmViewed = self.charms.indexOf(self.forCharm)
+                    //                    stvc.loadStoriesForCharmViewed()
+                    progressHUD.progress = 1
+                    MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+                    self.tabBarController?.selectedIndex = 0
+                    self.appDelegate.collectionController.navigateToCharmMoments(self.forCharm.objectId!)
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+                else{
+                    print(error)
+                    MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+                    self.tabBarController?.navigationItem.rightBarButtonItem?.enabled = true
+                    ParseErrorHandlingController.handleParseError(error)
+                }
+                
+            })
+            
+        }
+    }
+
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -152,7 +291,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             }
             if indexPath.row == 1{
                 let cell = tableView.dequeueReusableCellWithIdentifier("TextViewTableViewCell") as! TextViewTableViewCell
-                cell.textView.placeholder = "Description (Optional)"
+                cell.textView.placeholder = "Description"
                 cell.textView.delegate = self
                 return cell
             }
@@ -160,11 +299,8 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             let cell = tableView.dequeueReusableCellWithIdentifier("MomentMediaTableViewCell") as! MomentMediaTableViewCell
 
             cell.mediaCaptionTextView.delegate = self
-//            (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].target = self)
-//            (((cell.mediaCaptionTextView.inputAccessoryView as! UIToolbar).items!)[1].action = "textViewDoneButtonTapped:")
-            cell.mediaCaptionTextView.placeholder = "Description (Optional)"
+            cell.mediaCaptionTextView.placeholder = "Description"
             cell.mediaCaptionTextView.text = self.mediaDescriptions[indexPath.row]
-//            cell.mediaCaptionTextView.delegate = self
             cell.mediaPreviewImageView.backgroundColor = nil
             cell.mediaCaptionTextView.returnKeyType = UIReturnKeyType.Done
           
@@ -240,12 +376,15 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         print(indexPathForTextView)
         if (indexPathForTextView.section == 1){
             self.mediaDescriptions[indexPathForTextView.row] = textView.text
+            print(self.mediaDescriptions)
         }
         else{
             // == 1
             // This would be the moment desc
+            self.momentDescription = textView.text
         }
         self.activeField = nil
+        print("moment description is \(self.momentDescription)")
     }
     
     func textViewDidChange(textView: UITextView) {
@@ -288,19 +427,19 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sendButtonTapped(sender:UIBarButtonItem){
-        sender.enabled = false
-        self.createMomentFromForm()
-    }
-    
-    func createMomentFromForm(){
-        self.saveMoment()
-    }
-    
-    func saveMoment(){
-        // if successful
-        self.navigationItem.rightBarButtonItem?.enabled = true
-    }
+//    func sendButtonTapped(sender:UIBarButtonItem){
+//        sender.enabled = false
+//        self.createMomentFromForm()
+//    }
+//    
+//    func createMomentFromForm(){
+//        self.saveMoment()
+//    }
+//    
+//    func saveMoment(){
+//        // if successful
+//        self.navigationItem.rightBarButtonItem?.enabled = true
+//    }
     
 
     
@@ -316,10 +455,48 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if ((textField.superview?.superview?.isKindOfClass(TextFieldTableViewCell)) != nil){
-            print("yoooo")
+            if self.momentTitle != "" && self.forCharm != nil{
+                self.navigationItem.rightBarButtonItem!.enabled = true
+            }
+            else{
+                self.navigationItem.rightBarButtonItem!.enabled = false
+            }
             (self.tableViewController.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! TextViewTableViewCell).textView.becomeFirstResponder()
         }
         return false
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if self.indexPathForCellContainingView(textField, inTableView: self.tableViewController.tableView) == NSIndexPath(forRow: 0, inSection: 0){
+            // textField is moment title
+            if (textField.text != ""){
+                self.momentTitle = textField.text!
+            }
+            if self.momentTitle != "" && self.forCharm != nil{
+                self.navigationItem.rightBarButtonItem!.enabled = true
+            }
+            else{
+                self.navigationItem.rightBarButtonItem!.enabled = false
+            }
+        }
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let textFieldRange:NSRange = NSMakeRange(0, textField.text!.characters.count)
+        if (NSEqualRanges(range, textFieldRange) && string.characters.count == 0) {
+            print("just became empty")
+            self.momentTitle = ""
+        }
+        else{
+            self.momentTitle = textField.text! + string
+        }
+        if self.momentTitle != "" && self.forCharm != nil{
+            self.navigationItem.rightBarButtonItem!.enabled = true
+        }
+        else{
+            self.navigationItem.rightBarButtonItem!.enabled = false
+        }
+        return true
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
@@ -345,6 +522,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showCharmGroupPicker"{
             ((segue.destinationViewController as! UINavigationController).childViewControllers[0] as! CharmGroupPickerTableViewController).charms = (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager.charms
+            ((segue.destinationViewController as! UINavigationController).childViewControllers[0] as! CharmGroupPickerTableViewController).momentComposerVC = self
         }
     }
 
@@ -424,7 +602,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             print("keyboard was shown!")
             let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableViewController.tableView)!
             self.tableViewController.tableView.scrollToRowAtIndexPath(indexPathForTextView, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-
+            print("just showed keyboard \(self.keyboardShown)")
             if !CGRectContainsPoint(aRect, activeField!.frame.origin) {
 //                let myRect = self.tableViewController.tableView.rectForRowAtIndexPath(NSIndexPath(forItem: indexPathForTextView.row, inSection: 1)) //get offset for first the row in section
 //                let scrollToRect = CGRectMake(0, myRect.origin.y + activeField!.frame.origin.y, activeField!.frame.size.width, activeField!.frame.size.height) //add the offsets of the text field and the
@@ -433,10 +611,12 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
 //                self.tableViewController.tableView.scrollRectToVisible(scrollToRect, animated: true)
             }
         }
+        self.keyboardShown = true
     }
     
     func keyboardWillBeHidden(aNotification: NSNotification) {
         //        let contentInsets = UIEdgeInsetsZero
+        self.keyboardShown = false
         print("will hide \(oldContentInset)")
         self.tableViewController.tableView.contentInset = oldContentInset
         self.tableViewController.tableView.scrollIndicatorInsets = oldContentInset
@@ -472,8 +652,10 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     // end code by @hcatlin
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView == self.tableViewController.tableView{
-//            self.view.endEditing(true)
+        print("hello \(scrollView) is keyboard shown? \(self.keyboardShown)")
+        if (scrollView == self.tableViewController.tableView) && self.keyboardShown{
+            print("hide keyboard")
+            self.view.endEditing(true)
         }
     }
     
@@ -495,5 +677,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     func lockButtonTapped(){
         print("lock button tapped")
         // Present Modal Lock Options
+        let lockNC = UINavigationController(rootViewController: LockMomentViewController())
+        self.presentViewController(lockNC, animated: true, completion: nil)
     }
 }
