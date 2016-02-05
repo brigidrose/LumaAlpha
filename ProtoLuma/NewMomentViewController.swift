@@ -147,11 +147,16 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func sendButtonTapped(sender:UIBarButtonItem){
+        //special treatment for description since PFAnalytics can't handle nils
+        var descriptionLength = 0
+        if self.momentDescription != nil {
+            descriptionLength = self.momentDescription.characters.count
+        }
         var analyticsDimensions = [
             "attachmentCount": String(self.mediaAssets.count),
             "userId": PFUser.currentUser()!.objectId!,
             "titleLength": String(self.momentTitle.characters.count),
-            "descriptionLength": String(self.momentDescription.characters.count),
+            "descriptionLength": String(descriptionLength),
             "unlockType": "None"
         ]
         
@@ -164,7 +169,9 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         self.navigationItem.rightBarButtonItem?.enabled = false
         let story = PFObject(className: "Story")
         story["title"] = self.momentTitle
-        story["description"] = self.momentDescription
+        if self.momentDescription != nil {
+            story["description"] = self.momentDescription
+        }
         story["sender"] = PFUser.currentUser()
         story["charmGroup"] = self.forCharm["charmGroup"]
         if (self.unlockParameterType != nil){

@@ -20,8 +20,9 @@ class StoryTableViewCell : UITableViewCell {
     var story:Story!
     var storyUnits:[Story_Unit]!
     
-    func loadItem(title title: String, description: String, creatorPhoto: UIImage?, storyUnits: [PFObject]) {
+    func loadItem(title title: String, description: String?, creatorPhoto: UIImage?, storyUnits: [PFObject]) {
         self.title.text = title
+        
         self.storyDesc.text = description
         
         self.creatorPhoto.image = creatorPhoto
@@ -152,7 +153,7 @@ class StoriesTableViewController: UITableViewController {
             if(self.profileImages[sender.facebookId] != nil){
                 image = self.profileImages[sender.facebookId]
             }
-            cell.loadItem(title: story["title"] as! String, description:  story["description"] as! String, creatorPhoto: image, storyUnits: self.storiesStoryUnits[indexPath.row])
+            cell.loadItem(title: story["title"] as! String, description:  story["description"] as? String, creatorPhoto: image, storyUnits: self.storiesStoryUnits[indexPath.row])
             cell.story = story
             //add longpress gesture recognizer as edit gesture for now
             let gr = UILongPressGestureRecognizer(target: self, action: "editStory:")
