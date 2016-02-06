@@ -591,7 +591,6 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func keyboardWasShown(aNotification: NSNotification) {
-        print("hey")
         oldContentInset = self.tableViewController.tableView.contentInset
         if activeField != nil {
             let info = aNotification.userInfo as! [String: AnyObject],
@@ -605,26 +604,15 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
             // Your app might not need or want this behavior.
             var aRect = self.view.frame
             aRect.size.height -= kbSize.height
-            
-            print("keyboard was shown!")
             let indexPathForTextView:NSIndexPath = self.indexPathForCellContainingView(activeField!, inTableView: self.tableViewController.tableView)!
             self.tableViewController.tableView.scrollToRowAtIndexPath(indexPathForTextView, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-            print("just showed keyboard \(self.keyboardShown)")
-            if !CGRectContainsPoint(aRect, activeField!.frame.origin) {
-//                let myRect = self.tableViewController.tableView.rectForRowAtIndexPath(NSIndexPath(forItem: indexPathForTextView.row, inSection: 1)) //get offset for first the row in section
-//                let scrollToRect = CGRectMake(0, myRect.origin.y + activeField!.frame.origin.y, activeField!.frame.size.width, activeField!.frame.size.height) //add the offsets of the text field and the
-//                print("scrolling rect to visible. \(scrollToRect)")
-
-//                self.tableViewController.tableView.scrollRectToVisible(scrollToRect, animated: true)
-            }
         }
         self.keyboardShown = true
     }
     
     func keyboardWillBeHidden(aNotification: NSNotification) {
         //        let contentInsets = UIEdgeInsetsZero
-        self.keyboardShown = false
-        print("will hide \(oldContentInset)")
+        print("keyboard will hide")
         self.tableViewController.tableView.contentInset = oldContentInset
         self.tableViewController.tableView.scrollIndicatorInsets = oldContentInset
     }
@@ -659,15 +647,14 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     // end code by @hcatlin
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        print("hello \(scrollView) is keyboard shown? \(self.keyboardShown)")
         if (scrollView == self.tableViewController.tableView) && self.keyboardShown{
             print("hide keyboard")
             self.view.endEditing(true)
+            self.keyboardShown = false
         }
     }
     
     func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
-        print("tests")
         if (scrollView == self.tableViewController.tableView){
             return true
         }
