@@ -10,6 +10,8 @@ import UIKit
 
 class LockMomentViewController: UIViewController {
 
+    var tableViewController:UITableViewController!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,6 +20,20 @@ class LockMomentViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "donelButtonTapped")
 
         self.view.backgroundColor = UIColor.whiteColor()
+        
+        self.tableViewController = UITableViewController()
+        self.addChildViewController(self.tableViewController)
+        
+        self.tableViewController.tableView = UITableView(frame: CGRectZero)
+        self.tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.tableViewController.tableView)
+        
+        let viewsDictionary = ["tableView":self.tableViewController.tableView]
+        let tbvHConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[tableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        let tbvVConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[tableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+
+        self.view.addConstraints(tbvHConstraints)
+        self.view.addConstraints(tbvVConstraints)
     }
 
     override func didReceiveMemoryWarning() {

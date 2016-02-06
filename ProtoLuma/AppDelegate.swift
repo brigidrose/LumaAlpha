@@ -381,7 +381,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     class func notifyBracelet(device: MBLMetaWear, charmSlot: UInt8, completionHandler: (UIBackgroundFetchResult) -> Void){
         device.hapticBuzzer?.startHapticWithDutyCycleAsync(255, pulseWidth: 500, completion: nil)
 //        device.led?.flashLEDColorAsync(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 6).waitUntilFinished()
-        let length:UInt8 = 7; // Specific to your NeoPixel stand
+        let length:UInt8 = 5; // Specific to your NeoPixel stand
         let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
         let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand
         
@@ -411,10 +411,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         delay += timeBetweenFlashes
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_global_queue(priority, 0), {
+            print("setting blue")
+            strand.setPixelAsync(charmSlot, color: UIColor.blueColor()).waitUntilFinished()
+        })
+        
+        delay += timeBetweenFlashes
+        time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_global_queue(priority, 0), {
             print("turning off")
             strand.clearAllPixelsAsync().waitUntilFinished()
             
         })
+
         
         delay += timeBetweenFlashes
         time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
