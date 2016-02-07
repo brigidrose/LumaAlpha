@@ -302,6 +302,27 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                 cell.textView.delegate = self
                 return cell
             }
+            if indexPath.row == 2{
+                let cell = tableView.dequeueReusableCellWithIdentifier("TextFieldTableViewCell") as! TextFieldTableViewCell
+                var unlockStatus = "Unlocks"
+                if self.unlockParameterType == "time"{
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+                    dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+                    unlockStatus += " on \(dateFormatter.stringFromDate(self.unlockTime))"
+                }
+                else if self.unlockParameterType == "location"{
+                    if (self.unlockLocationPlacemark == nil || self.unlockLocationPlacemark.locality == nil || self.unlockLocationPlacemark.administrativeArea == nil){
+                        unlockStatus += " near \("\(self.unlockLocation.latitude)".trunc(7)), \("\(self.unlockLocation.longitude)".trunc(7))"
+                    }
+                    else{
+                        unlockStatus += " in \(self.unlockLocationPlacemark.locality!), \(self.unlockLocationPlacemark.administrativeArea!)"
+                    }
+                }
+                cell.textField.placeholder = unlockStatus
+                cell.textField.enabled = false
+                return cell
+            }
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("MomentMediaTableViewCell") as! MomentMediaTableViewCell
 
@@ -415,7 +436,12 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0{
-            return 2
+            if self.unlockParameterType == nil{
+                return 2
+            }
+            else{
+                return 3
+            }
         }
         else{
             return self.mediaAssets.count
@@ -433,22 +459,6 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         self.toolBarBottom.hidden = true
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-//    func sendButtonTapped(sender:UIBarButtonItem){
-//        sender.enabled = false
-//        self.createMomentFromForm()
-//    }
-//    
-//    func createMomentFromForm(){
-//        self.saveMoment()
-//    }
-//    
-//    func saveMoment(){
-//        // if successful
-//        self.navigationItem.rightBarButtonItem?.enabled = true
-//    }
-    
-
     
     override func canBecomeFirstResponder() -> Bool {
         return true
@@ -671,7 +681,20 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
     func lockButtonTapped(){
         print("lock button tapped")
         // Present Modal Lock Options
-        let lockNC = UINavigationController(rootViewController: LockMomentViewController())
+        let lockMomentVC = LockMomentViewController()
+        lockMomentVC.newMomentVC = self
+        let lockNC = UINavigationController(rootViewController:lockMomentVC)
         self.presentViewController(lockNC, animated: true, completion: nil)
     }
 }
+
+extension String {
+    func trunc(length: Int, trailing: String? = "...") -> String {
+        if self.characters.count > length {
+            return self.substringToIndex(self.startIndex.advancedBy(length)) + (trailing ?? "")
+        } else {
+            return self
+        }
+    }
+}
+

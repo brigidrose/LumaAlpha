@@ -380,7 +380,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     class func notifyBracelet(device: MBLMetaWear, charmSlot: UInt8, completionHandler: (UIBackgroundFetchResult) -> Void){
         device.hapticBuzzer?.startHapticWithDutyCycleAsync(255, pulseWidth: 500, completion: nil)
-//        device.led?.flashLEDColorAsync(UIColor.greenColor(), withIntensity: 1.0, numberOfFlashes: 6).waitUntilFinished()
         let length:UInt8 = 5; // Specific to your NeoPixel stand
         let color:MBLColorOrdering = MBLColorOrdering.GRB; // Specific to your NeoPixel stand
         let speed:MBLStrandSpeed = MBLStrandSpeed.Slow; // Specific to your NeoPixel stand

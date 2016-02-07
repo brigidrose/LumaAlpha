@@ -23,6 +23,7 @@
 		2C35037D1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */; };
 		2C35037F1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */; };
 		2C4636A01C63CE4200213D97 /* LockMomentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C46369F1C63CE4200213D97 /* LockMomentViewController.swift */; };
+		2C4A96FF1C67BF8F00039025 /* SegmentedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4A96FE1C67BF8F00039025 /* SegmentedHeaderView.swift */; };
 		2C7480371C6186D100142EF0 /* CharmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7480361C6186D100142EF0 /* CharmManager.swift */; };
 		2C7480391C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7480381C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift */; };
 		2C7E34441B9B73C200EFA603 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */; };
@@ -115,6 +116,7 @@
 		2C35037C1B9CC74000E4D87B /* DateTimePickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTimePickerTableViewCell.swift; sourceTree = "<group>"; };
 		2C35037E1B9CCE8C00E4D87B /* LocationPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerTableViewCell.swift; sourceTree = "<group>"; };
 		2C46369F1C63CE4200213D97 /* LockMomentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockMomentViewController.swift; sourceTree = "<group>"; };
+		2C4A96FE1C67BF8F00039025 /* SegmentedHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedHeaderView.swift; sourceTree = "<group>"; };
 		2C6278D11B7F1E08006DDBE7 /* ProtoLuma-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtoLuma-Bridging-Header.h"; sourceTree = "<group>"; };
 		2C7480361C6186D100142EF0 /* CharmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmManager.swift; sourceTree = "<group>"; };
 		2C7480381C618B4E00142EF0 /* CharmGroupPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharmGroupPickerTableViewController.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				2CAC3E001B9B550E00C41BE9 /* CharmPickerTableViewCell.swift */,
 				2C7E34431B9B73C200EFA603 /* TextFieldTableViewCell.swift */,
 				2C35037A1B9C922D00E4D87B /* SegmentedControlTableViewCell.swift */,
+				2C4A96FE1C67BF8F00039025 /* SegmentedHeaderView.swift */,
 				2C7E34451B9B7F0E00EFA603 /* TextViewTableViewCell.swift */,
 			);
 			name = "New Moment";
@@ -679,6 +682,7 @@
 				2CAB01211B98C88700652C76 /* ProfileBlurbTableViewCell.swift in Sources */,
 				2C26F9BA1B86BB800081388C /* CharmTitleBlurbHeaderTableViewCell.swift in Sources */,
 				2C947FA61B87E2A500607770 /* UIStyleController.swift in Sources */,
+				2C4A96FF1C67BF8F00039025 /* SegmentedHeaderView.swift in Sources */,
 				8370A7E71C41A5EB00811014 /* CharmSettingsButtonCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
