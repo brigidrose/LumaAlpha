@@ -294,12 +294,18 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
                 let cell = tableView.dequeueReusableCellWithIdentifier("TextFieldTableViewCell") as! TextFieldTableViewCell
                 cell.textField.placeholder = "Title"
                 cell.textField.delegate = self
+                if self.momentTitle != ""{
+                    cell.textField.text = self.momentTitle
+                }
                 return cell
             }
             if indexPath.row == 1{
                 let cell = tableView.dequeueReusableCellWithIdentifier("TextViewTableViewCell") as! TextViewTableViewCell
                 cell.textView.placeholder = "Description"
                 cell.textView.delegate = self
+                if self.momentDescription != ""{
+                    cell.textView.text = self.momentDescription
+                }
                 return cell
             }
             if indexPath.row == 2{
@@ -579,6 +585,7 @@ class NewMomentViewController: UIViewController, UITableViewDataSource, UITableV
         presentingVC.tableViewController.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
         picker.dismissViewControllerAnimated(true, completion: {
             print(presentingVC.mediaAssets)
+            presentingVC.becomeFirstResponder()
 //            presentingVC.imageAssets = NSMutableArray(capacity: picker.selectedAssets.count)
         })
     }

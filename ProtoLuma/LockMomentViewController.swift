@@ -368,6 +368,7 @@ class LockMomentViewController: UIViewController, UITableViewDataSource, UITable
             self.newMomentVC.tableViewController.tableView.insertRowsAtIndexPaths(indexPathsToInsert, withRowAnimation: UITableViewRowAnimation.Fade)
             self.newMomentVC.tableViewController.tableView.endUpdates()
             self.newMomentVC.tableViewController.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+            self.newMomentVC.becomeFirstResponder()
             self.checkForDoneButtonState()
         })
     }
