@@ -112,6 +112,8 @@ class CharmCollectionTableViewController: UITableViewController{
                 else{
                     if (PFUser.currentUser()!["bracelet"] != nil){
                         self.loadCharms()
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager = CharmManager.sharedManager
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager.loadCharms()
                     }
                     else{
                         self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
@@ -291,8 +293,9 @@ class CharmCollectionTableViewController: UITableViewController{
                         print("photo downloaded.  number \(photosDownloaded) out of \(fbIds.count)")
                         if(photosDownloaded == fbIds.count){
                             let barViewControllers = self.tabBarController?.viewControllers
-                            let avc = barViewControllers![1].childViewControllers[0] as! AccountViewController
-                            avc.profileImages = self.profileImages  //shared model
+                            if let avc = barViewControllers![1].childViewControllers[0] as? AccountViewController {
+                                avc.profileImages = self.profileImages  //shared model
+                            }
                          
                             print("all photos downloaded.  reloading table view")
                             dispatch_async(dispatch_get_main_queue()){
