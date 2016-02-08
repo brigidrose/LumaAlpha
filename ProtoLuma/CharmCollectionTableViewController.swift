@@ -112,6 +112,8 @@ class CharmCollectionTableViewController: UITableViewController{
                 else{
                     if (PFUser.currentUser()!["bracelet"] != nil){
                         self.loadCharms()
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager = CharmManager.sharedManager
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).charmManager.loadCharms()
                     }
                     else{
                         self.performSegueWithIdentifier("showLoggedInWithoutBracelet", sender: self)
